@@ -34,7 +34,7 @@ public class PlayerInputSystem extends IteratingSystem {
 
     @Override
     protected void processEntity(Entity entity, float deltaTime) {
-        players.get(entity).stateMachine.update();
+        players.get(entity).stateMachine.update(deltaTime);
     }
 
     @Override
@@ -71,11 +71,12 @@ public class PlayerInputSystem extends IteratingSystem {
 
         @Override
         public void entityAdded(Entity entity) {
+            Player.Settings settings = new Player.Settings(5f, 0.3f);
             PlayerRequest request = entity.remove(PlayerRequest.class);
             OnGround onGround = onGroundProvider.get();
             InputStateMachine stateMachine = stateMachineFactory.create(entity, onGround);
 
-            entity.add(new Player(request.camera, stateMachine, onGround));
+            entity.add(new Player(request.camera, stateMachine, onGround, settings));
             stateMachine.getCurrentState().enter(entity);
             for (Message value : Message.values()) {
                 messageDispatcher.addListener(stateMachine, value.ordinal());

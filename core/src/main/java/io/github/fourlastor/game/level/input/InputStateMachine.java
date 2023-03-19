@@ -14,6 +14,11 @@ public class InputStateMachine extends DefaultStateMachine<Entity, PlayerState> 
         super(entity, initialState);
     }
 
+    public void update(float deltaTime) {
+        currentState.setDelta(deltaTime);
+        update();
+    }
+
     @AssistedFactory
     public interface Factory {
         InputStateMachine create(Entity entity, PlayerState initialState);
