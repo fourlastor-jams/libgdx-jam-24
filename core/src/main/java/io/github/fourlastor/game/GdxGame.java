@@ -5,8 +5,6 @@ import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.graphics.Cursor;
-import com.badlogic.gdx.graphics.Pixmap;
 import io.github.fourlastor.game.di.GameComponent;
 import io.github.fourlastor.game.gameover.GameOverComponent;
 import io.github.fourlastor.game.intro.IntroComponent;
@@ -37,13 +35,15 @@ public class GdxGame extends Game implements Router {
 
     @Override
     public void create() {
+        //noinspection StatementWithEmptyBody
         if (Gdx.app.getType() != Application.ApplicationType.Android) {
-            Cursor customCursor =
-                    Gdx.graphics.newCursor(new Pixmap(Gdx.files.internal("images/included/whitePixel.png")), 0, 0);
-            Gdx.graphics.setCursor(customCursor);
+            //            Cursor customCursor =
+            //                    Gdx.graphics.newCursor(new
+            // Pixmap(Gdx.files.internal("images/included/whitePixel.png")), 0, 0);
+            //            Gdx.graphics.setCursor(customCursor);
         }
         Gdx.input.setInputProcessor(multiplexer);
-        goToIntro();
+        goToLevel();
     }
 
     @Override

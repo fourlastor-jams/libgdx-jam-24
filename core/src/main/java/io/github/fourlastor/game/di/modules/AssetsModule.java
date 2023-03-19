@@ -23,12 +23,7 @@ import javax.inject.Singleton;
 public class AssetsModule {
 
     private static final String PATH_TEXTURE_ATLAS = "images/included/packed/images.pack.atlas";
-    private static final String PATH_LEVELS = "maps/levels.ldtk";
-    private static final String PATH_DEFAULT_SHADER = "shaders/default.vs";
-    private static final String PATH_WAVE_SHADER = "shaders/wave.fs";
     public static final String WHITE_PIXEL = "white-pixel";
-    private static final String PATH_SPINE_JSON = "animations/animation_spine.json";
-    private static final String PATH_DRAGON_BONES_JSON = "images/included/animations/dancer/dancer.json";
 
     @Provides
     public DragonBonesLoader dragonBonesLoader(JsonReader json, JsonParser<DragonBonesEntity> parser) {
@@ -49,11 +44,6 @@ public class AssetsModule {
         assetManager.setLoader(SpineEntity.class, spineLoader);
         assetManager.setLoader(AnimationNode.Group.class, dragonBonesLoader);
         assetManager.load(PATH_TEXTURE_ATLAS, TextureAtlas.class);
-        assetManager.load(PATH_LEVELS, LdtkMapData.class);
-        assetManager.load(PATH_SPINE_JSON, SpineEntity.class);
-        assetManager.load(PATH_DRAGON_BONES_JSON, AnimationNode.Group.class);
-        assetManager.load(PATH_DEFAULT_SHADER, Text.class);
-        assetManager.load(PATH_WAVE_SHADER, Text.class);
         assetManager.finishLoading();
         return assetManager;
     }
