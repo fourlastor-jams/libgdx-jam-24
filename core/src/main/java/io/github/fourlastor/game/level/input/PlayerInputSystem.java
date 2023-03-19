@@ -12,7 +12,6 @@ import io.github.fourlastor.game.level.component.BodyComponent;
 import io.github.fourlastor.game.level.component.Player;
 import io.github.fourlastor.game.level.component.PlayerRequest;
 import io.github.fourlastor.game.level.input.state.OnGround;
-
 import javax.inject.Inject;
 import javax.inject.Provider;
 
@@ -20,15 +19,14 @@ public class PlayerInputSystem extends IteratingSystem {
 
     private static final Family FAMILY_REQUEST =
             Family.all(PlayerRequest.class, BodyComponent.class).get();
-    private static final Family FAMILY = Family.all(Player.class, BodyComponent.class)
-            .get();
+    private static final Family FAMILY =
+            Family.all(Player.class, BodyComponent.class).get();
 
     private final PlayerSetup playerSetup;
     private final ComponentMapper<Player> players;
 
     @Inject
-    public PlayerInputSystem(
-            PlayerSetup playerSetup, ComponentMapper<Player> players) {
+    public PlayerInputSystem(PlayerSetup playerSetup, ComponentMapper<Player> players) {
         super(FAMILY);
         this.playerSetup = playerSetup;
         this.players = players;
@@ -85,7 +83,6 @@ public class PlayerInputSystem extends IteratingSystem {
         }
 
         @Override
-        public void entityRemoved(Entity entity) {
-        }
+        public void entityRemoved(Entity entity) {}
     }
 }

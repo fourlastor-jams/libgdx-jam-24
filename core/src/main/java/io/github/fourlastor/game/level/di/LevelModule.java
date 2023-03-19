@@ -33,7 +33,7 @@ public class LevelModule {
             ClearScreenSystem clearScreenSystem,
             ActorFollowBodySystem actorFollowBodySystem,
             @SuppressWarnings("unused") // debug only
-            PhysicsDebugSystem physicsDebugSystem) {
+                    PhysicsDebugSystem physicsDebugSystem) {
         Engine engine = new Engine();
         engine.addSystem(playerInputSystem);
         engine.addSystem(physicsSystem);

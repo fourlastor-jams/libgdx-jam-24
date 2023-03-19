@@ -14,9 +14,7 @@ public class Player implements Component {
     public final InputStateMachine stateMachine;
     public final OnGround onGround;
 
-    public Player(
-            Camera camera, InputStateMachine stateMachine,
-            OnGround onGround) {
+    public Player(Camera camera, InputStateMachine stateMachine, OnGround onGround) {
         this.camera = camera;
         this.stateMachine = stateMachine;
         this.onGround = onGround;

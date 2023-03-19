@@ -6,7 +6,6 @@ import com.badlogic.gdx.ai.fsm.State;
 import com.badlogic.gdx.ai.msg.Telegram;
 import io.github.fourlastor.game.level.component.BodyComponent;
 import io.github.fourlastor.game.level.component.Player;
-
 import javax.inject.Inject;
 
 public abstract class PlayerState implements State<Entity> {
@@ -16,8 +15,7 @@ public abstract class PlayerState implements State<Entity> {
         final ComponentMapper<BodyComponent> bodies;
 
         @Inject
-        public Mappers(ComponentMapper<Player> players,
-                       ComponentMapper<BodyComponent> bodies) {
+        public Mappers(ComponentMapper<Player> players, ComponentMapper<BodyComponent> bodies) {
             this.players = players;
             this.bodies = bodies;
         }
@@ -32,20 +30,16 @@ public abstract class PlayerState implements State<Entity> {
     }
 
     @Override
-    public void enter(Entity entity) {
-    }
+    public void enter(Entity entity) {}
 
     @Override
-    public void update(Entity entity) {
-    }
+    public void update(Entity entity) {}
 
     @Override
-    public void exit(Entity entity) {
-    }
+    public void exit(Entity entity) {}
 
     @Override
     public boolean onMessage(Entity entity, Telegram telegram) {
         return false;
     }
-
 }

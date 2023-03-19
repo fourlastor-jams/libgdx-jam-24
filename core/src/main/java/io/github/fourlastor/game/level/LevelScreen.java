@@ -4,7 +4,6 @@ import com.badlogic.ashley.core.Engine;
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.viewport.Viewport;
-
 import javax.inject.Inject;
 
 public class LevelScreen extends ScreenAdapter {
@@ -16,11 +15,7 @@ public class LevelScreen extends ScreenAdapter {
     private final World world;
 
     @Inject
-    public LevelScreen(
-            Engine engine,
-            Viewport viewport,
-            EntitiesFactory entitiesFactory,
-            World world) {
+    public LevelScreen(Engine engine, Viewport viewport, EntitiesFactory entitiesFactory, World world) {
         this.engine = engine;
         this.viewport = viewport;
         this.entitiesFactory = entitiesFactory;

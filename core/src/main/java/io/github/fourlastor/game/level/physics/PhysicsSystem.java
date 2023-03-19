@@ -18,7 +18,6 @@ import io.github.fourlastor.game.level.Message;
 import io.github.fourlastor.game.level.UserData;
 import io.github.fourlastor.game.level.component.BodyBuilderComponent;
 import io.github.fourlastor.game.level.component.BodyComponent;
-
 import javax.inject.Inject;
 
 public class PhysicsSystem extends IntervalSystem {
@@ -111,8 +110,7 @@ public class PhysicsSystem extends IntervalSystem {
     private final ContactListener contactListener = new ContactListener() {
 
         @Override
-        public void beginContact(Contact contact) {
-        }
+        public void beginContact(Contact contact) {}
 
         private void checkCollision(Contact contact, Fixture playerFixture, Fixture platformFixture) {
             Body playerBody = playerFixture.getBody();
@@ -155,7 +153,6 @@ public class PhysicsSystem extends IntervalSystem {
         }
 
         @Override
-        public void postSolve(Contact contact, ContactImpulse impulse) {
-        }
+        public void postSolve(Contact contact, ContactImpulse impulse) {}
     };
 }

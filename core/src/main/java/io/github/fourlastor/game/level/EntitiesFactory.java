@@ -13,7 +13,6 @@ import io.github.fourlastor.game.di.ScreenScoped;
 import io.github.fourlastor.game.level.component.ActorComponent;
 import io.github.fourlastor.game.level.component.BodyBuilderComponent;
 import io.github.fourlastor.game.level.component.PlayerRequest;
-
 import javax.inject.Inject;
 
 /**
@@ -22,14 +21,11 @@ import javax.inject.Inject;
 @ScreenScoped
 public class EntitiesFactory {
 
-
     private final TextureAtlas textureAtlas;
     private final Camera camera;
 
     @Inject
-    public EntitiesFactory(
-            TextureAtlas textureAtlas,
-            Camera camera) {
+    public EntitiesFactory(TextureAtlas textureAtlas, Camera camera) {
         this.textureAtlas = textureAtlas;
         this.camera = camera;
     }

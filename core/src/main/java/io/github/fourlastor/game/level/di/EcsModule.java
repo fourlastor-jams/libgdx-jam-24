@@ -14,7 +14,6 @@ import io.github.fourlastor.game.level.component.SoundComponent;
 @Module
 public class EcsModule {
 
-
     @Provides
     @ScreenScoped
     public ComponentMapper<ActorComponent> actorComponent() {
@@ -38,7 +37,6 @@ public class EcsModule {
     public ComponentMapper<Player> playerComponent() {
         return ComponentMapper.getFor(Player.class);
     }
-
 
     @Provides
     @ScreenScoped

@@ -17,8 +17,7 @@ import javax.inject.Inject;
 
 public class StageSystem extends EntitySystem implements EntityListener {
 
-    private static final Family FAMILY =
-            Family.all(ActorComponent.class).get();
+    private static final Family FAMILY = Family.all(ActorComponent.class).get();
     private final Stage stage;
     private final ComponentMapper<ActorComponent> actors;
     private final List<Group> layerGroups;
