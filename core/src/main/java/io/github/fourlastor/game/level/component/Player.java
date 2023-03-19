@@ -14,9 +14,22 @@ public class Player implements Component {
     public final InputStateMachine stateMachine;
     public final OnGround onGround;
 
-    public Player(Camera camera, InputStateMachine stateMachine, OnGround onGround) {
+    public final Settings settings;
+
+    public Player(Camera camera, InputStateMachine stateMachine, OnGround onGround, Settings settings) {
         this.camera = camera;
         this.stateMachine = stateMachine;
         this.onGround = onGround;
+        this.settings = settings;
+    }
+
+    public static class Settings {
+        public final float speed;
+        public final float accelerationTime;
+
+        public Settings(float speed, float accelerationTime) {
+            this.speed = speed;
+            this.accelerationTime = accelerationTime;
+        }
     }
 }
