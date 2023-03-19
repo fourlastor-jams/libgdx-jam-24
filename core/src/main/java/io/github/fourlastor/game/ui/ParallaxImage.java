@@ -3,6 +3,7 @@ package io.github.fourlastor.game.ui;
 import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 
 public class ParallaxImage extends Actor {
@@ -10,9 +11,9 @@ public class ParallaxImage extends Actor {
     private final TextureRegion texture;
     private final float factor;
 
-    private float currentDelta = 0f;
+    private final Vector2 currentDelta = new Vector2();
 
-    public ParallaxImage(float factor, TextureRegion texture) {
+    public ParallaxImage(TextureRegion texture, float factor) {
         super();
         setBounds(0f, 0f, texture.getRegionWidth(), texture.getRegionHeight());
         setPosition(0f, 0f);
@@ -25,7 +26,8 @@ public class ParallaxImage extends Actor {
         super.act(delta);
         Camera camera = getStage().getCamera();
 
-        currentDelta = -((camera.position.y * factor));
+        currentDelta.x = -(camera.position.x * factor);
+        currentDelta.y = -(camera.position.y * factor);
     }
 
     @Override
@@ -36,9 +38,11 @@ public class ParallaxImage extends Actor {
         float targetHeight = getHeight() * getScaleY();
         float targetX = camera.position.x - targetWidth / 2;
         float targetY = camera.position.y - targetHeight / 2;
-        float deltaY = currentDelta % targetHeight;
+        float deltaX = currentDelta.x % targetHeight;
+        float deltaY = currentDelta.y % targetHeight;
 
-        batch.draw(texture, targetX, targetY + deltaY, targetWidth, targetHeight);
-        batch.draw(texture, targetX, targetY + deltaY + targetHeight, targetWidth, targetHeight);
+        float x = targetX + deltaX;
+        float y = targetY + deltaY;
+        batch.draw(texture, x, y, targetWidth, targetHeight);
     }
 }
