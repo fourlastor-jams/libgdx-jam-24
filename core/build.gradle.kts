@@ -44,9 +44,7 @@ tasks.create("packTextures") {
     outputs.dir(outputDir)
     doLast {
         delete(outputDir)
-        TexturePacker.process(TexturePacker.Settings().apply {
-            combineSubdirectories = true
-        }, inputDir, outputDir, "images.pack")
+        TexturePacker.process(inputDir, outputDir, "images.pack")
     }
 }
 
