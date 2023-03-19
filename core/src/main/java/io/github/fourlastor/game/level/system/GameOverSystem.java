@@ -12,14 +12,14 @@ import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.physics.box2d.Body;
 import io.github.fourlastor.game.level.Message;
 import io.github.fourlastor.game.level.component.BodyComponent;
-import io.github.fourlastor.game.level.component.PlayerComponent;
+import io.github.fourlastor.game.level.component.Player;
 import io.github.fourlastor.game.route.Router;
 import javax.inject.Inject;
 
 public class GameOverSystem extends IteratingSystem implements Telegraph {
 
     private static final Family FAMILY =
-            Family.all(PlayerComponent.class, BodyComponent.class).get();
+            Family.all(Player.class, BodyComponent.class).get();
 
     private final Camera camera;
     private final ComponentMapper<BodyComponent> bodies;

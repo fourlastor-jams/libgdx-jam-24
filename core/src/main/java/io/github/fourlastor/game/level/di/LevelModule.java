@@ -11,7 +11,6 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 import dagger.Module;
 import dagger.Provides;
 import io.github.fourlastor.game.di.ScreenScoped;
-import io.github.fourlastor.game.level.blueprint.ChunkSpawnSystem;
 import io.github.fourlastor.game.level.component.ActorComponent;
 import io.github.fourlastor.game.level.input.PlayerInputSystem;
 import io.github.fourlastor.game.level.physics.PhysicsDebugSystem;
@@ -19,11 +18,6 @@ import io.github.fourlastor.game.level.physics.PhysicsSystem;
 import io.github.fourlastor.game.level.system.ActorFollowBodySystem;
 import io.github.fourlastor.game.level.system.CameraMovementSystem;
 import io.github.fourlastor.game.level.system.ClearScreenSystem;
-import io.github.fourlastor.game.level.system.FishSpawnSystem;
-import io.github.fourlastor.game.level.system.GameOverSystem;
-import io.github.fourlastor.game.level.system.GarbageCollectionSystem;
-import io.github.fourlastor.game.level.system.MovingSystem;
-import io.github.fourlastor.game.level.system.SoundSystem;
 import io.github.fourlastor.game.level.system.StageSystem;
 
 @Module
@@ -35,31 +29,19 @@ public class LevelModule {
             PlayerInputSystem playerInputSystem,
             CameraMovementSystem cameraMovementSystem,
             PhysicsSystem physicsSystem,
-            ActorFollowBodySystem actorFollowBodySystem,
             StageSystem stageSystem,
             ClearScreenSystem clearScreenSystem,
+            ActorFollowBodySystem actorFollowBodySystem,
             @SuppressWarnings("unused") // debug only
-                    PhysicsDebugSystem physicsDebugSystem,
-            ChunkSpawnSystem chunkSpawnSystem,
-            GameOverSystem gameOverSystem,
-            MovingSystem movingSystem,
-            SoundSystem soundSystem,
-            FishSpawnSystem fishSpawnSystem,
-            GarbageCollectionSystem garbageCollectionSystem) {
+            PhysicsDebugSystem physicsDebugSystem) {
         Engine engine = new Engine();
-        engine.addSystem(chunkSpawnSystem);
-        engine.addSystem(fishSpawnSystem);
-        engine.addSystem(movingSystem);
         engine.addSystem(playerInputSystem);
         engine.addSystem(physicsSystem);
-        engine.addSystem(soundSystem);
-        engine.addSystem(cameraMovementSystem);
         engine.addSystem(actorFollowBodySystem);
+        engine.addSystem(cameraMovementSystem);
         engine.addSystem(clearScreenSystem);
         engine.addSystem(stageSystem);
-        engine.addSystem(gameOverSystem);
-        engine.addSystem(garbageCollectionSystem);
-        //        engine.addSystem(physicsDebugSystem);
+        engine.addSystem(physicsDebugSystem);
         return engine;
     }
 
@@ -72,7 +54,7 @@ public class LevelModule {
     @Provides
     @ScreenScoped
     public Viewport viewport() {
-        return new FitViewport(9f, 16f);
+        return new FitViewport(16f, 9f);
     }
 
     @Provides
@@ -91,7 +73,7 @@ public class LevelModule {
     @ScreenScoped
     @Gravity
     public Vector2 gravity() {
-        return new Vector2(0f, -10f);
+        return new Vector2(0f, 0f);
     }
 
     @Provides

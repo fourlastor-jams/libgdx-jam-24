@@ -10,7 +10,6 @@ import io.github.fourlastor.game.route.RouterModule;
 @Subcomponent(
         modules = {
             LevelModule.class,
-            MapModule.class,
             PlayerAnimationsFactory.class,
             RouterModule.class,
             EcsModule.class
