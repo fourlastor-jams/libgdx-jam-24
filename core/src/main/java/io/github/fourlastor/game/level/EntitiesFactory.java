@@ -8,11 +8,13 @@ import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import io.github.fourlastor.game.di.ScreenScoped;
 import io.github.fourlastor.game.level.component.ActorComponent;
 import io.github.fourlastor.game.level.component.BodyBuilderComponent;
 import io.github.fourlastor.game.level.component.PlayerRequest;
+import io.github.fourlastor.game.ui.ParallaxImage;
 import javax.inject.Inject;
 
 /**
@@ -51,6 +53,14 @@ public class EntitiesFactory {
         }));
         entity.add(new ActorComponent(image, ActorComponent.Layer.CHARACTER));
         entity.add(new PlayerRequest(camera));
+        return entity;
+    }
+
+    public Entity bg() {
+        Entity entity = new Entity();
+        Actor actor = new ParallaxImage(textureAtlas.findRegion("ground/ground"), 1f);
+        actor.setPosition(-50, -50);
+        entity.add(new ActorComponent(actor, ActorComponent.Layer.BG_PARALLAX));
         return entity;
     }
 }
