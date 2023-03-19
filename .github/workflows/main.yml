@@ -1,17 +1,16 @@
 name: Distribution Builds
 
 on:
-  # Automatically on every tag starting with v
-  push:
-    tags:
-      - v*
+  pull_request:
+    types:
+      - closed
   # Manual dispatch for testing
   workflow_dispatch:
 
 jobs:
   build:
     env:
-      ITCH_PROJECT: 'fourlastor/gdx-java-base'
+      ITCH_PROJECT: 'sandramoen/libgdx-jam-24'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
