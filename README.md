@@ -1,6 +1,5 @@
 # Libgdx Java starter
 
-test
 ## Credits
 
 - [libGDX](https://libgdx.com/)
