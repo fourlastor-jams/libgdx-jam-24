@@ -19,7 +19,10 @@ public abstract class PlayerState implements State<Entity> {
         final ComponentMapper<ActorComponent> actors;
 
         @Inject
-        public Mappers(ComponentMapper<Player> players, ComponentMapper<BodyComponent> bodies, ComponentMapper<ActorComponent> actors) {
+        public Mappers(
+                ComponentMapper<Player> players,
+                ComponentMapper<BodyComponent> bodies,
+                ComponentMapper<ActorComponent> actors) {
             this.players = players;
             this.bodies = bodies;
             this.actors = actors;
@@ -49,7 +52,6 @@ public abstract class PlayerState implements State<Entity> {
     public boolean onMessage(Entity entity, Telegram telegram) {
         return false;
     }
-
 
     public final void setDelta(float delta) {
         this.delta = delta;

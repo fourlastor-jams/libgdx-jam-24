@@ -7,7 +7,6 @@ import com.badlogic.gdx.math.Interpolation;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import io.github.fourlastor.game.level.component.Player;
-
 import javax.inject.Inject;
 
 public class OnGround extends PlayerState {
@@ -51,7 +50,8 @@ public class OnGround extends PlayerState {
         }
         movementTime += delta();
         float progress = Math.min(1f, movementTime / player.settings.accelerationTime);
-        float interpolated = targetVelocity.isZero() ? Interpolation.pow2.apply(1 - progress) :  Interpolation.pow2.apply(progress);
+        float interpolated =
+                targetVelocity.isZero() ? Interpolation.pow2.apply(1 - progress) : Interpolation.pow2.apply(progress);
         targetVelocity.nor().scl(player.settings.speed).scl(interpolated);
         body.setLinearVelocity(targetVelocity);
     }
