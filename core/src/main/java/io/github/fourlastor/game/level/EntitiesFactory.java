@@ -10,11 +10,18 @@ import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
+import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
+import com.badlogic.gdx.utils.Array;
 import io.github.fourlastor.game.di.ScreenScoped;
 import io.github.fourlastor.game.level.component.ActorComponent;
 import io.github.fourlastor.game.level.component.BodyBuilderComponent;
 import io.github.fourlastor.game.level.component.PlayerRequest;
 import io.github.fourlastor.game.ui.ParallaxImage;
+import io.github.fourlastor.harlequin.animation.Animation;
+import io.github.fourlastor.harlequin.animation.GdxAnimation;
+import io.github.fourlastor.harlequin.ui.AnimatedImage;
+
 import javax.inject.Inject;
 
 /**
@@ -34,8 +41,15 @@ public class EntitiesFactory {
 
     public Entity player() {
         Entity entity = new Entity();
+        Array<TextureAtlas.AtlasRegion> regions = textureAtlas.findRegions("character/walking/walking");
+        Array<Drawable> drawables = new Array<>(regions.size);
+        for (TextureAtlas.AtlasRegion region : regions) {
+            drawables.add(new TextureRegionDrawable(region));
+        }
+        GdxAnimation<Drawable> animation = new GdxAnimation<>(0.15f, drawables, Animation.PlayMode.LOOP);
 
-        Image image = new Image(textureAtlas.findRegion("whitePixel"));
+        Image image = new AnimatedImage(animation);
+        image.setScale(1f / 32f);
 
         entity.add(new BodyBuilderComponent(world -> {
             BodyDef bodyDef = new BodyDef();
