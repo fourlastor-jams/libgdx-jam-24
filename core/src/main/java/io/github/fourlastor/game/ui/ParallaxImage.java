@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
+import java.util.Objects;
 
 public class ParallaxImage extends Actor {
 
@@ -24,7 +25,7 @@ public class ParallaxImage extends Actor {
     @Override
     public void act(float delta) {
         super.act(delta);
-        Camera camera = getStage().getCamera();
+        Camera camera = Objects.requireNonNull(getStage()).getCamera();
 
         currentDelta.x = -(camera.position.x * factor);
         currentDelta.y = -(camera.position.y * factor);
@@ -32,17 +33,20 @@ public class ParallaxImage extends Actor {
 
     @Override
     public void draw(Batch batch, float parentAlpha) {
-        Camera camera = getStage().getCamera();
+        Camera camera = Objects.requireNonNull(getStage()).getCamera();
 
         float targetWidth = getWidth() * getScaleX();
         float targetHeight = getHeight() * getScaleY();
-        float targetX = camera.position.x - targetWidth / 2;
-        float targetY = camera.position.y - targetHeight / 2;
-        float deltaX = currentDelta.x % targetHeight;
-        float deltaY = currentDelta.y % targetHeight;
-
-        float x = targetX + deltaX;
-        float y = targetY + deltaY;
-        batch.draw(texture, x, y, targetWidth, targetHeight);
+        float startX = camera.position.x - camera.viewportWidth / 2;
+        float startY = camera.position.y - camera.viewportHeight / 2;
+        float maxX = camera.viewportWidth + startX;
+        float maxY = camera.viewportHeight + startY;
+        float dX = currentDelta.x % targetWidth;
+        float dY = currentDelta.y % targetHeight;
+        for (float x = startX + dX - targetWidth; x <= maxX; x += targetWidth) {
+            for (float y = startY + dY - targetHeight; y <= maxY; y += targetHeight) {
+                batch.draw(texture, x, y, targetWidth, targetHeight);
+            }
+        }
     }
 }
