@@ -8,7 +8,6 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import io.github.fourlastor.game.level.component.Player;
 import io.github.fourlastor.harlequin.ui.AnimatedImage;
-
 import javax.inject.Inject;
 
 public class OnGround extends PlayerState {

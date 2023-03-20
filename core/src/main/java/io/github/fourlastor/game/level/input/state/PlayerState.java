@@ -8,7 +8,6 @@ import io.github.fourlastor.game.level.component.ActorComponent;
 import io.github.fourlastor.game.level.component.Animated;
 import io.github.fourlastor.game.level.component.BodyComponent;
 import io.github.fourlastor.game.level.component.Player;
-
 import javax.inject.Inject;
 
 public abstract class PlayerState implements State<Entity> {
