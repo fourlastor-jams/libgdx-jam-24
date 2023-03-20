@@ -9,12 +9,12 @@ import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.scenes.scene2d.Actor;
-import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Array;
 import io.github.fourlastor.game.di.ScreenScoped;
 import io.github.fourlastor.game.level.component.ActorComponent;
+import io.github.fourlastor.game.level.component.Animated;
 import io.github.fourlastor.game.level.component.BodyBuilderComponent;
 import io.github.fourlastor.game.level.component.PlayerRequest;
 import io.github.fourlastor.game.ui.ParallaxImage;
@@ -48,7 +48,7 @@ public class EntitiesFactory {
         }
         GdxAnimation<Drawable> animation = new GdxAnimation<>(0.15f, drawables, Animation.PlayMode.LOOP);
 
-        Image image = new AnimatedImage(animation);
+        AnimatedImage image = new AnimatedImage(animation);
         image.setScale(1f / 32f);
 
         entity.add(new BodyBuilderComponent(world -> {
@@ -67,6 +67,7 @@ public class EntitiesFactory {
         }));
         entity.add(new ActorComponent(image, ActorComponent.Layer.CHARACTER));
         entity.add(new PlayerRequest(camera));
+        entity.add(new Animated(image));
         return entity;
     }
 

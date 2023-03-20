@@ -15,6 +15,7 @@ public class Player implements Component {
     public final OnGround onGround;
 
     public final Settings settings;
+    public float movementTime = 0f;
 
     public Player(Camera camera, InputStateMachine stateMachine, OnGround onGround, Settings settings) {
         this.camera = camera;

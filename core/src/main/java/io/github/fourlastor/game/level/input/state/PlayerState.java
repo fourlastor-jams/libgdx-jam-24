@@ -5,8 +5,10 @@ import com.badlogic.ashley.core.Entity;
 import com.badlogic.gdx.ai.fsm.State;
 import com.badlogic.gdx.ai.msg.Telegram;
 import io.github.fourlastor.game.level.component.ActorComponent;
+import io.github.fourlastor.game.level.component.Animated;
 import io.github.fourlastor.game.level.component.BodyComponent;
 import io.github.fourlastor.game.level.component.Player;
+
 import javax.inject.Inject;
 
 public abstract class PlayerState implements State<Entity> {
@@ -17,26 +19,31 @@ public abstract class PlayerState implements State<Entity> {
         final ComponentMapper<Player> players;
         final ComponentMapper<BodyComponent> bodies;
         final ComponentMapper<ActorComponent> actors;
+        final ComponentMapper<Animated> animated;
 
         @Inject
         public Mappers(
                 ComponentMapper<Player> players,
                 ComponentMapper<BodyComponent> bodies,
-                ComponentMapper<ActorComponent> actors) {
+                ComponentMapper<ActorComponent> actors,
+                ComponentMapper<Animated> animated) {
             this.players = players;
             this.bodies = bodies;
             this.actors = actors;
+            this.animated = animated;
         }
     }
 
     protected final ComponentMapper<Player> players;
     protected final ComponentMapper<BodyComponent> bodies;
     protected final ComponentMapper<ActorComponent> actors;
+    protected final ComponentMapper<Animated> animated;
 
     public PlayerState(Mappers mappers) {
         this.players = mappers.players;
         this.bodies = mappers.bodies;
         this.actors = mappers.actors;
+        this.animated = mappers.animated;
     }
 
     @Override
