@@ -49,6 +49,9 @@ public class OnGround extends PlayerState {
         }
         boolean isStationary = targetVelocity.isZero();
         animation.setPlaying(!isStationary);
+        if (targetVelocity.x != 0) {
+            animation.setScaleX(Math.abs(animation.getScaleX()) * Math.signum(targetVelocity.x));
+        }
         if (isStationary != wasStationary) {
             player.movementTime = 0f;
         }
