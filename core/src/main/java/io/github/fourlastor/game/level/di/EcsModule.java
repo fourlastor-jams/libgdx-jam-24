@@ -5,6 +5,7 @@ import dagger.Module;
 import dagger.Provides;
 import io.github.fourlastor.game.di.ScreenScoped;
 import io.github.fourlastor.game.level.component.ActorComponent;
+import io.github.fourlastor.game.level.component.Animated;
 import io.github.fourlastor.game.level.component.BodyBuilderComponent;
 import io.github.fourlastor.game.level.component.BodyComponent;
 import io.github.fourlastor.game.level.component.MovingComponent;
@@ -48,5 +49,11 @@ public class EcsModule {
     @ScreenScoped
     public ComponentMapper<SoundComponent> soundComponent() {
         return ComponentMapper.getFor(SoundComponent.class);
+    }
+
+    @Provides
+    @ScreenScoped
+    public ComponentMapper<Animated> animatedComponent() {
+        return ComponentMapper.getFor(Animated.class);
     }
 }
