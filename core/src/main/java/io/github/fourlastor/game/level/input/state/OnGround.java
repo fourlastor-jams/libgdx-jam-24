@@ -22,6 +22,7 @@ public class OnGround extends PlayerState {
     }
 
     private final Vector2 targetVelocity = new Vector2();
+    private final Vector2 impulse = new Vector2();
     private float movementTime = 0f;
 
     @Override
@@ -53,6 +54,7 @@ public class OnGround extends PlayerState {
         float interpolated =
                 targetVelocity.isZero() ? Interpolation.pow2.apply(1 - progress) : Interpolation.pow2.apply(progress);
         targetVelocity.nor().scl(player.settings.speed).scl(interpolated);
-        body.setLinearVelocity(targetVelocity);
+        impulse.set(body.getLinearVelocity()).scl(-1f).add(targetVelocity).scl(body.getMass());
+        body.applyLinearImpulse(impulse, body.getWorldCenter(), true);
     }
 }
