@@ -29,6 +29,7 @@ import io.github.fourlastor.harlequin.ui.AnimatedImage;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Random;
 import javax.inject.Inject;
 
 /**
@@ -40,12 +41,14 @@ public class EntitiesFactory {
     private static final float SCALE = 1f / 32f;
     private final TextureAtlas textureAtlas;
     private final Camera camera;
-    private final Map<String, Animation<TextureRegionDrawable>> enemyRegions = new HashMap<>();
+    private final Map<String, Array<TextureRegionDrawable>> enemyRegions = new HashMap<>();
+    private final Random random;
 
     @Inject
-    public EntitiesFactory(TextureAtlas textureAtlas, Camera camera) {
+    public EntitiesFactory(TextureAtlas textureAtlas, Camera camera, Random random) {
         this.textureAtlas = textureAtlas;
         this.camera = camera;
+        this.random = random;
     }
 
     public Entity player() {
@@ -92,7 +95,15 @@ public class EntitiesFactory {
 
     public Entity enemy(Vector2 position, EnemyType type) {
         Entity entity = new Entity();
-        Image image = new AnimatedImage(enemyWalk(type.animationPath));
+
+        float period = type.frameDuration + random.nextFloat() * -type.frameDuration / 2f;
+        Animation<TextureRegionDrawable> animation = new GdxAnimation<>(
+                period,
+                enemyWalk(type.animationPath),
+                Animation.PlayMode.LOOP_PING_PONG
+        );
+
+        Image image = new AnimatedImage(animation);
         image.setScale(SCALE);
         entity.add(new ActorComponent(image, ActorComponent.Layer.ENEMIES));
         entity.add(new EnemyAi());
@@ -115,7 +126,7 @@ public class EntitiesFactory {
         return entity;
     }
 
-    private Animation<TextureRegionDrawable> enemyWalk(String basePath) {
+    private Array<TextureRegionDrawable> enemyWalk(String basePath) {
         String path = "enemy/" + basePath + "/walking";
         if (!enemyRegions.containsKey(path)) {
             Array<TextureAtlas.AtlasRegion> regions = textureAtlas.findRegions(path);
@@ -123,10 +134,7 @@ public class EntitiesFactory {
             for (TextureAtlas.AtlasRegion region : regions) {
                 drawables.add(new TextureRegionDrawable(region));
             }
-            Animation<TextureRegionDrawable> animation =
-                    new GdxAnimation<>(0.15f, drawables, Animation.PlayMode.LOOP_PING_PONG);
-
-            enemyRegions.put(path, animation);
+            enemyRegions.put(path, drawables);
         }
 
         return enemyRegions.get(path);
