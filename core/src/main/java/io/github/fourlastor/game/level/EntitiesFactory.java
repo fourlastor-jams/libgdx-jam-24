@@ -2,7 +2,6 @@ package io.github.fourlastor.game.level;
 
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.gdx.graphics.Camera;
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
@@ -21,12 +20,15 @@ import io.github.fourlastor.game.level.component.Animated;
 import io.github.fourlastor.game.level.component.BodyBuilderComponent;
 import io.github.fourlastor.game.level.component.EnemyAi;
 import io.github.fourlastor.game.level.component.PlayerRequest;
+import io.github.fourlastor.game.level.enemy.EnemyType;
 import io.github.fourlastor.game.level.physics.Bits;
 import io.github.fourlastor.game.ui.ParallaxImage;
 import io.github.fourlastor.harlequin.animation.Animation;
 import io.github.fourlastor.harlequin.animation.GdxAnimation;
 import io.github.fourlastor.harlequin.ui.AnimatedImage;
 import javax.inject.Inject;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
 
 /**
@@ -35,17 +37,15 @@ import java.util.Objects;
 @ScreenScoped
 public class EntitiesFactory {
 
+    private static final float SCALE = 1f / 32f;
     private final TextureAtlas textureAtlas;
     private final Camera camera;
-    private final Drawable enemyPixel;
+    private final Map<String, Animation<TextureRegionDrawable>> enemyRegions = new HashMap<>();
 
     @Inject
     public EntitiesFactory(TextureAtlas textureAtlas, Camera camera) {
         this.textureAtlas = textureAtlas;
         this.camera = camera;
-        TextureRegionDrawable whitePixel = new TextureRegionDrawable(textureAtlas.findRegion("whitePixel"));
-        enemyPixel = whitePixel.tint(new Color(0xa53030ff));
-
     }
 
     public Entity player() {
@@ -58,7 +58,7 @@ public class EntitiesFactory {
         GdxAnimation<Drawable> animation = new GdxAnimation<>(0.15f, drawables, Animation.PlayMode.LOOP);
 
         AnimatedImage image = new AnimatedImage(animation);
-        image.setScale(1f / 32f);
+        image.setScale(SCALE);
 
         entity.add(new BodyBuilderComponent(world -> {
             BodyDef bodyDef = new BodyDef();
@@ -90,10 +90,10 @@ public class EntitiesFactory {
         return entity;
     }
 
-    public Entity enemy(Vector2 position) {
+    public Entity enemy(Vector2 position, EnemyType type) {
         Entity entity = new Entity();
-        Image image = new Image(enemyPixel);
-        image.setScale(1f / 2.5f);
+        Image image = new AnimatedImage(enemyWalk(type.animationPath));
+        image.setScale(SCALE);
         entity.add(new ActorComponent(image, ActorComponent.Layer.ENEMIES));
         entity.add(new EnemyAi());
         entity.add(new BodyBuilderComponent(world -> {
@@ -113,5 +113,21 @@ public class EntitiesFactory {
             return body;
         }));
         return entity;
+    }
+
+    private Animation<TextureRegionDrawable> enemyWalk(String basePath) {
+        String path = "enemy/" + basePath + "/walking";
+        if (!enemyRegions.containsKey(path)) {
+            Array<TextureAtlas.AtlasRegion> regions = textureAtlas.findRegions(path);
+            Array<TextureRegionDrawable> drawables = new Array<>(regions.size);
+            for (TextureAtlas.AtlasRegion region : regions) {
+                drawables.add(new TextureRegionDrawable(region));
+            }
+            Animation<TextureRegionDrawable> animation = new GdxAnimation<>(0.15f, drawables, Animation.PlayMode.LOOP_PING_PONG);
+
+            enemyRegions.put(path, animation);
+        }
+
+        return enemyRegions.get(path);
     }
 }

@@ -47,7 +47,7 @@ public class LevelModule {
         engine.addSystem(clearScreenSystem);
         engine.addSystem(stageSystem);
         engine.addSystem(enemySpawnSystem);
-        engine.addSystem(physicsDebugSystem);
+//        engine.addSystem(physicsDebugSystem);
         return engine;
     }
 

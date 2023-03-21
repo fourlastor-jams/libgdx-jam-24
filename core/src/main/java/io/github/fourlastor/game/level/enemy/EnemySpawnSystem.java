@@ -51,8 +51,16 @@ public class EnemySpawnSystem extends EntitySystem {
     private void spawnEnemies() {
         Engine engine = getEngine();
         for (int i = 0; i < 30; i++) {
-            Entity enemy = factory.enemy(randomLocation());
+            Entity enemy = factory.enemy(randomLocation(), randomType());
             engine.addEntity(enemy);
+        }
+    }
+
+    private EnemyType randomType() {
+        if (random.nextBoolean()) {
+            return EnemyType.PIGEON_0;
+        } else {
+            return EnemyType.PIGEON_1;
         }
     }
 
