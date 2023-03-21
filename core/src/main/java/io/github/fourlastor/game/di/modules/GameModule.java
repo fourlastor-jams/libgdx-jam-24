@@ -8,6 +8,8 @@ import io.github.fourlastor.game.gameover.GameOverComponent;
 import io.github.fourlastor.game.intro.IntroComponent;
 import io.github.fourlastor.game.level.di.LevelComponent;
 import javax.inject.Singleton;
+import squidpony.squidmath.FastNoise;
+import squidpony.squidmath.Noise;
 import squidpony.squidmath.SilkRNG;
 
 @Module
@@ -26,5 +28,10 @@ public class GameModule {
     @Provides
     public SilkRNG random() {
         return new SilkRNG();
+    }
+
+    @Provides
+    public Noise.Noise3D noise3D() {
+        return new FastNoise((int) System.currentTimeMillis());
     }
 }
