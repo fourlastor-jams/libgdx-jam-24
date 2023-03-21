@@ -16,8 +16,7 @@ public class Bits {
     public enum Mask {
         PLAYER(Category.GROUND, Category.ENEMY),
         ENEMY(Category.PLAYER, Category.GROUND, Category.ENEMY),
-        GROUND(Category.PLAYER, Category.ENEMY)
-        ;
+        GROUND(Category.PLAYER, Category.ENEMY);
 
         public final short bits;
 

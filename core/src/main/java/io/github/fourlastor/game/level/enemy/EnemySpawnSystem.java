@@ -9,9 +9,8 @@ import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.math.Vector2;
 import io.github.fourlastor.game.level.EntitiesFactory;
 import io.github.fourlastor.game.level.component.EnemyAi;
-
-import javax.inject.Inject;
 import java.util.Random;
+import javax.inject.Inject;
 
 public class EnemySpawnSystem extends EntitySystem {
     private static final Family ENEMY_FAMILY = Family.all(EnemyAi.class).get();
@@ -24,9 +23,7 @@ public class EnemySpawnSystem extends EntitySystem {
     private ImmutableArray<Entity> entities;
 
     @Inject
-    public EnemySpawnSystem(Camera camera,
-                            EntitiesFactory factory,
-                            Random random) {
+    public EnemySpawnSystem(Camera camera, EntitiesFactory factory, Random random) {
         this.camera = camera;
         this.factory = factory;
         this.random = random;

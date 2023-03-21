@@ -26,10 +26,10 @@ import io.github.fourlastor.game.ui.ParallaxImage;
 import io.github.fourlastor.harlequin.animation.Animation;
 import io.github.fourlastor.harlequin.animation.GdxAnimation;
 import io.github.fourlastor.harlequin.ui.AnimatedImage;
-import javax.inject.Inject;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
+import javax.inject.Inject;
 
 /**
  * Factory to create various entities: player, buildings, enemies..
@@ -123,7 +123,8 @@ public class EntitiesFactory {
             for (TextureAtlas.AtlasRegion region : regions) {
                 drawables.add(new TextureRegionDrawable(region));
             }
-            Animation<TextureRegionDrawable> animation = new GdxAnimation<>(0.15f, drawables, Animation.PlayMode.LOOP_PING_PONG);
+            Animation<TextureRegionDrawable> animation =
+                    new GdxAnimation<>(0.15f, drawables, Animation.PlayMode.LOOP_PING_PONG);
 
             enemyRegions.put(path, animation);
         }

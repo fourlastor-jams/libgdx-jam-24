@@ -12,13 +12,14 @@ import io.github.fourlastor.game.level.component.BodyComponent;
 import io.github.fourlastor.game.level.component.EnemyAi;
 import io.github.fourlastor.game.level.component.Player;
 import io.github.fourlastor.game.level.physics.BodyHelper;
-
 import javax.inject.Inject;
 
 public class EnemyAiSystem extends IteratingSystem {
 
-    private static final Family ENEMY_FAMILY = Family.all(BodyComponent.class, EnemyAi.class).get();
-    private static final Family PLAYER_FAMILY = Family.all(BodyComponent.class, Player.class).get();
+    private static final Family ENEMY_FAMILY =
+            Family.all(BodyComponent.class, EnemyAi.class).get();
+    private static final Family PLAYER_FAMILY =
+            Family.all(BodyComponent.class, Player.class).get();
     private final ComponentMapper<BodyComponent> bodies;
     private final BodyHelper helper;
 

@@ -57,7 +57,8 @@ public class OnGround extends PlayerState {
             player.movementTime = 0f;
         }
         player.movementTime += delta();
-        Vector2 accelerated = helper.accelerate(player.movementTime, player.settings.accelerationTime, player.settings.speed, targetVelocity);
+        Vector2 accelerated = helper.accelerate(
+                player.movementTime, player.settings.accelerationTime, player.settings.speed, targetVelocity);
         body.setLinearVelocity(accelerated);
     }
 }

@@ -12,14 +12,14 @@ import dagger.Module;
 import dagger.Provides;
 import io.github.fourlastor.game.di.ScreenScoped;
 import io.github.fourlastor.game.level.component.ActorComponent;
+import io.github.fourlastor.game.level.enemy.EnemyAiSystem;
+import io.github.fourlastor.game.level.enemy.EnemySpawnSystem;
 import io.github.fourlastor.game.level.input.PlayerInputSystem;
 import io.github.fourlastor.game.level.physics.PhysicsDebugSystem;
 import io.github.fourlastor.game.level.physics.PhysicsSystem;
 import io.github.fourlastor.game.level.system.ActorFollowBodySystem;
 import io.github.fourlastor.game.level.system.CameraMovementSystem;
 import io.github.fourlastor.game.level.system.ClearScreenSystem;
-import io.github.fourlastor.game.level.enemy.EnemyAiSystem;
-import io.github.fourlastor.game.level.enemy.EnemySpawnSystem;
 import io.github.fourlastor.game.level.system.StageSystem;
 
 @Module
@@ -47,7 +47,7 @@ public class LevelModule {
         engine.addSystem(clearScreenSystem);
         engine.addSystem(stageSystem);
         engine.addSystem(enemySpawnSystem);
-//        engine.addSystem(physicsDebugSystem);
+        //        engine.addSystem(physicsDebugSystem);
         return engine;
     }
 
