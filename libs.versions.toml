@@ -12,8 +12,9 @@ gwt-framework="2.8.2"
 gwt-plugin="1.1.18"
 shadow = "7.1.2"
 spotless = "6.10.0"
-regexodus = "0.1.13"
-textratypist = "0.7.2"
+squidLib = "3.0.6"
+regexodus = "0.1.15"
+textratypist = "0.8.0"
 [libraries]
 ashley = { module = "com.badlogicgames.ashley:ashley", version.ref = "ashley" }
 dagger-core = { module = "com.google.dagger:dagger", version.ref = "dagger"}
@@ -32,6 +33,7 @@ gdx-controllers-gwt = { module = "com.badlogicgames.gdx-controllers:gdx-controll
 gdx-backend-lwjgl3 = { module = "com.badlogicgames.gdx:gdx-backend-lwjgl3", version.ref = "gdx" }
 gdx-backend-gwt = { module = "com.badlogicgames.gdx:gdx-backend-gwt", version.ref = "gdx" }
 regexodus = { module = "com.github.tommyettinger:regexodus", version.ref = "regexodus" }
+squidLib-core = { module = "com.squidpony:squidlib-util", version.ref = "squidLib" }
 textratypist = { module = "com.github.tommyettinger:textratypist", version.ref = "textratypist" }
 [plugins]
 beryxRuntime = { id = "org.beryx.runtime", version.ref = "beryx-runtime"}
