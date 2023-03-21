@@ -87,8 +87,9 @@ public class EntitiesFactory {
 
     public Entity bg() {
         Entity entity = new Entity();
-        Actor actor = new ParallaxImage(Objects.requireNonNull(textureAtlas.findRegion("ground/ground")), 1f);
+        Actor actor = new ParallaxImage(Objects.requireNonNull(textureAtlas.findRegion("ground/grass")), 1f);
         actor.setPosition(-50, -50);
+        actor.setScale(SCALE);
         entity.add(new ActorComponent(actor, ActorComponent.Layer.BG_PARALLAX));
         return entity;
     }
