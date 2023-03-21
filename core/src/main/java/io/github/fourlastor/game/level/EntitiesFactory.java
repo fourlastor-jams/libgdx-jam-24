@@ -19,6 +19,7 @@ import io.github.fourlastor.game.di.ScreenScoped;
 import io.github.fourlastor.game.level.component.ActorComponent;
 import io.github.fourlastor.game.level.component.Animated;
 import io.github.fourlastor.game.level.component.BodyBuilderComponent;
+import io.github.fourlastor.game.level.component.EnemyAi;
 import io.github.fourlastor.game.level.component.PlayerRequest;
 import io.github.fourlastor.game.level.physics.Bits;
 import io.github.fourlastor.game.ui.ParallaxImage;
@@ -94,6 +95,7 @@ public class EntitiesFactory {
         Image image = new Image(enemyPixel);
         image.setScale(1f / 2.5f);
         entity.add(new ActorComponent(image, ActorComponent.Layer.ENEMIES));
+        entity.add(new EnemyAi());
         entity.add(new BodyBuilderComponent(world -> {
             BodyDef bodyDef = new BodyDef();
             bodyDef.position.set(position);
