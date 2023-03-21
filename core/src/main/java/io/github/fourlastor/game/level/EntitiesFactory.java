@@ -26,10 +26,11 @@ import io.github.fourlastor.game.ui.ParallaxImage;
 import io.github.fourlastor.harlequin.animation.Animation;
 import io.github.fourlastor.harlequin.animation.GdxAnimation;
 import io.github.fourlastor.harlequin.ui.AnimatedImage;
+import squidpony.squidmath.SilkRNG;
+
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
-import java.util.Random;
 import javax.inject.Inject;
 
 /**
@@ -42,10 +43,10 @@ public class EntitiesFactory {
     private final TextureAtlas textureAtlas;
     private final Camera camera;
     private final Map<String, Array<TextureRegionDrawable>> enemyRegions = new HashMap<>();
-    private final Random random;
+    private final SilkRNG random;
 
     @Inject
-    public EntitiesFactory(TextureAtlas textureAtlas, Camera camera, Random random) {
+    public EntitiesFactory(TextureAtlas textureAtlas, Camera camera, SilkRNG random) {
         this.textureAtlas = textureAtlas;
         this.camera = camera;
         this.random = random;

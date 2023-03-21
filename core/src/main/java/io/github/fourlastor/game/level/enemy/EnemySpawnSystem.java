@@ -9,7 +9,8 @@ import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.math.Vector2;
 import io.github.fourlastor.game.level.EntitiesFactory;
 import io.github.fourlastor.game.level.component.EnemyAi;
-import java.util.Random;
+import squidpony.squidmath.SilkRNG;
+
 import javax.inject.Inject;
 
 public class EnemySpawnSystem extends EntitySystem {
@@ -17,13 +18,13 @@ public class EnemySpawnSystem extends EntitySystem {
 
     private final Camera camera;
     private final EntitiesFactory factory;
-    private final Random random;
+    private final SilkRNG random;
 
     private float runTime = 0f;
     private ImmutableArray<Entity> entities;
 
     @Inject
-    public EnemySpawnSystem(Camera camera, EntitiesFactory factory, Random random) {
+    public EnemySpawnSystem(Camera camera, EntitiesFactory factory, SilkRNG random) {
         this.camera = camera;
         this.factory = factory;
         this.random = random;

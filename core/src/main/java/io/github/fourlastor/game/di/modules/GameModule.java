@@ -7,7 +7,8 @@ import io.github.fourlastor.game.GdxGame;
 import io.github.fourlastor.game.gameover.GameOverComponent;
 import io.github.fourlastor.game.intro.IntroComponent;
 import io.github.fourlastor.game.level.di.LevelComponent;
-import java.util.Random;
+import squidpony.squidmath.SilkRNG;
+
 import javax.inject.Singleton;
 
 @Module
@@ -24,7 +25,7 @@ public class GameModule {
     }
 
     @Provides
-    public Random random() {
-        return new Random();
+    public SilkRNG random() {
+        return new SilkRNG();
     }
 }
