@@ -18,6 +18,7 @@ import io.github.fourlastor.game.level.physics.PhysicsSystem;
 import io.github.fourlastor.game.level.system.ActorFollowBodySystem;
 import io.github.fourlastor.game.level.system.CameraMovementSystem;
 import io.github.fourlastor.game.level.system.ClearScreenSystem;
+import io.github.fourlastor.game.level.system.EnemySpawnSystem;
 import io.github.fourlastor.game.level.system.StageSystem;
 
 @Module
@@ -32,6 +33,7 @@ public class LevelModule {
             StageSystem stageSystem,
             ClearScreenSystem clearScreenSystem,
             ActorFollowBodySystem actorFollowBodySystem,
+            EnemySpawnSystem enemySpawnSystem,
             @SuppressWarnings("unused") // debug only
                     PhysicsDebugSystem physicsDebugSystem) {
         Engine engine = new Engine();
@@ -41,6 +43,7 @@ public class LevelModule {
         engine.addSystem(cameraMovementSystem);
         engine.addSystem(clearScreenSystem);
         engine.addSystem(stageSystem);
+        engine.addSystem(enemySpawnSystem);
         engine.addSystem(physicsDebugSystem);
         return engine;
     }
