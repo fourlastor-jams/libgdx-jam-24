@@ -7,9 +7,8 @@ import io.github.fourlastor.game.GdxGame;
 import io.github.fourlastor.game.gameover.GameOverComponent;
 import io.github.fourlastor.game.intro.IntroComponent;
 import io.github.fourlastor.game.level.di.LevelComponent;
-import squidpony.squidmath.SilkRNG;
-
 import javax.inject.Singleton;
+import squidpony.squidmath.SilkRNG;
 
 @Module
 public class GameModule {

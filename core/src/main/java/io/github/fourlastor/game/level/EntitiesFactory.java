@@ -26,12 +26,11 @@ import io.github.fourlastor.game.ui.ParallaxImage;
 import io.github.fourlastor.harlequin.animation.Animation;
 import io.github.fourlastor.harlequin.animation.GdxAnimation;
 import io.github.fourlastor.harlequin.ui.AnimatedImage;
-import squidpony.squidmath.SilkRNG;
-
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 import javax.inject.Inject;
+import squidpony.squidmath.SilkRNG;
 
 /**
  * Factory to create various entities: player, buildings, enemies..
@@ -98,11 +97,8 @@ public class EntitiesFactory {
         Entity entity = new Entity();
 
         float period = type.frameDuration + random.nextFloat() * -type.frameDuration / 2f;
-        Animation<TextureRegionDrawable> animation = new GdxAnimation<>(
-                period,
-                enemyWalk(type.animationPath),
-                Animation.PlayMode.LOOP_PING_PONG
-        );
+        Animation<TextureRegionDrawable> animation =
+                new GdxAnimation<>(period, enemyWalk(type.animationPath), Animation.PlayMode.LOOP_PING_PONG);
 
         Image image = new AnimatedImage(animation);
         image.setScale(SCALE);

@@ -9,9 +9,8 @@ import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.math.Vector2;
 import io.github.fourlastor.game.level.EntitiesFactory;
 import io.github.fourlastor.game.level.component.EnemyAi;
-import squidpony.squidmath.SilkRNG;
-
 import javax.inject.Inject;
+import squidpony.squidmath.SilkRNG;
 
 public class EnemySpawnSystem extends EntitySystem {
     private static final Family ENEMY_FAMILY = Family.all(EnemyAi.class).get();
