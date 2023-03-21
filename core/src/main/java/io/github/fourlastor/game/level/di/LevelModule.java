@@ -18,8 +18,8 @@ import io.github.fourlastor.game.level.physics.PhysicsSystem;
 import io.github.fourlastor.game.level.system.ActorFollowBodySystem;
 import io.github.fourlastor.game.level.system.CameraMovementSystem;
 import io.github.fourlastor.game.level.system.ClearScreenSystem;
-import io.github.fourlastor.game.level.system.EnemyAiSystem;
-import io.github.fourlastor.game.level.system.EnemySpawnSystem;
+import io.github.fourlastor.game.level.enemy.EnemyAiSystem;
+import io.github.fourlastor.game.level.enemy.EnemySpawnSystem;
 import io.github.fourlastor.game.level.system.StageSystem;
 
 @Module

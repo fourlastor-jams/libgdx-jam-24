@@ -1,4 +1,4 @@
-package io.github.fourlastor.game.level.system;
+package io.github.fourlastor.game.level.enemy;
 
 import com.badlogic.ashley.core.Engine;
 import com.badlogic.ashley.core.Entity;
