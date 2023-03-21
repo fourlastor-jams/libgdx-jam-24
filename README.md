@@ -1,9 +1,7 @@
-# Libgdx Java starter
+# Wedding survivor
 
-## Credits
+Entry for the [libGDX Jam 24](https://itch.io/jam/libgdx-jam-24).
 
-- [libGDX](https://libgdx.com/)
-- [tommyettinger](https://github.com/tommyettinger) for helping with GWT + examples in [tommyettinger/gdx-liftoff](https://github.com/tommyettinger/gdx-liftoff)
-- [Quan Pixel](https://diaowinner.itch.io/galmuri-extended)
-- [littlekt](https://github.com/littlektframework/littlekt) for the initial version of LDTK JSON model
-- [ansimuz](https://opengameart.org/users/ansimuz) for the [dancer sprites](https://opengameart.org/content/dancing-girl-sprites)
+By [Sandra Moen](https://github.com/Slideshow776) and [Daniele Conti](https://github.com/fourlastor).
+
+![cover image](https://user-images.githubusercontent.com/1263058/226357112-d08f016d-7b28-4b29-9403-4b545ddc44e2.png)

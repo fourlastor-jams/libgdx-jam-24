@@ -8,8 +8,8 @@ public class AnimatedImage extends Image {
 
     private Animation<? extends Drawable> animation;
 
-    public boolean playing = true;
-    public float playTime = 0f;
+    private boolean playing = true;
+    private float playTime = 0f;
 
     public AnimatedImage(Animation<? extends Drawable> animation) {
         super(animation.getKeyFrame(0));

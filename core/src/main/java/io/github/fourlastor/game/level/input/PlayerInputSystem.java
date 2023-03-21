@@ -8,6 +8,7 @@ import com.badlogic.ashley.core.Family;
 import com.badlogic.ashley.systems.IteratingSystem;
 import com.badlogic.gdx.ai.msg.MessageDispatcher;
 import io.github.fourlastor.game.level.Message;
+import io.github.fourlastor.game.level.component.Animated;
 import io.github.fourlastor.game.level.component.BodyComponent;
 import io.github.fourlastor.game.level.component.Player;
 import io.github.fourlastor.game.level.component.PlayerRequest;
@@ -18,7 +19,7 @@ import javax.inject.Provider;
 public class PlayerInputSystem extends IteratingSystem {
 
     private static final Family FAMILY_REQUEST =
-            Family.all(PlayerRequest.class, BodyComponent.class).get();
+            Family.all(PlayerRequest.class, BodyComponent.class, Animated.class).get();
     private static final Family FAMILY =
             Family.all(Player.class, BodyComponent.class).get();
 
