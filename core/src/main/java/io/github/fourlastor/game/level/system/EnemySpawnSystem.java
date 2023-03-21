@@ -3,20 +3,25 @@ package io.github.fourlastor.game.level.system;
 import com.badlogic.ashley.core.Engine;
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.EntitySystem;
+import com.badlogic.ashley.core.Family;
+import com.badlogic.ashley.utils.ImmutableArray;
 import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.math.Vector2;
 import io.github.fourlastor.game.level.EntitiesFactory;
+import io.github.fourlastor.game.level.component.EnemyAi;
 
 import javax.inject.Inject;
 import java.util.Random;
 
 public class EnemySpawnSystem extends EntitySystem {
+    private static final Family ENEMY_FAMILY = Family.all(EnemyAi.class).get();
 
     private final Camera camera;
     private final EntitiesFactory factory;
     private final Random random;
 
     private float runTime = 0f;
+    private ImmutableArray<Entity> entities;
 
     @Inject
     public EnemySpawnSystem(Camera camera,
@@ -28,10 +33,16 @@ public class EnemySpawnSystem extends EntitySystem {
     }
 
     @Override
+    public void addedToEngine(Engine engine) {
+        super.addedToEngine(engine);
+        entities = engine.getEntitiesFor(ENEMY_FAMILY);
+    }
+
+    @Override
     public void update(float deltaTime) {
         super.update(deltaTime);
         runTime += deltaTime;
-        if (runTime > 5f) {
+        if (entities.size() < 300 && runTime > 5f) {
             runTime = 0f;
             spawnEnemies();
         }
