@@ -60,6 +60,8 @@ dependencies {
     implementation(libs.ashley)
     implementation(libs.textratypist)
     implementation(libs.dagger.core)
+    implementation(libs.regexodus)
+    implementation(libs.squidLib.core)
     api(libs.dagger.gwt)
     annotationProcessor(libs.dagger.compiler)
 }

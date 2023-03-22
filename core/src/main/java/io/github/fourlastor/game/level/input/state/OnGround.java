@@ -3,18 +3,21 @@ package io.github.fourlastor.game.level.input.state;
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
-import com.badlogic.gdx.math.Interpolation;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import io.github.fourlastor.game.level.component.Player;
+import io.github.fourlastor.game.level.physics.BodyHelper;
 import io.github.fourlastor.harlequin.ui.AnimatedImage;
 import javax.inject.Inject;
 
 public class OnGround extends PlayerState {
 
+    private final BodyHelper helper;
+
     @Inject
-    public OnGround(Mappers mappers) {
+    public OnGround(Mappers mappers, BodyHelper helper) {
         super(mappers);
+        this.helper = helper;
     }
 
     @Override
@@ -23,7 +26,6 @@ public class OnGround extends PlayerState {
     }
 
     private final Vector2 targetVelocity = new Vector2();
-    private final Vector2 impulse = new Vector2();
 
     @Override
     public void update(Entity entity) {
@@ -55,11 +57,8 @@ public class OnGround extends PlayerState {
             player.movementTime = 0f;
         }
         player.movementTime += delta();
-        float progress = Math.min(1f, player.movementTime / player.settings.accelerationTime);
-        float interpolated =
-                targetVelocity.isZero() ? Interpolation.pow2.apply(1 - progress) : Interpolation.pow2.apply(progress);
-        targetVelocity.nor().scl(player.settings.speed).scl(interpolated);
-        impulse.set(body.getLinearVelocity()).scl(-1f).add(targetVelocity).scl(body.getMass());
-        body.applyLinearImpulse(impulse, body.getWorldCenter(), true);
+        Vector2 accelerated = helper.accelerate(
+                player.movementTime, player.settings.accelerationTime, player.settings.speed, targetVelocity);
+        body.setLinearVelocity(accelerated);
     }
 }

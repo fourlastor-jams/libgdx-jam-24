@@ -6,9 +6,10 @@
 	<inherits name="com.badlogic.gdx.controllers" />
 	<inherits name="com.badlogic.gdx.controllers.controllers-gwt" />
 	<inherits name="com.badlogic.gdx.ai" />
-	<inherits name="regexodus" />
-	<inherits name="textratypist" />
+	<inherits name="regexodus.regexodus" />
+	<inherits name="com.github.tommyettinger.textratypist" />
 	<inherits name="com.badlogic.ashley_gwt" />
+	<inherits name="squidpony.squidlib-util" />
 
 	<inherits name="io.github.fourlastor.GdxGame" />
 	<inherits name="io.github.fourlastor.LdtkLoader" />
