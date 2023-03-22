@@ -16,7 +16,7 @@ public class BodyData {
 
     public enum Mask {
         PLAYER(Category.GROUND, Category.ENEMY),
-        ENEMY(Category.PLAYER, Category.GROUND, Category.ENEMY),
+        ENEMY(Category.PLAYER, Category.GROUND, Category.ENEMY, Category.WEAPON),
         WEAPON(Category.ENEMY),
         DISABLED();
 

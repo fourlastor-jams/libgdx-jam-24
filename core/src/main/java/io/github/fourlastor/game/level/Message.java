@@ -1,7 +1,6 @@
 package io.github.fourlastor.game.level;
 
 public enum Message {
-    PLAYER_OFF_GROUND,
-    PLAYER_ON_GROUND,
+    ENEMY_HIT,
     GAME_OVER,
 }

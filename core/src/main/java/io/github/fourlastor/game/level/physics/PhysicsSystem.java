@@ -15,7 +15,6 @@ import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.Manifold;
 import com.badlogic.gdx.physics.box2d.World;
 import io.github.fourlastor.game.level.Message;
-import io.github.fourlastor.game.level.UserData;
 import io.github.fourlastor.game.level.component.BodyBuilderComponent;
 import io.github.fourlastor.game.level.component.BodyComponent;
 import javax.inject.Inject;
@@ -110,46 +109,36 @@ public class PhysicsSystem extends IntervalSystem {
     private final ContactListener contactListener = new ContactListener() {
 
         @Override
-        public void beginContact(Contact contact) {}
-
-        private void checkCollision(Contact contact, Fixture playerFixture, Fixture platformFixture) {
-            Body playerBody = playerFixture.getBody();
-            Body platformBody = platformFixture.getBody();
-            float playerBottom = playerBody.getPosition().y - 0.25f;
-            double platformTop = platformBody.getPosition().y + 0.2;
-            boolean shouldNotCollide = playerBottom < platformTop;
-            if (shouldNotCollide) {
-                contact.setEnabled(false);
-            } else {
-                messageDispatcher.dispatchMessage(Message.PLAYER_ON_GROUND.ordinal());
+        public void beginContact(Contact contact) {
+            Fixture fixtureA = contact.getFixtureA();
+            Fixture fixtureB = contact.getFixtureB();
+            if (isWeapon(fixtureA) && isEnemy(fixtureB)) {
+                onEnemyHit(fixtureB);
+            } else if (isWeapon(fixtureB) && isEnemy(fixtureA)) {
+                onEnemyHit(fixtureA);
             }
+        }
+
+        private boolean isWeapon(Fixture fixture) {
+            Object userData = fixture.getUserData();
+            return userData == BodyData.Type.WEAPON_L || userData == BodyData.Type.WEAPON_R;
+        }
+
+        private boolean isEnemy(Fixture fixture) {
+            return fixture.getUserData() == BodyData.Type.ENEMY;
+        }
+
+        private void onEnemyHit(Fixture fixture) {
+            messageDispatcher.dispatchMessage(Message.ENEMY_HIT.ordinal(), fixture.getBody().getUserData());
         }
 
         @Override
         public void endContact(Contact contact) {
-            contact.setEnabled(true);
+
         }
 
         @Override
         public void preSolve(Contact contact, Manifold oldManifold) {
-            Fixture fixtureA = contact.getFixtureA();
-            Fixture fixtureB = contact.getFixtureB();
-            Fixture playerFixture;
-            Fixture otherFixture;
-            if (UserData.PLAYER == fixtureA.getUserData()) {
-                playerFixture = fixtureA;
-                otherFixture = fixtureB;
-            } else if (UserData.PLAYER == fixtureB.getUserData()) {
-                playerFixture = fixtureB;
-                otherFixture = fixtureA;
-            } else {
-                return;
-            }
-            if (UserData.PLATFORM == otherFixture.getUserData()) {
-                checkCollision(contact, playerFixture, otherFixture);
-            } else if (UserData.SAWBLADE == otherFixture.getUserData()) {
-                messageDispatcher.dispatchMessage(Message.GAME_OVER.ordinal());
-            }
         }
 
         @Override
