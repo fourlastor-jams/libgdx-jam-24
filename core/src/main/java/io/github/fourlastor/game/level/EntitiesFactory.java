@@ -7,12 +7,14 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.CircleShape;
-import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
+import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
+import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.Array;
 import io.github.fourlastor.game.di.ScreenScoped;
 import io.github.fourlastor.game.level.component.ActorComponent;
@@ -20,8 +22,9 @@ import io.github.fourlastor.game.level.component.Animated;
 import io.github.fourlastor.game.level.component.BodyBuilderComponent;
 import io.github.fourlastor.game.level.component.EnemyAi;
 import io.github.fourlastor.game.level.component.PlayerRequest;
+import io.github.fourlastor.game.level.component.Whip;
 import io.github.fourlastor.game.level.enemy.EnemyType;
-import io.github.fourlastor.game.level.physics.Bits;
+import io.github.fourlastor.game.level.physics.BodyData;
 import io.github.fourlastor.game.ui.ParallaxImage;
 import io.github.fourlastor.harlequin.animation.Animation;
 import io.github.fourlastor.harlequin.animation.GdxAnimation;
@@ -61,27 +64,65 @@ public class EntitiesFactory {
         GdxAnimation<Drawable> animation = new GdxAnimation<>(0.15f, drawables, Animation.PlayMode.LOOP);
 
         AnimatedImage image = new AnimatedImage(animation);
-        image.setScale(SCALE);
 
+        Image whipActor = new Image(textureAtlas.findRegion("whitePixel"));
+        float whipW = 43f;
+        int whipH = 4;
+        whipActor.setSize(whipW, whipH);
+        int whipX = 19;
+        int whipY = 20;
+        whipActor.setPosition(whipX, whipY);
+
+        Group group = new Group();
+        group.setScale(SCALE);
+        group.setOrigin(Align.left);
+        float playerWidth = image.getWidth();
+        float playerHeight = image.getHeight();
+        group.setSize(playerWidth, playerHeight);
+        group.addActor(image);
+        group.addActor(whipActor);
         entity.add(new BodyBuilderComponent(world -> {
             BodyDef bodyDef = new BodyDef();
             bodyDef.type = BodyDef.BodyType.KinematicBody;
             bodyDef.position.set(new Vector2(4.5f, 1.5f));
             Body body = world.createBody(bodyDef);
+            body.setUserData(entity);
             CircleShape shape = new CircleShape();
-            shape.setRadius(0.5f);
+            shape.setRadius(0.25f);
             FixtureDef def = new FixtureDef();
-            def.filter.categoryBits = Bits.Category.PLAYER.bits;
-            def.filter.maskBits = Bits.Mask.PLAYER.bits;
+            def.filter.categoryBits = BodyData.Category.PLAYER.bits;
+            def.filter.maskBits = BodyData.Mask.PLAYER.bits;
             def.shape = shape;
-            Fixture fixture = body.createFixture(def);
-            fixture.setUserData(entity);
+            body.createFixture(def).setUserData(BodyData.Type.PLAYER);
+            PolygonShape whipShape = new PolygonShape();
+            FixtureDef whipDef = new FixtureDef();
+            whipShape.setAsBox(43f * SCALE / 2, 2f * SCALE / 2, new Vector2(-19f * SCALE / 2, 18f * SCALE), 0f);
+            float hx = whipW * SCALE / 2f;
+            float hy = whipH * SCALE / 2f;
+            whipShape.setAsBox(
+                    hx,
+                    hy,
+                    new Vector2((whipX - playerWidth / 2) * SCALE + hx, (whipY - playerHeight / 2) * SCALE + hy),
+                    0f);
+            whipDef.shape = whipShape;
+            whipDef.isSensor = true;
+            whipDef.filter.categoryBits = BodyData.Category.WEAPON.bits;
+            whipDef.filter.maskBits = BodyData.Mask.WEAPON.bits;
+            body.createFixture(whipDef).setUserData(BodyData.Type.WEAPON_R);
+            whipShape.setAsBox(
+                    hx,
+                    hy,
+                    new Vector2((-whipX + playerWidth / 2) * SCALE - hx, (whipY - playerHeight / 2) * SCALE + hy),
+                    0f);
+            body.createFixture(whipDef).setUserData(BodyData.Type.WEAPON_L);
+            whipShape.dispose();
             shape.dispose();
             return body;
         }));
-        entity.add(new ActorComponent(image, ActorComponent.Layer.CHARACTER));
+        entity.add(new ActorComponent(group, ActorComponent.Layer.CHARACTER));
         entity.add(new PlayerRequest(camera));
         entity.add(new Animated(image));
+        entity.add(new Whip.Request(whipActor));
         return entity;
     }
 
@@ -90,7 +131,7 @@ public class EntitiesFactory {
         Actor actor = new ParallaxImage(Objects.requireNonNull(textureAtlas.findRegion("ground/grass")), 1f);
         actor.setPosition(-50, -50);
         actor.setScale(SCALE);
-        entity.add(new ActorComponent(actor, ActorComponent.Layer.BG_PARALLAX));
+        entity.add(new ActorComponent(actor, ActorComponent.Layer.BG));
         return entity;
     }
 
@@ -110,14 +151,14 @@ public class EntitiesFactory {
             bodyDef.position.set(position);
             bodyDef.type = BodyDef.BodyType.DynamicBody;
             Body body = world.createBody(bodyDef);
+            body.setUserData(entity);
             CircleShape shape = new CircleShape();
             shape.setRadius(0.2f);
             FixtureDef def = new FixtureDef();
-            def.filter.categoryBits = Bits.Category.ENEMY.bits;
-            def.filter.maskBits = Bits.Mask.ENEMY.bits;
+            def.filter.categoryBits = BodyData.Category.ENEMY.bits;
+            def.filter.maskBits = BodyData.Mask.ENEMY.bits;
             def.shape = shape;
-            Fixture fixture = body.createFixture(def);
-            fixture.setUserData(entity);
+            body.createFixture(def).setUserData(BodyData.Type.ENEMY);
             shape.dispose();
             return body;
         }));

@@ -11,6 +11,7 @@ import io.github.fourlastor.game.level.component.BodyComponent;
 import io.github.fourlastor.game.level.component.MovingComponent;
 import io.github.fourlastor.game.level.component.Player;
 import io.github.fourlastor.game.level.component.SoundComponent;
+import io.github.fourlastor.game.level.component.Whip;
 
 @Module
 public class EcsModule {
@@ -55,5 +56,11 @@ public class EcsModule {
     @ScreenScoped
     public ComponentMapper<Animated> animatedComponent() {
         return ComponentMapper.getFor(Animated.class);
+    }
+
+    @Provides
+    @ScreenScoped
+    public ComponentMapper<Whip> whipComponent() {
+        return ComponentMapper.getFor(Whip.class);
     }
 }

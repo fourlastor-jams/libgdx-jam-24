@@ -1,10 +1,11 @@
 package io.github.fourlastor.game.level.physics;
 
-public class Bits {
+public class BodyData {
 
     public enum Category {
         PLAYER,
         ENEMY,
+        WEAPON,
         GROUND;
         public final short bits;
 
@@ -16,7 +17,8 @@ public class Bits {
     public enum Mask {
         PLAYER(Category.GROUND, Category.ENEMY),
         ENEMY(Category.PLAYER, Category.GROUND, Category.ENEMY),
-        GROUND(Category.PLAYER, Category.ENEMY);
+        WEAPON(Category.ENEMY),
+        DISABLED();
 
         public final short bits;
 
@@ -27,5 +29,12 @@ public class Bits {
             }
             this.bits = bits;
         }
+    }
+
+    public enum Type {
+        PLAYER,
+        ENEMY,
+        WEAPON_L,
+        WEAPON_R,
     }
 }
