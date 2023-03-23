@@ -12,7 +12,7 @@ public class Disabled extends WhipState {
 
     @Override
     protected float timer() {
-        return 5;
+        return 2;
     }
 
     @Override

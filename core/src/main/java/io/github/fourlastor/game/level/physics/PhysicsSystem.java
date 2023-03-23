@@ -129,17 +129,15 @@ public class PhysicsSystem extends IntervalSystem {
         }
 
         private void onEnemyHit(Fixture fixture) {
-            messageDispatcher.dispatchMessage(Message.ENEMY_HIT.ordinal(), fixture.getBody().getUserData());
+            messageDispatcher.dispatchMessage(
+                    Message.ENEMY_HIT.ordinal(), fixture.getBody().getUserData());
         }
 
         @Override
-        public void endContact(Contact contact) {
-
-        }
+        public void endContact(Contact contact) {}
 
         @Override
-        public void preSolve(Contact contact, Manifold oldManifold) {
-        }
+        public void preSolve(Contact contact, Manifold oldManifold) {}
 
         @Override
         public void postSolve(Contact contact, ContactImpulse impulse) {}

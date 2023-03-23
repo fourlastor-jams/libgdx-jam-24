@@ -20,7 +20,7 @@ import io.github.fourlastor.game.di.ScreenScoped;
 import io.github.fourlastor.game.level.component.ActorComponent;
 import io.github.fourlastor.game.level.component.Animated;
 import io.github.fourlastor.game.level.component.BodyBuilderComponent;
-import io.github.fourlastor.game.level.component.EnemyAi;
+import io.github.fourlastor.game.level.component.Enemy;
 import io.github.fourlastor.game.level.component.PlayerRequest;
 import io.github.fourlastor.game.level.component.Whip;
 import io.github.fourlastor.game.level.enemy.EnemyType;
@@ -145,7 +145,7 @@ public class EntitiesFactory {
         Image image = new AnimatedImage(animation);
         image.setScale(SCALE);
         entity.add(new ActorComponent(image, ActorComponent.Layer.ENEMIES));
-        entity.add(new EnemyAi());
+        entity.add(new Enemy.Request());
         entity.add(new BodyBuilderComponent(world -> {
             BodyDef bodyDef = new BodyDef();
             bodyDef.position.set(position);

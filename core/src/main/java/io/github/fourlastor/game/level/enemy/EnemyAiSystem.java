@@ -3,45 +3,69 @@ package io.github.fourlastor.game.level.enemy;
 import com.badlogic.ashley.core.ComponentMapper;
 import com.badlogic.ashley.core.Engine;
 import com.badlogic.ashley.core.Entity;
+import com.badlogic.ashley.core.EntityListener;
 import com.badlogic.ashley.core.Family;
 import com.badlogic.ashley.systems.IteratingSystem;
 import com.badlogic.ashley.utils.ImmutableArray;
-import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.physics.box2d.Body;
+import com.badlogic.gdx.ai.msg.MessageDispatcher;
+import io.github.fourlastor.game.level.Message;
 import io.github.fourlastor.game.level.component.BodyComponent;
-import io.github.fourlastor.game.level.component.EnemyAi;
+import io.github.fourlastor.game.level.component.Enemy;
 import io.github.fourlastor.game.level.component.Player;
-import io.github.fourlastor.game.level.physics.BodyHelper;
+import io.github.fourlastor.game.level.enemy.state.Alive;
+import io.github.fourlastor.game.level.enemy.state.Dead;
 import javax.inject.Inject;
 
 public class EnemyAiSystem extends IteratingSystem {
 
     private static final Family ENEMY_FAMILY =
-            Family.all(BodyComponent.class, EnemyAi.class).get();
+            Family.all(BodyComponent.class, Enemy.class).get();
     private static final Family PLAYER_FAMILY =
             Family.all(BodyComponent.class, Player.class).get();
-    private final ComponentMapper<BodyComponent> bodies;
-    private final BodyHelper helper;
+    private static final Family REQUEST_FAMILY = Family.all(Enemy.Request.class).get();
+    private static final Family DELETE_FAMILY = Family.all(Enemy.Delete.class).get();
+    private final ComponentMapper<Enemy> enemies;
+    private final MessageDispatcher dispatcher;
 
-    private final Vector2 targetVelocity = new Vector2();
-    private final Vector2 impulse = new Vector2();
+    private final Alive.Factory aliveFactory;
+    private final Dead.Factory deadFactory;
+    private final EnemyStateMachine.Factory stateMachineFactory;
+
+    private final SetupListener setupListener = new SetupListener();
+    private final CleanupListener cleanupListener = new CleanupListener();
+
+    private final DeleteListener deleteListener = new DeleteListener();
     private ImmutableArray<Entity> players;
 
     @Inject
-    public EnemyAiSystem(ComponentMapper<BodyComponent> bodies, BodyHelper helper) {
+    public EnemyAiSystem(
+            ComponentMapper<Enemy> enemies,
+            MessageDispatcher dispatcher,
+            Alive.Factory aliveFactory,
+            Dead.Factory deadFactory,
+            EnemyStateMachine.Factory stateMachineFactory) {
         super(ENEMY_FAMILY);
-        this.bodies = bodies;
-        this.helper = helper;
+        this.enemies = enemies;
+        this.dispatcher = dispatcher;
+        this.aliveFactory = aliveFactory;
+        this.deadFactory = deadFactory;
+        this.stateMachineFactory = stateMachineFactory;
     }
 
     @Override
     public void addedToEngine(Engine engine) {
         super.addedToEngine(engine);
         players = engine.getEntitiesFor(PLAYER_FAMILY);
+        engine.addEntityListener(REQUEST_FAMILY, setupListener);
+        engine.addEntityListener(ENEMY_FAMILY, cleanupListener);
+        engine.addEntityListener(DELETE_FAMILY, deleteListener);
     }
 
     @Override
     public void removedFromEngine(Engine engine) {
+        engine.removeEntityListener(deleteListener);
+        engine.removeEntityListener(cleanupListener);
+        engine.removeEntityListener(setupListener);
         players = null;
         super.removedFromEngine(engine);
     }
@@ -51,25 +75,45 @@ public class EnemyAiSystem extends IteratingSystem {
         if (players.size() == 0) {
             return;
         }
-        Body body = bodies.get(entity).body;
-        Vector2 position = body.getPosition();
-        Vector2 playerPosition = findClosestPlayer(position);
-        targetVelocity.set(playerPosition).sub(position).nor().scl(2f);
-        body.applyLinearImpulse(helper.velocityAsImpulse(body, targetVelocity, impulse), body.getWorldCenter(), false);
+        enemies.get(entity).stateMachine.update(deltaTime);
     }
 
-    private Vector2 findClosestPlayer(Vector2 position) {
-        int min = 0;
-        float minDistance = Float.POSITIVE_INFINITY;
-        for (int i = 0; i < players.size(); i++) {
-            Entity player = players.get(i);
-            Vector2 playerPosition = bodies.get(player).body.getPosition();
-            float distance = position.dst(playerPosition);
-            if (distance < minDistance) {
-                min = i;
-                minDistance = distance;
-            }
+    private class SetupListener implements EntityListener {
+
+        @Override
+        public void entityAdded(Entity entity) {
+            entity.remove(Enemy.Request.class);
+            Alive alive = aliveFactory.create(players);
+            Dead dead = deadFactory.create(players);
+            EnemyStateMachine stateMachine = stateMachineFactory.create(entity, alive);
+            dispatcher.addListener(stateMachine, Message.ENEMY_HIT.ordinal());
+            entity.add(new Enemy(stateMachine, alive, dead));
         }
-        return bodies.get(players.get(min)).body.getPosition();
+
+        @Override
+        public void entityRemoved(Entity entity) {}
+    }
+
+    private class CleanupListener implements EntityListener {
+
+        @Override
+        public void entityAdded(Entity entity) {}
+
+        @Override
+        public void entityRemoved(Entity entity) {
+            EnemyStateMachine stateMachine = enemies.get(entity).stateMachine;
+            dispatcher.removeListener(stateMachine);
+        }
+    }
+
+    private class DeleteListener implements EntityListener {
+
+        @Override
+        public void entityAdded(Entity entity) {
+            getEngine().removeEntity(entity);
+        }
+
+        @Override
+        public void entityRemoved(Entity entity) {}
     }
 }

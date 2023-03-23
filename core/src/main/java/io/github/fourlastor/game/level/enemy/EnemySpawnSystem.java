@@ -8,13 +8,13 @@ import com.badlogic.ashley.utils.ImmutableArray;
 import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.math.Vector2;
 import io.github.fourlastor.game.level.EntitiesFactory;
-import io.github.fourlastor.game.level.component.EnemyAi;
+import io.github.fourlastor.game.level.component.Enemy;
 import javax.inject.Inject;
 import squidpony.squidmath.Noise;
 import squidpony.squidmath.SilkRNG;
 
 public class EnemySpawnSystem extends EntitySystem {
-    private static final Family ENEMY_FAMILY = Family.all(EnemyAi.class).get();
+    private static final Family ENEMY_FAMILY = Family.all(Enemy.class).get();
 
     private final Camera camera;
     private final EntitiesFactory factory;
@@ -91,25 +91,5 @@ public class EnemySpawnSystem extends EntitySystem {
         } else {
             return EnemyType.PIGEON_1;
         }
-    }
-
-    private Vector2 randomLocation() {
-        boolean horizontalSpawn = random.nextBoolean();
-        boolean atStart = random.nextBoolean();
-        float gradient = random.nextFloat();
-        float left = camera.position.x - camera.viewportWidth / 2;
-        float right = left + camera.viewportWidth;
-        float bottom = camera.position.y - camera.viewportHeight / 2;
-        float top = bottom + camera.viewportHeight;
-        float x;
-        float y;
-        if (horizontalSpawn) {
-            x = camera.viewportWidth * gradient + left;
-            y = atStart ? bottom : top;
-        } else {
-            x = atStart ? left : right;
-            y = camera.viewportHeight * gradient + bottom;
-        }
-        return new Vector2(x, y);
     }
 }
