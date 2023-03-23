@@ -8,7 +8,6 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import io.github.fourlastor.game.level.component.ActorComponent;
 import io.github.fourlastor.game.level.component.HpBar;
 import io.github.fourlastor.game.ui.Bar;
-
 import javax.inject.Inject;
 
 public class HpBarSystem extends IteratingSystem {

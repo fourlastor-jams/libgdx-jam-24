@@ -61,10 +61,7 @@ public class EntitiesFactory {
         Entity entity = new Entity();
         TextureRegionDrawable whitePixel = new TextureRegionDrawable(textureAtlas.findRegion("whitePixel"));
 
-        Bar bar = new Bar(
-                whitePixel.tint(Color.RED),
-                whitePixel.tint(Color.BLACK)
-        );
+        Bar bar = new Bar(whitePixel.tint(Color.RED), whitePixel.tint(Color.BLACK));
         bar.setSize(20, 3);
         bar.setScale(SCALE);
         bar.setAmount(0.7f);
