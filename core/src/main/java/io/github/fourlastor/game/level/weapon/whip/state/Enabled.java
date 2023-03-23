@@ -22,6 +22,6 @@ public class Enabled extends WhipState {
 
     @Override
     protected float timer() {
-        return 1;
+        return 0.2f;
     }
 }

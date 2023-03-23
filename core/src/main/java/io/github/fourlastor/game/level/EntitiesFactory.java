@@ -65,12 +65,12 @@ public class EntitiesFactory {
 
         AnimatedImage image = new AnimatedImage(animation);
 
-        Image whipActor = new Image(textureAtlas.findRegion("whitePixel"));
-        float whipW = 43f;
-        int whipH = 4;
+        Image whipActor = new Image(textureAtlas.findRegion("character/whip"));
+        float whipW = whipActor.getWidth();
+        float whipH = whipActor.getHeight();
         whipActor.setSize(whipW, whipH);
-        int whipX = 19;
-        int whipY = 20;
+        int whipX = 24;
+        int whipY = 4;
         whipActor.setPosition(whipX, whipY);
 
         Group group = new Group();
