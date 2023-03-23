@@ -2,6 +2,7 @@ package io.github.fourlastor.game.level;
 
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.gdx.graphics.Camera;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
@@ -21,10 +22,12 @@ import io.github.fourlastor.game.level.component.ActorComponent;
 import io.github.fourlastor.game.level.component.Animated;
 import io.github.fourlastor.game.level.component.BodyBuilderComponent;
 import io.github.fourlastor.game.level.component.Enemy;
+import io.github.fourlastor.game.level.component.HpBar;
 import io.github.fourlastor.game.level.component.PlayerRequest;
 import io.github.fourlastor.game.level.component.Whip;
 import io.github.fourlastor.game.level.enemy.EnemyType;
 import io.github.fourlastor.game.level.physics.BodyData;
+import io.github.fourlastor.game.ui.Bar;
 import io.github.fourlastor.game.ui.ParallaxImage;
 import io.github.fourlastor.harlequin.animation.Animation;
 import io.github.fourlastor.harlequin.animation.GdxAnimation;
@@ -52,6 +55,19 @@ public class EntitiesFactory {
         this.textureAtlas = textureAtlas;
         this.camera = camera;
         this.random = random;
+    }
+
+    public Entity hpBar(Entity player) {
+        Entity entity = new Entity();
+        TextureRegionDrawable whitePixel = new TextureRegionDrawable(textureAtlas.findRegion("whitePixel"));
+
+        Bar bar = new Bar(whitePixel.tint(Color.RED), whitePixel.tint(Color.BLACK));
+        bar.setSize(20, 3);
+        bar.setScale(SCALE);
+        bar.setAmount(0.7f);
+        entity.add(new ActorComponent(bar, ActorComponent.Layer.CHARACTER));
+        entity.add(new HpBar(bar, player));
+        return entity;
     }
 
     public Entity player() {
