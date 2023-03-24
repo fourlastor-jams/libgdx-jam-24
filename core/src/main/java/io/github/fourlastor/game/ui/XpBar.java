@@ -23,10 +23,8 @@ public class XpBar extends WidgetGroup {
 
     public XpBar(TextureAtlas atlas) {
         super();
-        Drawable emptyEndDrawable =
-                new TextureRegionDrawable(atlas.findRegion("xp/bar_empty_end"));
-        Drawable emptyMidDrawable =
-                new TextureRegionDrawable(atlas.findRegion("xp/bar_empty_middle"));
+        Drawable emptyEndDrawable = new TextureRegionDrawable(atlas.findRegion("xp/bar_empty_end"));
+        Drawable emptyMidDrawable = new TextureRegionDrawable(atlas.findRegion("xp/bar_empty_middle"));
         Drawable filledEndDrawable = new TextureRegionDrawable(atlas.findRegion("xp/bar_filled_end"));
         Drawable filledMidDrawable = new TextureRegionDrawable(atlas.findRegion("xp/bar_filled_middle"));
         setSize(END_WIDTH * 2 + MIDDLE_WIDTH, HEIGHT);
@@ -75,8 +73,7 @@ public class XpBar extends WidgetGroup {
         boolean visible = amount == 1f;
         Action action = Actions.sequence(
                 Actions.scaleTo(amount, 1f, 0.15f, Interpolation.pow2),
-                Actions.run(() -> filledEnd.setVisible(visible))
-        );
+                Actions.run(() -> filledEnd.setVisible(visible)));
         filledMiddle.addAction(action);
     }
 }

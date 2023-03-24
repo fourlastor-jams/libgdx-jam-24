@@ -8,7 +8,6 @@ import com.badlogic.gdx.graphics.Camera;
 import io.github.fourlastor.game.level.component.Player;
 import io.github.fourlastor.game.level.component.XpBarComponent;
 import io.github.fourlastor.game.ui.XpBar;
-
 import javax.inject.Inject;
 
 public class XpBarSystem extends IteratingSystem {

@@ -18,7 +18,6 @@ import io.github.fourlastor.game.level.Message;
 import io.github.fourlastor.game.level.component.BodyBuilderComponent;
 import io.github.fourlastor.game.level.component.BodyComponent;
 import io.github.fourlastor.game.level.component.Reward;
-
 import javax.inject.Inject;
 
 public class PhysicsSystem extends IntervalSystem {

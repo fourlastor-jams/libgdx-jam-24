@@ -1,7 +1,6 @@
 package io.github.fourlastor.game.level.enemy;
 
 import io.github.fourlastor.game.level.reward.RewardType;
-
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;

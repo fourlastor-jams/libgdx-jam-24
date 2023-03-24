@@ -79,16 +79,19 @@ public class EcsModule {
     public ComponentMapper<HpBar> hpBarComponent() {
         return ComponentMapper.getFor(HpBar.class);
     }
+
     @Provides
     @ScreenScoped
     public ComponentMapper<Reward> rewardComponent() {
         return ComponentMapper.getFor(Reward.class);
     }
+
     @Provides
     @ScreenScoped
     public ComponentMapper<XpBarComponent> xpBarComponent() {
         return ComponentMapper.getFor(XpBarComponent.class);
     }
+
     @Provides
     @ScreenScoped
     public ComponentMapper<Reward.PickUp> rewardPickupComponent() {
