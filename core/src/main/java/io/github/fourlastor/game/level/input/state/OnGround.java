@@ -5,6 +5,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import io.github.fourlastor.game.level.component.Player;
 import io.github.fourlastor.game.level.physics.BodyHelper;
 import io.github.fourlastor.harlequin.ui.AnimatedImage;
@@ -33,6 +34,7 @@ public class OnGround extends PlayerState {
         Body body = bodies.get(entity).body;
         Player player = players.get(entity);
         AnimatedImage animation = animated.get(entity).animation;
+        Actor actor = actors.get(entity).actor;
         boolean wasStationary = targetVelocity.isZero();
         targetVelocity.x = 0;
         targetVelocity.y = 0;
@@ -51,7 +53,7 @@ public class OnGround extends PlayerState {
         boolean isStationary = targetVelocity.isZero();
         animation.setPlaying(!isStationary);
         if (targetVelocity.x != 0) {
-            animation.setScaleX(Math.abs(animation.getScaleX()) * Math.signum(targetVelocity.x));
+            actor.setScaleX(Math.abs(actor.getScaleX()) * Math.signum(targetVelocity.x));
         }
         if (isStationary != wasStationary) {
             player.movementTime = 0f;

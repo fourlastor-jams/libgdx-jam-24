@@ -1,6 +1,7 @@
 package io.github.fourlastor.game.level;
 
 import com.badlogic.ashley.core.Engine;
+import com.badlogic.ashley.core.Entity;
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.viewport.Viewport;
@@ -34,8 +35,10 @@ public class LevelScreen extends ScreenAdapter {
 
     @Override
     public void show() {
-        engine.addEntity(entitiesFactory.player());
+        Entity player = entitiesFactory.player();
+        engine.addEntity(player);
         engine.addEntity(entitiesFactory.bg());
+        engine.addEntity(entitiesFactory.hpBar(player));
     }
 
     @Override
