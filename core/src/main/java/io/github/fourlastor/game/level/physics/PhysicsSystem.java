@@ -17,6 +17,8 @@ import com.badlogic.gdx.physics.box2d.World;
 import io.github.fourlastor.game.level.Message;
 import io.github.fourlastor.game.level.component.BodyBuilderComponent;
 import io.github.fourlastor.game.level.component.BodyComponent;
+import io.github.fourlastor.game.level.component.Reward;
+
 import javax.inject.Inject;
 
 public class PhysicsSystem extends IntervalSystem {
@@ -116,7 +118,27 @@ public class PhysicsSystem extends IntervalSystem {
                 onEnemyHit(fixtureB);
             } else if (isWeapon(fixtureB) && isEnemy(fixtureA)) {
                 onEnemyHit(fixtureA);
+            } else if (isPlayer(fixtureA) && isReward(fixtureB)) {
+                onPickUp(fixtureB, fixtureA);
+            } else if (isPlayer(fixtureB) && isReward(fixtureA)) {
+                onPickUp(fixtureA, fixtureB);
             }
+        }
+
+        private void onPickUp(Fixture reward, Fixture player) {
+            Entity rewardEntity = (Entity) reward.getBody().getUserData();
+            Entity playerEntity = (Entity) player.getBody().getUserData();
+            rewardEntity.add(new Reward.PickUp(playerEntity));
+        }
+
+        private boolean isReward(Fixture fixture) {
+            Object userData = fixture.getUserData();
+            return userData == BodyData.Type.REWARD;
+        }
+
+        private boolean isPlayer(Fixture fixture) {
+            Object userData = fixture.getUserData();
+            return userData == BodyData.Type.PLAYER;
         }
 
         private boolean isWeapon(Fixture fixture) {
