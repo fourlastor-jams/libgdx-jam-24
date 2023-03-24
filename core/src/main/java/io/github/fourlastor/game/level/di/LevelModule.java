@@ -17,11 +17,13 @@ import io.github.fourlastor.game.level.enemy.EnemySpawnSystem;
 import io.github.fourlastor.game.level.input.PlayerInputSystem;
 import io.github.fourlastor.game.level.physics.PhysicsDebugSystem;
 import io.github.fourlastor.game.level.physics.PhysicsSystem;
+import io.github.fourlastor.game.level.reward.RewardPickupSystem;
 import io.github.fourlastor.game.level.system.ActorFollowBodySystem;
 import io.github.fourlastor.game.level.system.CameraMovementSystem;
 import io.github.fourlastor.game.level.system.ClearScreenSystem;
 import io.github.fourlastor.game.level.system.HpBarSystem;
 import io.github.fourlastor.game.level.system.StageSystem;
+import io.github.fourlastor.game.level.system.XpBarSystem;
 import io.github.fourlastor.game.level.weapon.whip.WhipSystem;
 
 @Module
@@ -32,10 +34,12 @@ public class LevelModule {
     public Engine engine(
             PlayerInputSystem playerInputSystem,
             HpBarSystem hpBarSystem,
+            XpBarSystem xpBarSystem,
             WhipSystem whipSystem,
             EnemyAiSystem enemyAiSystem,
             CameraMovementSystem cameraMovementSystem,
             PhysicsSystem physicsSystem,
+            RewardPickupSystem rewardPickupSystem,
             StageSystem stageSystem,
             ClearScreenSystem clearScreenSystem,
             ActorFollowBodySystem actorFollowBodySystem,
@@ -47,8 +51,10 @@ public class LevelModule {
         engine.addSystem(whipSystem);
         engine.addSystem(enemyAiSystem);
         engine.addSystem(physicsSystem);
+        engine.addSystem(rewardPickupSystem);
         engine.addSystem(actorFollowBodySystem);
         engine.addSystem(hpBarSystem);
+        engine.addSystem(xpBarSystem);
         engine.addSystem(cameraMovementSystem);
         engine.addSystem(clearScreenSystem);
         engine.addSystem(stageSystem);

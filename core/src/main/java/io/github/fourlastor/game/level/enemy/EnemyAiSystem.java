@@ -8,13 +8,18 @@ import com.badlogic.ashley.core.Family;
 import com.badlogic.ashley.systems.IteratingSystem;
 import com.badlogic.ashley.utils.ImmutableArray;
 import com.badlogic.gdx.ai.msg.MessageDispatcher;
+import com.badlogic.gdx.math.Vector2;
+import io.github.fourlastor.game.level.EntitiesFactory;
 import io.github.fourlastor.game.level.Message;
 import io.github.fourlastor.game.level.component.BodyComponent;
 import io.github.fourlastor.game.level.component.Enemy;
 import io.github.fourlastor.game.level.component.Player;
 import io.github.fourlastor.game.level.enemy.state.Alive;
 import io.github.fourlastor.game.level.enemy.state.Dead;
+import io.github.fourlastor.game.level.reward.RewardType;
+import java.util.Set;
 import javax.inject.Inject;
+import squidpony.squidmath.SilkRNG;
 
 public class EnemyAiSystem extends IteratingSystem {
 
@@ -25,11 +30,14 @@ public class EnemyAiSystem extends IteratingSystem {
     private static final Family REQUEST_FAMILY = Family.all(Enemy.Request.class).get();
     private static final Family DELETE_FAMILY = Family.all(Enemy.Delete.class).get();
     private final ComponentMapper<Enemy> enemies;
+    private final ComponentMapper<BodyComponent> bodies;
     private final MessageDispatcher dispatcher;
 
     private final Alive.Factory aliveFactory;
     private final Dead.Factory deadFactory;
     private final EnemyStateMachine.Factory stateMachineFactory;
+    private final SilkRNG random;
+    private final EntitiesFactory entitiesFactory;
 
     private final SetupListener setupListener = new SetupListener();
     private final CleanupListener cleanupListener = new CleanupListener();
@@ -40,16 +48,22 @@ public class EnemyAiSystem extends IteratingSystem {
     @Inject
     public EnemyAiSystem(
             ComponentMapper<Enemy> enemies,
+            ComponentMapper<BodyComponent> bodies,
             MessageDispatcher dispatcher,
             Alive.Factory aliveFactory,
             Dead.Factory deadFactory,
-            EnemyStateMachine.Factory stateMachineFactory) {
+            EnemyStateMachine.Factory stateMachineFactory,
+            SilkRNG random,
+            EntitiesFactory entitiesFactory) {
         super(ENEMY_FAMILY);
         this.enemies = enemies;
+        this.bodies = bodies;
         this.dispatcher = dispatcher;
         this.aliveFactory = aliveFactory;
         this.deadFactory = deadFactory;
         this.stateMachineFactory = stateMachineFactory;
+        this.random = random;
+        this.entitiesFactory = entitiesFactory;
     }
 
     @Override
@@ -82,12 +96,12 @@ public class EnemyAiSystem extends IteratingSystem {
 
         @Override
         public void entityAdded(Entity entity) {
-            entity.remove(Enemy.Request.class);
+            Enemy.Request request = entity.remove(Enemy.Request.class);
             Alive alive = aliveFactory.create(players);
             Dead dead = deadFactory.create(players);
             EnemyStateMachine stateMachine = stateMachineFactory.create(entity, alive);
             dispatcher.addListener(stateMachine, Message.ENEMY_HIT.ordinal());
-            entity.add(new Enemy(stateMachine, alive, dead));
+            entity.add(new Enemy(stateMachine, alive, dead, request.type));
         }
 
         @Override
@@ -110,7 +124,11 @@ public class EnemyAiSystem extends IteratingSystem {
 
         @Override
         public void entityAdded(Entity entity) {
+            Set<RewardType> rewards = enemies.get(entity).type.rewards;
+            RewardType rewardType = random.getRandomElement(rewards);
+            Vector2 position = bodies.get(entity).body.getPosition();
             getEngine().removeEntity(entity);
+            getEngine().addEntity(entitiesFactory.reward(rewardType, position));
         }
 
         @Override

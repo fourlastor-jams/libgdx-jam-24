@@ -5,6 +5,7 @@ public class BodyData {
     public enum Category {
         PLAYER,
         ENEMY,
+        REWARD,
         WEAPON,
         GROUND;
         public final short bits;
@@ -15,8 +16,9 @@ public class BodyData {
     }
 
     public enum Mask {
-        PLAYER(Category.GROUND, Category.ENEMY),
+        PLAYER(Category.GROUND, Category.ENEMY, Category.REWARD),
         ENEMY(Category.PLAYER, Category.GROUND, Category.ENEMY, Category.WEAPON),
+        REWARD(Category.PLAYER),
         WEAPON(Category.ENEMY),
         DISABLED();
 
@@ -34,6 +36,7 @@ public class BodyData {
     public enum Type {
         PLAYER,
         ENEMY,
+        REWARD,
         WEAPON_L,
         WEAPON_R,
     }
