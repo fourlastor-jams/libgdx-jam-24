@@ -39,6 +39,7 @@ public class LevelScreen extends ScreenAdapter {
         engine.addEntity(player);
         engine.addEntity(entitiesFactory.bg());
         engine.addEntity(entitiesFactory.hpBar(player));
+        engine.addEntity(entitiesFactory.xpBar(player));
     }
 
     @Override

@@ -15,6 +15,7 @@ import io.github.fourlastor.game.level.component.Player;
 import io.github.fourlastor.game.level.component.Reward;
 import io.github.fourlastor.game.level.component.SoundComponent;
 import io.github.fourlastor.game.level.component.Whip;
+import io.github.fourlastor.game.level.component.XpBarComponent;
 
 @Module
 public class EcsModule {
@@ -82,6 +83,11 @@ public class EcsModule {
     @ScreenScoped
     public ComponentMapper<Reward> rewardComponent() {
         return ComponentMapper.getFor(Reward.class);
+    }
+    @Provides
+    @ScreenScoped
+    public ComponentMapper<XpBarComponent> xpBarComponent() {
+        return ComponentMapper.getFor(XpBarComponent.class);
     }
     @Provides
     @ScreenScoped

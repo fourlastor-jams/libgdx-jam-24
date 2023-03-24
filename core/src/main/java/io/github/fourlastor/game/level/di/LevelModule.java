@@ -23,6 +23,7 @@ import io.github.fourlastor.game.level.system.CameraMovementSystem;
 import io.github.fourlastor.game.level.system.ClearScreenSystem;
 import io.github.fourlastor.game.level.system.HpBarSystem;
 import io.github.fourlastor.game.level.system.StageSystem;
+import io.github.fourlastor.game.level.system.XpBarSystem;
 import io.github.fourlastor.game.level.weapon.whip.WhipSystem;
 
 @Module
@@ -33,6 +34,7 @@ public class LevelModule {
     public Engine engine(
             PlayerInputSystem playerInputSystem,
             HpBarSystem hpBarSystem,
+            XpBarSystem xpBarSystem,
             WhipSystem whipSystem,
             EnemyAiSystem enemyAiSystem,
             CameraMovementSystem cameraMovementSystem,
@@ -52,6 +54,7 @@ public class LevelModule {
         engine.addSystem(rewardPickupSystem);
         engine.addSystem(actorFollowBodySystem);
         engine.addSystem(hpBarSystem);
+        engine.addSystem(xpBarSystem);
         engine.addSystem(cameraMovementSystem);
         engine.addSystem(clearScreenSystem);
         engine.addSystem(stageSystem);
