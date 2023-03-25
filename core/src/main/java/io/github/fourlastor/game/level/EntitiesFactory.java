@@ -208,7 +208,7 @@ public class EntitiesFactory {
         Entity entity = new Entity();
         Image image = new Image(textureAtlas.findRegion("items/" + rewardType.image));
         image.setScale(SCALE);
-        entity.add(new ActorComponent(image, ActorComponent.Layer.ENEMIES));
+        entity.add(new ActorComponent(image, ActorComponent.Layer.REWARDS));
         entity.add(new BodyBuilderComponent(world -> {
             BodyDef bodyDef = new BodyDef();
             bodyDef.position.set(position);
