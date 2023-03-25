@@ -34,6 +34,7 @@ public class UiSystem extends EntitySystem {
     private Label timerLaberl;
     private XpBar bar;
     private ImmutableArray<Entity> playerEntities;
+    private TextraLabel killLabel;
 
     @Inject
     public UiSystem(@Named("ui") Stage stage, AssetManager manager, ComponentMapper<Player> players, TextureAtlas textureAtlas) {
@@ -66,7 +67,7 @@ public class UiSystem extends EntitySystem {
         Image killIcon = new Image(textureAtlas.findRegion("ui/kill_counter"));
         killIcon.setPosition(x + 7, y - bar.getHeight() * bar.getScaleY() - 7 + 3);
         stage.addActor(killIcon);
-        TextraLabel killLabel = new TextraLabel("123", new Font(regular).scale(0.4f, 0.4f));
+        this.killLabel = new TextraLabel("123", new Font(regular).scale(0.4f, 0.4f));
         killLabel.setPosition(x + 25, y - bar.getHeight() * bar.getScaleY() + 6 + 3);
         killLabel.setColor(DARK_GRAY);
         stage.addActor(killLabel);
@@ -99,6 +100,7 @@ public class UiSystem extends EntitySystem {
         Player player = players.get(playerEntity);
         float amount = player.xp / player.maxXp;
         bar.setAmount(amount);
+        killLabel.setText(String.valueOf(player.killCounter));
     }
 
     private Entity getPlayer() {

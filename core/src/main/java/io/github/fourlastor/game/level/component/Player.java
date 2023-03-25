@@ -22,6 +22,7 @@ public class Player implements Component {
     public float maxXp = 1000f;
     public float maxHp = 100f;
     public float hp = maxHp;
+    public int killCounter = 0;
 
     public Player(
             Camera camera, InputStateMachine stateMachine, OnGround onGround, Settings settings, PlayerActor actor) {
