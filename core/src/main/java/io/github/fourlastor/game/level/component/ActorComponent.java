@@ -16,6 +16,7 @@ public class ActorComponent implements Component {
     public enum Layer {
         BG,
         ENEMIES,
-        CHARACTER
+        CHARACTER,
+        UI,
     }
 }

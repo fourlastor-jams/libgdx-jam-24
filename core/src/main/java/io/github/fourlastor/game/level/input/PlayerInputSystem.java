@@ -79,9 +79,7 @@ public class PlayerInputSystem extends IteratingSystem {
 
             entity.add(new Player(request.camera, stateMachine, onGround, settings));
             stateMachine.getCurrentState().enter(entity);
-            for (Message value : Message.values()) {
-                messageDispatcher.addListener(stateMachine, value.ordinal());
-            }
+            messageDispatcher.addListener(stateMachine, Message.PLAYER_HIT.ordinal());
         }
 
         @Override

@@ -24,11 +24,15 @@ import io.github.fourlastor.game.level.component.BodyBuilderComponent;
 import io.github.fourlastor.game.level.component.Enemy;
 import io.github.fourlastor.game.level.component.HpBar;
 import io.github.fourlastor.game.level.component.PlayerRequest;
+import io.github.fourlastor.game.level.component.Reward;
 import io.github.fourlastor.game.level.component.Whip;
+import io.github.fourlastor.game.level.component.XpBarComponent;
 import io.github.fourlastor.game.level.enemy.EnemyType;
 import io.github.fourlastor.game.level.physics.BodyData;
+import io.github.fourlastor.game.level.reward.RewardType;
 import io.github.fourlastor.game.ui.Bar;
 import io.github.fourlastor.game.ui.ParallaxImage;
+import io.github.fourlastor.game.ui.XpBar;
 import io.github.fourlastor.harlequin.animation.Animation;
 import io.github.fourlastor.harlequin.animation.GdxAnimation;
 import io.github.fourlastor.harlequin.ui.AnimatedImage;
@@ -67,6 +71,15 @@ public class EntitiesFactory {
         bar.setAmount(0.7f);
         entity.add(new ActorComponent(bar, ActorComponent.Layer.CHARACTER));
         entity.add(new HpBar(bar, player));
+        return entity;
+    }
+
+    public Entity xpBar(Entity player) {
+        Entity entity = new Entity();
+        XpBar bar = new XpBar(textureAtlas);
+        bar.setScale(0.95f * camera.viewportWidth / bar.getWidth());
+        entity.add(new ActorComponent(bar, ActorComponent.Layer.UI));
+        entity.add(new XpBarComponent(bar, player));
         return entity;
     }
 
@@ -161,7 +174,7 @@ public class EntitiesFactory {
         Image image = new AnimatedImage(animation);
         image.setScale(SCALE);
         entity.add(new ActorComponent(image, ActorComponent.Layer.ENEMIES));
-        entity.add(new Enemy.Request());
+        entity.add(new Enemy.Request(type));
         entity.add(new BodyBuilderComponent(world -> {
             BodyDef bodyDef = new BodyDef();
             bodyDef.position.set(position);
@@ -193,5 +206,30 @@ public class EntitiesFactory {
         }
 
         return enemyRegions.get(path);
+    }
+
+    public Entity reward(RewardType rewardType, Vector2 position) {
+        Entity entity = new Entity();
+        Image image = new Image(textureAtlas.findRegion("items/" + rewardType.image));
+        image.setScale(SCALE);
+        entity.add(new ActorComponent(image, ActorComponent.Layer.ENEMIES));
+        entity.add(new BodyBuilderComponent(world -> {
+            BodyDef bodyDef = new BodyDef();
+            bodyDef.position.set(position);
+            bodyDef.type = BodyDef.BodyType.DynamicBody;
+            Body body = world.createBody(bodyDef);
+            body.setUserData(entity);
+            CircleShape shape = new CircleShape();
+            shape.setRadius(0.2f);
+            FixtureDef def = new FixtureDef();
+            def.filter.categoryBits = BodyData.Category.REWARD.bits;
+            def.filter.maskBits = BodyData.Mask.REWARD.bits;
+            def.shape = shape;
+            body.createFixture(def).setUserData(BodyData.Type.REWARD);
+            shape.dispose();
+            return body;
+        }));
+        entity.add(new Reward(rewardType));
+        return entity;
     }
 }

@@ -17,6 +17,7 @@ import com.badlogic.gdx.physics.box2d.World;
 import io.github.fourlastor.game.level.Message;
 import io.github.fourlastor.game.level.component.BodyBuilderComponent;
 import io.github.fourlastor.game.level.component.BodyComponent;
+import io.github.fourlastor.game.level.component.Reward;
 import javax.inject.Inject;
 
 public class PhysicsSystem extends IntervalSystem {
@@ -116,7 +117,36 @@ public class PhysicsSystem extends IntervalSystem {
                 onEnemyHit(fixtureB);
             } else if (isWeapon(fixtureB) && isEnemy(fixtureA)) {
                 onEnemyHit(fixtureA);
+            } else if (isPlayer(fixtureA) && isReward(fixtureB)) {
+                onPickUp(fixtureB, fixtureA);
+            } else if (isPlayer(fixtureB) && isReward(fixtureA)) {
+                onPickUp(fixtureA, fixtureB);
+            } else if (isEnemy(fixtureA) && isPlayer(fixtureB)) {
+                playerHit(fixtureA);
+            } else if (isPlayer(fixtureA) && isEnemy(fixtureB)) {
+                playerHit(fixtureB);
             }
+        }
+
+        private void playerHit(Fixture enemy) {
+            messageDispatcher.dispatchMessage(
+                    Message.PLAYER_HIT.ordinal(), enemy.getBody().getUserData());
+        }
+
+        private void onPickUp(Fixture reward, Fixture player) {
+            Entity rewardEntity = (Entity) reward.getBody().getUserData();
+            Entity playerEntity = (Entity) player.getBody().getUserData();
+            rewardEntity.add(new Reward.PickUp(playerEntity));
+        }
+
+        private boolean isReward(Fixture fixture) {
+            Object userData = fixture.getUserData();
+            return userData == BodyData.Type.REWARD;
+        }
+
+        private boolean isPlayer(Fixture fixture) {
+            Object userData = fixture.getUserData();
+            return userData == BodyData.Type.PLAYER;
         }
 
         private boolean isWeapon(Fixture fixture) {
@@ -134,7 +164,20 @@ public class PhysicsSystem extends IntervalSystem {
         }
 
         @Override
-        public void endContact(Contact contact) {}
+        public void endContact(Contact contact) {
+            Fixture fixtureA = contact.getFixtureA();
+            Fixture fixtureB = contact.getFixtureB();
+            if (isEnemy(fixtureA) && isPlayer(fixtureB)) {
+                playerHitEnd(fixtureA);
+            } else if (isPlayer(fixtureA) && isEnemy(fixtureB)) {
+                playerHitEnd(fixtureB);
+            }
+        }
+
+        private void playerHitEnd(Fixture enemy) {
+            messageDispatcher.dispatchMessage(
+                    Message.PLAYER_HIT.ordinal(), enemy.getBody().getUserData());
+        }
 
         @Override
         public void preSolve(Contact contact, Manifold oldManifold) {}

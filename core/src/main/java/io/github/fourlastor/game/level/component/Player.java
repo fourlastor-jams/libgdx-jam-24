@@ -16,6 +16,10 @@ public class Player implements Component {
 
     public final Settings settings;
     public float movementTime = 0f;
+    public float xp = 0f;
+    public float maxXp = 1000f;
+    public float maxHp = 100f;
+    public float hp = maxHp;
 
     public Player(Camera camera, InputStateMachine stateMachine, OnGround onGround, Settings settings) {
         this.camera = camera;
