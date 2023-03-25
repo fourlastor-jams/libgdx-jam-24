@@ -42,7 +42,7 @@ public class UiSystem extends EntitySystem implements Telegraph {
     private final InputMultiplexer inputMultiplexer;
     private final Router router;
     private final RetryProcessor retryProcessor = new RetryProcessor();
-    private Label timerLaberl;
+    private Label timerLabel;
     private XpBar bar;
     private ImmutableArray<Entity> playerEntities;
     private TextraLabel killLabel;
@@ -73,9 +73,9 @@ public class UiSystem extends EntitySystem implements Telegraph {
     public void addedToEngine(Engine engine) {
         super.addedToEngine(engine);
         timer = 0;
-        timerLaberl = new Label("00:00", new Label.LabelStyle(bold, DARK_GRAY));
-        timerLaberl.setPosition(stage.getWidth() / 2, stage.getHeight() - 40f, Align.center);
-        stage.addActor(timerLaberl);
+        timerLabel = new Label("00:00", new Label.LabelStyle(bold, DARK_GRAY));
+        timerLabel.setPosition(stage.getWidth() / 2, stage.getHeight() - 40f, Align.center);
+        stage.addActor(timerLabel);
         bar = new XpBar(textureAtlas, regular);
         bar.setScale(0.95f * stage.getWidth() / bar.getWidth());
 
@@ -126,7 +126,7 @@ public class UiSystem extends EntitySystem implements Telegraph {
             lastSecond = seconds;
             lastMinute = minutes;
             String text = (minutes > 10 ? minutes : "0" + minutes) + ":" + (seconds > 10 ? seconds : "0" + seconds);
-            timerLaberl.setText(text);
+            timerLabel.setText(text);
         }
         stage.act(deltaTime);
         stage.draw();
