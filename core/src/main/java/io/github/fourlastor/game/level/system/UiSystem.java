@@ -12,7 +12,6 @@ import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.ai.msg.MessageDispatcher;
 import com.badlogic.gdx.ai.msg.Telegram;
 import com.badlogic.gdx.ai.msg.Telegraph;
-import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
@@ -53,15 +52,16 @@ public class UiSystem extends EntitySystem implements Telegraph {
     @Inject
     public UiSystem(
             @Named("ui") Stage stage,
-            AssetManager manager,
+            @Named("bold") BitmapFont bold,
+            @Named("regular") BitmapFont regular,
             ComponentMapper<Player> players,
             TextureAtlas textureAtlas,
             MessageDispatcher dispatcher,
             InputMultiplexer inputMultiplexer,
             Router router) {
         this.stage = stage;
-        bold = manager.get("fonts/play-bold.fnt", BitmapFont.class);
-        regular = manager.get("fonts/play-regular.fnt", BitmapFont.class);
+        this.bold = bold;
+        this.regular = regular;
         this.players = players;
         this.textureAtlas = textureAtlas;
         this.dispatcher = dispatcher;

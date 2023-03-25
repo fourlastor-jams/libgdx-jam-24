@@ -1,5 +1,6 @@
 package io.github.fourlastor.game.di.modules;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
@@ -19,6 +20,7 @@ import io.github.fourlastor.ldtk.LdtkLoader;
 import io.github.fourlastor.ldtk.model.LdtkMapData;
 import io.github.fourlastor.text.Text;
 import io.github.fourlastor.text.TextLoader;
+
 import javax.inject.Named;
 import javax.inject.Singleton;
 
@@ -47,8 +49,6 @@ public class AssetsModule {
         assetManager.setLoader(SpineEntity.class, spineLoader);
         assetManager.setLoader(AnimationNode.Group.class, dragonBonesLoader);
         assetManager.load(PATH_TEXTURE_ATLAS, TextureAtlas.class);
-        assetManager.load("fonts/play-bold.fnt", BitmapFont.class);
-        assetManager.load("fonts/play-regular.fnt", BitmapFont.class);
 
         assetManager.load("audio/sounds/pickups/xp 0.wav", Sound.class);
         assetManager.load("audio/sounds/pickups/xp 1.wav", Sound.class);
@@ -83,5 +83,18 @@ public class AssetsModule {
     @Named(WHITE_PIXEL)
     public TextureRegion whitePixel(TextureAtlas atlas) {
         return atlas.findRegion("whitePixel");
+    }
+
+    @Provides
+    @Singleton
+    @Named("bold")
+    BitmapFont bold(TextureAtlas atlas) {
+        return new BitmapFont(Gdx.files.internal("images/included/fonts/play-bold.fnt"), atlas.findRegion("images/included/fonts/play-bold"));
+    }
+    @Provides
+    @Singleton
+    @Named("regular")
+    BitmapFont regular(TextureAtlas atlas) {
+        return new BitmapFont(Gdx.files.internal("images/included/fonts/play-regular.fnt"), atlas.findRegion("images/included/fonts/play-regular"));
     }
 }
