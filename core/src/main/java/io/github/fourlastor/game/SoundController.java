@@ -9,7 +9,8 @@ import javax.inject.Singleton;
 
 @Singleton
 public class SoundController {
-    private float audioVolume = 1f;
+    private float soundVolume = 0.7f;
+    private float musicVolume = 0.5f;
 
     @Inject
     public SoundController() {
@@ -17,7 +18,7 @@ public class SoundController {
     }
 
     public void play(Music music, float volume, boolean repeat) {
-        music.setVolume(volume);
+        music.setVolume(volume * musicVolume);
         if (repeat)
             music.setLooping(true);
         music.play();
@@ -28,7 +29,7 @@ public class SoundController {
     }
 
     public void play(Sound sound, float volume) {
-        sound.play(volume * audioVolume, MathUtils.random(.95f, 1.05f), 0);
+        sound.play(volume * soundVolume, MathUtils.random(.95f, 1.05f), 0);
     }
 
     public void play(Sound sound) {
