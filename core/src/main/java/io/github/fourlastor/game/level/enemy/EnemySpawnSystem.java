@@ -9,9 +9,8 @@ import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.math.Vector2;
 import io.github.fourlastor.game.level.EntitiesFactory;
 import io.github.fourlastor.game.level.component.Enemy;
-import javax.inject.Inject;
-
 import io.github.fourlastor.game.level.reward.RewardType;
+import javax.inject.Inject;
 import squidpony.squidmath.Noise;
 import squidpony.squidmath.SilkRNG;
 

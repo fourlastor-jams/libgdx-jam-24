@@ -35,7 +35,6 @@ public class Player implements Component {
 
     public static class Settings {
 
-
         public static final float PLAYER_SPEED = 5f;
         public final float speed = PLAYER_SPEED;
         public final float accelerationTime;
