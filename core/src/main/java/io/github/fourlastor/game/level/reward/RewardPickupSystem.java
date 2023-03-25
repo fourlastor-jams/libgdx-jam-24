@@ -57,7 +57,7 @@ public class RewardPickupSystem extends EntitySystem {
                     player.xp += 30;
                     break;
                 case PASTA:
-                    player.hp += player.maxHp * 0.1f;
+                    player.hp += player.maxHp * 0.25f;
                     player.hp = Math.min(player.maxHp, player.hp);
                     break;
             }
