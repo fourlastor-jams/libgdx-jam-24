@@ -25,17 +25,25 @@ public class PlayerInputSystem extends IteratingSystem {
 
     private final PlayerSetup playerSetup;
     private final ComponentMapper<Player> players;
+    private final MessageDispatcher dispatcher;
 
     @Inject
-    public PlayerInputSystem(PlayerSetup playerSetup, ComponentMapper<Player> players) {
+    public PlayerInputSystem(PlayerSetup playerSetup, ComponentMapper<Player> players, MessageDispatcher dispatcher) {
         super(FAMILY);
         this.playerSetup = playerSetup;
         this.players = players;
+        this.dispatcher = dispatcher;
     }
 
     @Override
     protected void processEntity(Entity entity, float deltaTime) {
-        players.get(entity).stateMachine.update(deltaTime);
+        Player player = players.get(entity);
+        if (player.hp <= 0) {
+            setProcessing(false);
+            dispatcher.dispatchMessage(Message.GAME_OVER.ordinal());
+            return;
+        }
+        player.stateMachine.update(deltaTime);
     }
 
     @Override
