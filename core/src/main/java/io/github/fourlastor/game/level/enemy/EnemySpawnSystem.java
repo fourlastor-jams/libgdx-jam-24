@@ -25,8 +25,8 @@ public class EnemySpawnSystem extends EntitySystem {
 
     private final LinkedList<EnemyWave> waves = new LinkedList<>(asList(
             new EnemyWave(
-                    asList(EnemyType.PIGEON_0),
-                    7f
+                    asList(EnemyType.DRAGON_QUEEN),
+                    70f
             ),
             new EnemyWave(
                     asList(EnemyType.PIGEON_1),
