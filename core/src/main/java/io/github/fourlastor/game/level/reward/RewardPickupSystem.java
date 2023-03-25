@@ -12,7 +12,6 @@ import com.badlogic.gdx.ai.msg.Telegraph;
 import io.github.fourlastor.game.level.Message;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.audio.Sound;
-import com.badlogic.gdx.math.MathUtils;
 
 import io.github.fourlastor.game.SoundController;
 import io.github.fourlastor.game.level.component.Player;
@@ -29,29 +28,27 @@ public class RewardPickupSystem extends EntitySystem implements Telegraph {
     private final ComponentMapper<Reward.PickUp> pickups;
     private final RewardsListener rewardsListener = new RewardsListener();
     private final MessageDispatcher dispatcher;
-    private final AssetManager assetManager;
     private final SoundController soundController;
-    private Sound xp0Sound;
-    private Sound xp1Sound;
-    private Sound xp2Sound;
-    private Sound pastaSound;
+    private final Sound xp0Sound;
+    private final Sound xp1Sound;
+    private final Sound xp2Sound;
+    private final Sound pastaSound;
 
     @Inject
     public RewardPickupSystem(
             ComponentMapper<Player> players,
             ComponentMapper<Reward> rewards,
             ComponentMapper<Reward.PickUp> pickups,
-            MessageDispatcher dispatcher) {
+            MessageDispatcher dispatcher, AssetManager assetManager, SoundController soundController) {
         this.players = players;
         this.rewards = rewards;
         this.pickups = pickups;
         this.dispatcher = dispatcher;
-        this.assetManager = assetManager;
+        this.soundController = soundController;
         xp0Sound = assetManager.get("audio/sounds/pickups/xp 0.wav", Sound.class);
         xp1Sound = assetManager.get("audio/sounds/pickups/xp 1.wav", Sound.class);
         xp2Sound = assetManager.get("audio/sounds/pickups/xp 2.wav", Sound.class);
         pastaSound = assetManager.get("audio/sounds/pickups/pasta.wav", Sound.class);
-        this.soundController = soundController;
     }
 
     @Override
