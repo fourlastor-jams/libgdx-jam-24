@@ -23,6 +23,7 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 import javax.inject.Inject;
 
 import io.github.fourlastor.game.SoundController;
+import io.github.fourlastor.game.route.Router;
 
 public class IntroScreen extends ScreenAdapter {
 
@@ -33,7 +34,7 @@ public class IntroScreen extends ScreenAdapter {
     private final Viewport viewport;
     private final TextureAtlas textureAtlas;
     private final SoundController soundController;
-    private final AssetManager assetManager;
+    private final Router router;
     private Image clouds0;
     private Image clouds1;
     private Image character;
@@ -57,11 +58,11 @@ public class IntroScreen extends ScreenAdapter {
     private float time = 0f;
 
     @Inject
-    public IntroScreen(InputMultiplexer inputMultiplexer, TextureAtlas textureAtlas, SoundController soundController, AssetManager assetManager) {
+    public IntroScreen(InputMultiplexer inputMultiplexer, TextureAtlas textureAtlas, SoundController soundController, Router router, AssetManager assetManager) {
         this.inputMultiplexer = inputMultiplexer;
         this.textureAtlas = textureAtlas;
         this.soundController = soundController;
-        this.assetManager = assetManager;
+        this.router = router;
 
         viewport = new FitViewport(192, 108);
         stage = new Stage(viewport);
@@ -135,10 +136,9 @@ public class IntroScreen extends ScreenAdapter {
                     )
             ));
             character.addAction(Actions.sequence(Actions.delay(2), Actions.run(() -> {
-                // TODO: when the player click, the go to next screen here
                 introMusic.stop();
                 chatterMusic.stop();
-                System.out.println("Go to level");
+                router.goToLevel();
             })));
             return true;
         }
