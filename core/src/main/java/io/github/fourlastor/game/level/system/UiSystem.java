@@ -11,6 +11,7 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.utils.Align;
 import io.github.fourlastor.game.level.component.Player;
@@ -56,6 +57,9 @@ public class UiSystem extends EntitySystem {
         bar.setPosition(x, y);
         stage.addActor(bar);
         playerEntities = engine.getEntitiesFor(FAMILY_PLAYER);
+        Image weapons = new Image(textureAtlas.findRegion("ui/weapons"));
+        weapons.setPosition(x + 7, y - bar.getHeight() * bar.getScaleY() - 19);
+        stage.addActor(weapons);
     }
 
     private float timer = 0f;
