@@ -170,6 +170,7 @@ public class EntitiesFactory {
 
         Image image = new AnimatedImage(animation);
         image.setScale(SCALE);
+        image.setAlign(Align.center);
         image.addAction(Actions.forever(
                 Actions.sequence(
                         Actions.rotateTo(-7, 0.7f),
