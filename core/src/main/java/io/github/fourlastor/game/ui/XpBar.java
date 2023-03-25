@@ -1,5 +1,7 @@
 package io.github.fourlastor.game.ui;
 
+import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.math.Interpolation;
 import com.badlogic.gdx.scenes.scene2d.Action;
@@ -10,6 +12,8 @@ import com.badlogic.gdx.scenes.scene2d.ui.WidgetGroup;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Align;
+import com.github.tommyettinger.textra.Font;
+import com.github.tommyettinger.textra.TextraLabel;
 
 public class XpBar extends WidgetGroup {
 
@@ -21,7 +25,7 @@ public class XpBar extends WidgetGroup {
     private final Image filledEnd;
     private float amount = 0f;
 
-    public XpBar(TextureAtlas atlas) {
+    public XpBar(TextureAtlas atlas, BitmapFont font) {
         super();
         Drawable emptyEndDrawable = new TextureRegionDrawable(atlas.findRegion("xp/bar_empty_end"));
         Drawable emptyMidDrawable = new TextureRegionDrawable(atlas.findRegion("xp/bar_empty_middle"));
@@ -60,6 +64,10 @@ public class XpBar extends WidgetGroup {
         filledStart.setVisible(false);
         filledEnd.setVisible(false);
         filledMiddle.setScaleX(0f);
+        TextraLabel levelLabel = new TextraLabel("Level 1", new Font(font).scale(0.3f, 0.3f));
+        levelLabel.setPosition(getWidth() - 40f, 5f);
+        levelLabel.setColor(new Color(0xa5a7aeff));
+        addActor(levelLabel);
     }
 
     public void setAmount(float amount) {

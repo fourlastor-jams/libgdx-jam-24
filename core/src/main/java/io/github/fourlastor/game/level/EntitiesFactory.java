@@ -28,14 +28,12 @@ import io.github.fourlastor.game.level.component.HpBar;
 import io.github.fourlastor.game.level.component.PlayerRequest;
 import io.github.fourlastor.game.level.component.Reward;
 import io.github.fourlastor.game.level.component.Whip;
-import io.github.fourlastor.game.level.component.XpBarComponent;
 import io.github.fourlastor.game.level.enemy.EnemyType;
 import io.github.fourlastor.game.level.physics.BodyData;
 import io.github.fourlastor.game.level.reward.RewardType;
 import io.github.fourlastor.game.ui.Bar;
 import io.github.fourlastor.game.ui.ParallaxImage;
 import io.github.fourlastor.game.ui.PlayerActor;
-import io.github.fourlastor.game.ui.XpBar;
 import io.github.fourlastor.harlequin.animation.Animation;
 import io.github.fourlastor.harlequin.animation.GdxAnimation;
 import io.github.fourlastor.harlequin.ui.AnimatedImage;
@@ -77,14 +75,6 @@ public class EntitiesFactory {
         return entity;
     }
 
-    public Entity xpBar(Entity player) {
-        Entity entity = new Entity();
-        XpBar bar = new XpBar(textureAtlas);
-        bar.setScale(0.95f * camera.viewportWidth / bar.getWidth());
-        entity.add(new ActorComponent(bar, ActorComponent.Layer.UI));
-        entity.add(new XpBarComponent(bar, player));
-        return entity;
-    }
 
     public Entity player() {
         Entity entity = new Entity();

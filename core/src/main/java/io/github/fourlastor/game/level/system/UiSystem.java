@@ -48,7 +48,7 @@ public class UiSystem extends EntitySystem {
         timerLaberl = new Label("00:00", new Label.LabelStyle(bold, DARK_GRAY));
         timerLaberl.setPosition(stage.getWidth() / 2, stage.getHeight() - 40f, Align.center);
         stage.addActor(timerLaberl);
-        bar = new XpBar(textureAtlas);
+        bar = new XpBar(textureAtlas, bold);
         bar.setScale(0.95f * stage.getWidth() / bar.getWidth());
 
         float x = stage.getWidth() / 2 - bar.getWidth() * bar.getScaleX() / 2f;
