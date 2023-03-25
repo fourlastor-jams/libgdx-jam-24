@@ -17,6 +17,7 @@ import io.github.fourlastor.game.level.enemy.EnemySpawnSystem;
 import io.github.fourlastor.game.level.input.PlayerInputSystem;
 import io.github.fourlastor.game.level.physics.PhysicsDebugSystem;
 import io.github.fourlastor.game.level.physics.PhysicsSystem;
+import io.github.fourlastor.game.level.reward.RewardMovementSystem;
 import io.github.fourlastor.game.level.reward.RewardPickupSystem;
 import io.github.fourlastor.game.level.system.ActorFollowBodySystem;
 import io.github.fourlastor.game.level.system.CameraMovementSystem;
@@ -40,6 +41,7 @@ public class LevelModule {
             CameraMovementSystem cameraMovementSystem,
             PhysicsSystem physicsSystem,
             RewardPickupSystem rewardPickupSystem,
+            RewardMovementSystem rewardMovementSystem,
             StageSystem stageSystem,
             ClearScreenSystem clearScreenSystem,
             ActorFollowBodySystem actorFollowBodySystem,
@@ -53,6 +55,7 @@ public class LevelModule {
         engine.addSystem(enemyAiSystem);
         engine.addSystem(physicsSystem);
         engine.addSystem(rewardPickupSystem);
+        engine.addSystem(rewardMovementSystem);
         engine.addSystem(actorFollowBodySystem);
         engine.addSystem(hpBarSystem);
         engine.addSystem(cameraMovementSystem);

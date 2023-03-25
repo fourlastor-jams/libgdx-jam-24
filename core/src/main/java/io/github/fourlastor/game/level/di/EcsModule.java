@@ -97,4 +97,9 @@ public class EcsModule {
     public ComponentMapper<Reward.PickUp> rewardPickupComponent() {
         return ComponentMapper.getFor(Reward.PickUp.class);
     }
+    @Provides
+    @ScreenScoped
+    public ComponentMapper<Reward.State> rewardStateComponent() {
+        return ComponentMapper.getFor(Reward.State.class);
+    }
 }

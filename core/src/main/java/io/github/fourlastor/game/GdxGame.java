@@ -44,7 +44,7 @@ public class GdxGame extends Game implements Router {
         }
         Gdx.input.setInputProcessor(multiplexer);
         // goToLevel();
-        goToIntro();
+        goToLevel();
     }
 
     @Override

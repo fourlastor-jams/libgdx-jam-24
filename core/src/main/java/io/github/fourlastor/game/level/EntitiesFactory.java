@@ -216,7 +216,7 @@ public class EntitiesFactory {
             Body body = world.createBody(bodyDef);
             body.setUserData(entity);
             CircleShape shape = new CircleShape();
-            shape.setRadius(0.2f);
+            shape.setRadius(0.3f);
             FixtureDef def = new FixtureDef();
             def.filter.categoryBits = BodyData.Category.REWARD.bits;
             def.filter.maskBits = BodyData.Mask.REWARD.bits;
