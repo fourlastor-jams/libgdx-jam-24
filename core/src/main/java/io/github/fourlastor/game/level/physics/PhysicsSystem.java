@@ -121,7 +121,16 @@ public class PhysicsSystem extends IntervalSystem {
                 onPickUp(fixtureB, fixtureA);
             } else if (isPlayer(fixtureB) && isReward(fixtureA)) {
                 onPickUp(fixtureA, fixtureB);
+            } else if (isEnemy(fixtureA) && isPlayer(fixtureB)) {
+                playerHit(fixtureA);
+            } else if (isPlayer(fixtureA) && isEnemy(fixtureB)) {
+                playerHit(fixtureB);
             }
+        }
+
+        private void playerHit(Fixture enemy) {
+            messageDispatcher.dispatchMessage(
+                    Message.PLAYER_HIT.ordinal(), enemy.getBody().getUserData());
         }
 
         private void onPickUp(Fixture reward, Fixture player) {

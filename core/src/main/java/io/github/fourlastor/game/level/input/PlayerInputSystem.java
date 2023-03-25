@@ -7,6 +7,7 @@ import com.badlogic.ashley.core.EntityListener;
 import com.badlogic.ashley.core.Family;
 import com.badlogic.ashley.systems.IteratingSystem;
 import com.badlogic.gdx.ai.msg.MessageDispatcher;
+import io.github.fourlastor.game.level.Message;
 import io.github.fourlastor.game.level.component.Animated;
 import io.github.fourlastor.game.level.component.BodyComponent;
 import io.github.fourlastor.game.level.component.Player;
@@ -78,9 +79,12 @@ public class PlayerInputSystem extends IteratingSystem {
 
             entity.add(new Player(request.camera, stateMachine, onGround, settings));
             stateMachine.getCurrentState().enter(entity);
+            messageDispatcher.addListener(stateMachine, Message.PLAYER_HIT.ordinal());
         }
 
         @Override
-        public void entityRemoved(Entity entity) {}
+        public void entityRemoved(Entity entity) {
+            //            messageDispatcher.removeListener(entity.getComponent(Player.class).stateMachine);
+        }
     }
 }
