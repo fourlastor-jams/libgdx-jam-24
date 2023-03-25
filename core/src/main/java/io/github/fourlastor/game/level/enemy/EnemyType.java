@@ -7,7 +7,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 public enum EnemyType {
-    PIGEON_0(0.2f, 5, 2f, Settings.PLAYER_SPEED * 0.4f, "pigeon-0", 10, RewardType.XP_S),
+    PIGEON_0(0.2f, 25, 2f, Settings.PLAYER_SPEED * 0.4f, "pigeon-0", 10, RewardType.XP_S),
     PIGEON_1(0.3f, 15, 1.5f, Settings.PLAYER_SPEED * 0.3f, "pigeon-1", 15, RewardType.XP_M, RewardType.XP_S),
     SATCHMO(0.5f, 30, 0.7f, Settings.PLAYER_SPEED * 0.1f, "satchmo", 10, RewardType.XP_M, RewardType.XP_S),
     ;

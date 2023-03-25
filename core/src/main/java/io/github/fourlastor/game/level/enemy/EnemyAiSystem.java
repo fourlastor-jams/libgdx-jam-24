@@ -16,6 +16,7 @@ import io.github.fourlastor.game.level.component.Enemy;
 import io.github.fourlastor.game.level.component.Player;
 import io.github.fourlastor.game.level.enemy.state.Alive;
 import io.github.fourlastor.game.level.enemy.state.Dead;
+import io.github.fourlastor.game.level.enemy.state.Knocked;
 import io.github.fourlastor.game.level.reward.RewardType;
 import java.util.Set;
 import javax.inject.Inject;
@@ -36,6 +37,7 @@ public class EnemyAiSystem extends IteratingSystem {
 
     private final Alive.Factory aliveFactory;
     private final Dead.Factory deadFactory;
+    private final Knocked.Factory knockedFactory;
     private final EnemyStateMachine.Factory stateMachineFactory;
     private final SilkRNG random;
     private final EntitiesFactory entitiesFactory;
@@ -54,7 +56,7 @@ public class EnemyAiSystem extends IteratingSystem {
             MessageDispatcher dispatcher,
             Alive.Factory aliveFactory,
             Dead.Factory deadFactory,
-            EnemyStateMachine.Factory stateMachineFactory,
+            Knocked.Factory knockedFactory, EnemyStateMachine.Factory stateMachineFactory,
             SilkRNG random,
             EntitiesFactory entitiesFactory) {
         super(ENEMY_FAMILY);
@@ -64,6 +66,7 @@ public class EnemyAiSystem extends IteratingSystem {
         this.dispatcher = dispatcher;
         this.aliveFactory = aliveFactory;
         this.deadFactory = deadFactory;
+        this.knockedFactory = knockedFactory;
         this.stateMachineFactory = stateMachineFactory;
         this.random = random;
         this.entitiesFactory = entitiesFactory;
@@ -102,9 +105,10 @@ public class EnemyAiSystem extends IteratingSystem {
             Enemy.Request request = entity.remove(Enemy.Request.class);
             Alive alive = aliveFactory.create(players);
             Dead dead = deadFactory.create(players);
+            Knocked knocked = knockedFactory.create(players);
             EnemyStateMachine stateMachine = stateMachineFactory.create(entity, alive);
             dispatcher.addListener(stateMachine, Message.ENEMY_HIT.ordinal());
-            entity.add(new Enemy(stateMachine, alive, dead, request.type));
+            entity.add(new Enemy(stateMachine, alive, dead, knocked, request.type));
         }
 
         @Override
