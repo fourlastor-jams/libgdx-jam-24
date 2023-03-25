@@ -84,7 +84,6 @@ public class PlayerInputSystem extends IteratingSystem {
 
         @Override
         public void entityRemoved(Entity entity) {
-            //            messageDispatcher.removeListener(entity.getComponent(Player.class).stateMachine);
         }
     }
 }
