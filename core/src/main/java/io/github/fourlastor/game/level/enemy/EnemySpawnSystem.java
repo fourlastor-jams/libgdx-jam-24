@@ -17,7 +17,7 @@ import squidpony.squidmath.SilkRNG;
 
 public class EnemySpawnSystem extends EntitySystem {
     private static final Family ENEMY_FAMILY = Family.all(Enemy.class).get();
-    private static final float SPAWN_INTERVAL = 4f;
+    private static final float SPAWN_INTERVAL = 2f;
     private static final float PASTA_INTERVAL = 15f;
 
     private final Camera camera;

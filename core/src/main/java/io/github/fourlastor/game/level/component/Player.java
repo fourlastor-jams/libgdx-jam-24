@@ -34,11 +34,13 @@ public class Player implements Component {
     }
 
     public static class Settings {
-        public final float speed;
+
+
+        public static final float PLAYER_SPEED = 5f;
+        public final float speed = PLAYER_SPEED;
         public final float accelerationTime;
 
-        public Settings(float speed, float accelerationTime) {
-            this.speed = speed;
+        public Settings(float accelerationTime) {
             this.accelerationTime = accelerationTime;
         }
     }
