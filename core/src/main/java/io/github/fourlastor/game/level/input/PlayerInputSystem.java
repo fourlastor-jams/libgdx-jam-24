@@ -80,6 +80,7 @@ public class PlayerInputSystem extends IteratingSystem {
             entity.add(new Player(request.camera, stateMachine, onGround, settings));
             stateMachine.getCurrentState().enter(entity);
             messageDispatcher.addListener(stateMachine, Message.PLAYER_HIT.ordinal());
+            messageDispatcher.addListener(stateMachine, Message.PLAYER_HIT_END.ordinal());
         }
 
         @Override

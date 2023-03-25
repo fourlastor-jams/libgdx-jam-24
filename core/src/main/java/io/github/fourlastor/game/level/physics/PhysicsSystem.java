@@ -176,7 +176,7 @@ public class PhysicsSystem extends IntervalSystem {
 
         private void playerHitEnd(Fixture enemy) {
             messageDispatcher.dispatchMessage(
-                    Message.PLAYER_HIT.ordinal(), enemy.getBody().getUserData());
+                    Message.PLAYER_HIT_END.ordinal(), enemy.getBody().getUserData());
         }
 
         @Override
