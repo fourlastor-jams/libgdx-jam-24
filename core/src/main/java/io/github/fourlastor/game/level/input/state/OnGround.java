@@ -78,6 +78,9 @@ public class OnGround extends PlayerState {
         Vector2 accelerated = helper.accelerate(
                 player.movementTime, player.settings.accelerationTime, player.settings.speed, targetVelocity);
         body.setLinearVelocity(accelerated);
+        if (player.hp <= 0) {
+            player.stateMachine.changeState(player.dead);
+        }
     }
 
     @Override

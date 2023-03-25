@@ -3,6 +3,7 @@ package io.github.fourlastor.game.level.component;
 import com.badlogic.ashley.core.Component;
 import com.badlogic.gdx.graphics.Camera;
 import io.github.fourlastor.game.level.input.InputStateMachine;
+import io.github.fourlastor.game.level.input.state.Dead;
 import io.github.fourlastor.game.level.input.state.OnGround;
 import io.github.fourlastor.game.ui.PlayerActor;
 
@@ -14,6 +15,7 @@ public class Player implements Component {
     public final Camera camera;
     public final InputStateMachine stateMachine;
     public final OnGround onGround;
+    public final Dead dead;
 
     public final Settings settings;
     public final PlayerActor actor;
@@ -25,10 +27,16 @@ public class Player implements Component {
     public int killCounter = 0;
 
     public Player(
-            Camera camera, InputStateMachine stateMachine, OnGround onGround, Settings settings, PlayerActor actor) {
+            Camera camera,
+            InputStateMachine stateMachine,
+            OnGround onGround,
+            Dead dead,
+            Settings settings,
+            PlayerActor actor) {
         this.camera = camera;
         this.stateMachine = stateMachine;
         this.onGround = onGround;
+        this.dead = dead;
         this.settings = settings;
         this.actor = actor;
     }

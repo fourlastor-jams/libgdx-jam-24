@@ -6,6 +6,10 @@ import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.EntityListener;
 import com.badlogic.ashley.core.Family;
 import com.badlogic.ashley.systems.IteratingSystem;
+import com.badlogic.gdx.ai.msg.MessageDispatcher;
+import com.badlogic.gdx.ai.msg.Telegram;
+import com.badlogic.gdx.ai.msg.Telegraph;
+import io.github.fourlastor.game.level.Message;
 import io.github.fourlastor.game.level.component.ActorComponent;
 import io.github.fourlastor.game.level.component.BodyComponent;
 import io.github.fourlastor.game.level.component.Whip;
@@ -14,19 +18,21 @@ import io.github.fourlastor.game.level.weapon.whip.state.Enabled;
 import javax.inject.Inject;
 import javax.inject.Provider;
 
-public class WhipSystem extends IteratingSystem {
+public class WhipSystem extends IteratingSystem implements Telegraph {
 
     private static final Family FAMILY =
             Family.all(BodyComponent.class, ActorComponent.class, Whip.class).get();
     private static final Family FAMILY_SETUP = Family.all(Whip.Request.class).get();
     private final ComponentMapper<Whip> whips;
     private final SetupListener setupListener;
+    private final MessageDispatcher dispatcher;
 
     @Inject
-    public WhipSystem(ComponentMapper<Whip> whips, SetupListener setupListener) {
+    public WhipSystem(ComponentMapper<Whip> whips, SetupListener setupListener, MessageDispatcher dispatcher) {
         super(FAMILY);
         this.whips = whips;
         this.setupListener = setupListener;
+        this.dispatcher = dispatcher;
     }
 
     @Override
@@ -38,12 +44,22 @@ public class WhipSystem extends IteratingSystem {
     public void addedToEngine(Engine engine) {
         super.addedToEngine(engine);
         engine.addEntityListener(FAMILY_SETUP, setupListener);
+        dispatcher.addListener(this, Message.GAME_OVER.ordinal());
     }
 
     @Override
     public void removedFromEngine(Engine engine) {
         engine.removeEntityListener(setupListener);
         super.removedFromEngine(engine);
+    }
+
+    @Override
+    public boolean handleMessage(Telegram msg) {
+        if (msg.message == Message.GAME_OVER.ordinal()) {
+            setProcessing(false);
+            return true;
+        }
+        return false;
     }
 
     public static class SetupListener implements EntityListener {
