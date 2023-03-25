@@ -77,7 +77,7 @@ public class PlayerInputSystem extends IteratingSystem {
             OnGround onGround = onGroundProvider.get();
             InputStateMachine stateMachine = stateMachineFactory.create(entity, onGround);
 
-            entity.add(new Player(request.camera, stateMachine, onGround, settings));
+            entity.add(new Player(request.camera, stateMachine, onGround, settings, request.actor));
             stateMachine.getCurrentState().enter(entity);
             messageDispatcher.addListener(stateMachine, Message.PLAYER_HIT.ordinal());
             messageDispatcher.addListener(stateMachine, Message.PLAYER_HIT_END.ordinal());

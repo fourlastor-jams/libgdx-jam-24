@@ -42,6 +42,7 @@ public class OnGround extends PlayerState {
         Player player = players.get(entity);
         AnimatedImage animation = animated.get(entity).animation;
         Actor actor = actors.get(entity).actor;
+        player.actor.setBleeding(enemiesHitting.notEmpty());
         if (hitTimer >= 1) {
             hitTimer = 0f;
             for (Entity enemy : enemiesHitting) {
