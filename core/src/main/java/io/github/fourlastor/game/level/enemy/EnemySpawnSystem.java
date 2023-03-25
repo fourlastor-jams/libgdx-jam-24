@@ -10,11 +10,15 @@ import com.badlogic.gdx.math.Vector2;
 import io.github.fourlastor.game.level.EntitiesFactory;
 import io.github.fourlastor.game.level.component.Enemy;
 import javax.inject.Inject;
+
+import io.github.fourlastor.game.level.reward.RewardType;
 import squidpony.squidmath.Noise;
 import squidpony.squidmath.SilkRNG;
 
 public class EnemySpawnSystem extends EntitySystem {
     private static final Family ENEMY_FAMILY = Family.all(Enemy.class).get();
+    private static final float SPAWN_INTERVAL = 15f;
+    private static final float PASTA_INTERVAL = 1f;
 
     private final Camera camera;
     private final EntitiesFactory factory;
@@ -22,7 +26,8 @@ public class EnemySpawnSystem extends EntitySystem {
     private final Noise.Noise3D noise;
 
     private float totalTime = 0f;
-    private float runTime = 0f;
+    private float spawnTime = 0f;
+    private float pastaTime = 0f;
     private ImmutableArray<Entity> entities;
 
     @Inject
@@ -43,11 +48,40 @@ public class EnemySpawnSystem extends EntitySystem {
     public void update(float deltaTime) {
         super.update(deltaTime);
         totalTime += deltaTime;
-        runTime += deltaTime;
-        if (entities.size() < 300 && runTime > 2f) {
-            runTime = 0f;
+        spawnTime += deltaTime;
+        pastaTime += deltaTime;
+        if (entities.size() < 300 && spawnTime > SPAWN_INTERVAL) {
+            spawnTime = 0f;
             spawnEnemies();
         }
+        if (pastaTime > PASTA_INTERVAL) {
+            pastaTime = 0f;
+            spawnPasta();
+        }
+    }
+
+    private void spawnPasta() {
+        getEngine().addEntity(factory.reward(RewardType.PASTA, randomLocationOutsideViewport()));
+    }
+
+    private Vector2 randomLocationOutsideViewport() {
+        boolean horizontalSpawn = random.nextBoolean();
+        boolean atStart = random.nextBoolean();
+        float gradient = random.nextFloat();
+        float left = camera.position.x - camera.viewportWidth / 2;
+        float right = left + camera.viewportWidth;
+        float bottom = camera.position.y - camera.viewportHeight / 2;
+        float top = bottom + camera.viewportHeight;
+        float x;
+        float y;
+        if (horizontalSpawn) {
+            x = camera.viewportWidth * gradient + left;
+            y = atStart ? bottom : top;
+        } else {
+            x = atStart ? left : right;
+            y = camera.viewportHeight * gradient + bottom;
+        }
+        return new Vector2(x, y);
     }
 
     private void spawnEnemies() {

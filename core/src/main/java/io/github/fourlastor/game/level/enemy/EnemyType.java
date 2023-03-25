@@ -6,8 +6,8 @@ import java.util.HashSet;
 import java.util.Set;
 
 public enum EnemyType {
-    PIGEON_0(0.2f, 0.3f, "pigeon-0", 10, RewardType.XP_S, RewardType.XP_M),
-    PIGEON_1(0.3f, 0.4f, "pigeon-1", 15, RewardType.XP_M, RewardType.XP_L),
+    PIGEON_0(0.2f, 0.3f, "pigeon-0", 10, RewardType.XP_S),
+    PIGEON_1(0.3f, 0.4f, "pigeon-1", 15, RewardType.XP_M, RewardType.XP_S),
     ;
 
     public final float size;
