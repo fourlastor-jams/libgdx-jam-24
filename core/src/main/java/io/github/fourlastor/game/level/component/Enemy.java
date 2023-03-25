@@ -12,14 +12,16 @@ public class Enemy implements Component {
     public final Alive alive;
     public final Dead dead;
     public final EnemyType type;
-    public final int maxHealth = 5;
-    public int health = maxHealth;
+    public final int maxHealth;
+    public int health;
 
     public Enemy(EnemyStateMachine stateMachine, Alive alive, Dead dead, EnemyType type) {
         this.stateMachine = stateMachine;
         this.alive = alive;
         this.dead = dead;
         this.type = type;
+        maxHealth = type.maxHealth;
+        health = type.maxHealth;
     }
 
     public static class Request implements Component {

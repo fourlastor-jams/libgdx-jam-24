@@ -14,10 +14,32 @@ import javax.inject.Inject;
 import squidpony.squidmath.Noise;
 import squidpony.squidmath.SilkRNG;
 
+import java.util.LinkedList;
+
+import static java.util.Arrays.asList;
+
 public class EnemySpawnSystem extends EntitySystem {
     private static final Family ENEMY_FAMILY = Family.all(Enemy.class).get();
     private static final float SPAWN_INTERVAL = 2f;
     private static final float PASTA_INTERVAL = 15f;
+
+    private final LinkedList<EnemyWave> waves = new LinkedList<>(asList(
+            new EnemyWave(
+                    asList(EnemyType.PIGEON_0),
+                    7f
+            ),
+            new EnemyWave(
+                    asList(EnemyType.PIGEON_1),
+                    15
+            ),
+            new EnemyWave(
+                    asList(EnemyType.SATCHMO),
+                    30
+            )
+    ));
+
+    private EnemyWave wave = waves.poll();
+
 
     private final Camera camera;
     private final EntitiesFactory factory;
@@ -49,6 +71,12 @@ public class EnemySpawnSystem extends EntitySystem {
         totalTime += deltaTime;
         spawnTime += deltaTime;
         pastaTime += deltaTime;
+        if (wave.time <= totalTime) {
+            System.out.println(totalTime);
+            if (!waves.isEmpty()) {
+                wave = waves.poll();
+            }
+        }
         if (entities.size() < 300 && spawnTime > SPAWN_INTERVAL) {
             spawnTime = 0f;
             spawnEnemies();
@@ -119,10 +147,6 @@ public class EnemySpawnSystem extends EntitySystem {
     }
 
     private EnemyType randomType() {
-        if (random.nextBoolean()) {
-            return EnemyType.PIGEON_0;
-        } else {
-            return EnemyType.PIGEON_1;
-        }
+        return random.getRandomElement(wave.types);
     }
 }
