@@ -4,7 +4,6 @@ import com.badlogic.ashley.core.ComponentMapper;
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.gdx.ai.fsm.State;
 import com.badlogic.gdx.ai.msg.Telegram;
-import io.github.fourlastor.game.level.Message;
 import io.github.fourlastor.game.level.component.ActorComponent;
 import io.github.fourlastor.game.level.component.Animated;
 import io.github.fourlastor.game.level.component.BodyComponent;
@@ -63,12 +62,6 @@ public abstract class PlayerState implements State<Entity> {
 
     @Override
     public boolean onMessage(Entity entity, Telegram telegram) {
-        if (telegram.message == Message.PLAYER_HIT.ordinal()) {
-            Entity enemy = (Entity) telegram.extraInfo;
-            float damage = enemies.get(enemy).type.damage;
-            players.get(entity).hp -= damage;
-            // TODO: if HP <= 0 => game over
-        }
         return false;
     }
 

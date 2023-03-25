@@ -164,7 +164,20 @@ public class PhysicsSystem extends IntervalSystem {
         }
 
         @Override
-        public void endContact(Contact contact) {}
+        public void endContact(Contact contact) {
+            Fixture fixtureA = contact.getFixtureA();
+            Fixture fixtureB = contact.getFixtureB();
+            if (isEnemy(fixtureA) && isPlayer(fixtureB)) {
+                playerHitEnd(fixtureA);
+            } else if (isPlayer(fixtureA) && isEnemy(fixtureB)) {
+                playerHitEnd(fixtureB);
+            }
+        }
+
+        private void playerHitEnd(Fixture enemy) {
+            messageDispatcher.dispatchMessage(
+                    Message.PLAYER_HIT.ordinal(), enemy.getBody().getUserData());
+        }
 
         @Override
         public void preSolve(Contact contact, Manifold oldManifold) {}
