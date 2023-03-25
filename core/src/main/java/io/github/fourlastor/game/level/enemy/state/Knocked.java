@@ -7,6 +7,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
+import com.badlogic.gdx.scenes.scene2d.actions.SequenceAction;
 import dagger.assisted.Assisted;
 import dagger.assisted.AssistedFactory;
 import dagger.assisted.AssistedInject;
@@ -19,6 +20,10 @@ public class Knocked extends EnemyState {
     private final Vector2 impulse = new Vector2();
     private final BodyHelper helper;
 
+    private final SequenceAction changeColor = Actions.sequence(
+            Actions.color(Color.RED, 0.2f),
+            Actions.color(Color.WHITE, 0.2f)
+    );
     private float timer;
 
     @AssistedInject
@@ -31,11 +36,8 @@ public class Knocked extends EnemyState {
     public void enter(Entity entity) {
         super.enter(entity);
         Actor actor = actors.get(entity).actor;
-        actor.clearActions();
-        actor.addAction(Actions.sequence(
-                Actions.color(Color.RED, 0.2f),
-                Actions.color(Color.WHITE, 0.2f)
-        ));
+        actor.removeAction(changeColor);
+        actor.addAction(changeColor);
         timer = 0;
     }
 

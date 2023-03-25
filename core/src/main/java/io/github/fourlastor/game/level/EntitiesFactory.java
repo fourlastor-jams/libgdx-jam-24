@@ -14,6 +14,7 @@ import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Group;
+import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
@@ -169,6 +170,12 @@ public class EntitiesFactory {
 
         Image image = new AnimatedImage(animation);
         image.setScale(SCALE);
+        image.addAction(Actions.forever(
+                Actions.sequence(
+                        Actions.rotateTo(-7, 0.7f),
+                        Actions.rotateTo(7, 0.7f)
+                )
+        ));
         entity.add(new ActorComponent(image, ActorComponent.Layer.ENEMIES));
         entity.add(new Enemy.Request(type));
         entity.add(new BodyBuilderComponent(world -> {
