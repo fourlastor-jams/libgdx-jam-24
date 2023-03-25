@@ -1,8 +1,10 @@
 package io.github.fourlastor.game.level;
 
 import com.badlogic.ashley.core.Entity;
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.g2d.ParticleEffect;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
@@ -26,13 +28,12 @@ import io.github.fourlastor.game.level.component.HpBar;
 import io.github.fourlastor.game.level.component.PlayerRequest;
 import io.github.fourlastor.game.level.component.Reward;
 import io.github.fourlastor.game.level.component.Whip;
-import io.github.fourlastor.game.level.component.XpBarComponent;
 import io.github.fourlastor.game.level.enemy.EnemyType;
 import io.github.fourlastor.game.level.physics.BodyData;
 import io.github.fourlastor.game.level.reward.RewardType;
 import io.github.fourlastor.game.ui.Bar;
 import io.github.fourlastor.game.ui.ParallaxImage;
-import io.github.fourlastor.game.ui.XpBar;
+import io.github.fourlastor.game.ui.PlayerActor;
 import io.github.fourlastor.harlequin.animation.Animation;
 import io.github.fourlastor.harlequin.animation.GdxAnimation;
 import io.github.fourlastor.harlequin.ui.AnimatedImage;
@@ -74,15 +75,6 @@ public class EntitiesFactory {
         return entity;
     }
 
-    public Entity xpBar(Entity player) {
-        Entity entity = new Entity();
-        XpBar bar = new XpBar(textureAtlas);
-        bar.setScale(0.95f * camera.viewportWidth / bar.getWidth());
-        entity.add(new ActorComponent(bar, ActorComponent.Layer.UI));
-        entity.add(new XpBarComponent(bar, player));
-        return entity;
-    }
-
     public Entity player() {
         Entity entity = new Entity();
         Array<TextureAtlas.AtlasRegion> regions = textureAtlas.findRegions("character/walking/walking");
@@ -92,7 +84,11 @@ public class EntitiesFactory {
         }
         GdxAnimation<Drawable> animation = new GdxAnimation<>(0.15f, drawables, Animation.PlayMode.LOOP);
 
-        AnimatedImage image = new AnimatedImage(animation);
+        ParticleEffect effect = new ParticleEffect();
+        effect.load(Gdx.files.internal("effects/blood down.pfx"), Gdx.files.internal("images/included"));
+        effect.scaleEffect(SCALE);
+        effect.setPosition(1f, 1f);
+        PlayerActor image = new PlayerActor(animation, effect);
 
         Image whipActor = new Image(textureAtlas.findRegion("character/whip"));
         float whipW = whipActor.getWidth();
@@ -149,7 +145,7 @@ public class EntitiesFactory {
             return body;
         }));
         entity.add(new ActorComponent(group, ActorComponent.Layer.CHARACTER));
-        entity.add(new PlayerRequest(camera));
+        entity.add(new PlayerRequest(camera, image));
         entity.add(new Animated(image));
         entity.add(new Whip.Request(whipActor));
         return entity;
@@ -212,7 +208,7 @@ public class EntitiesFactory {
         Entity entity = new Entity();
         Image image = new Image(textureAtlas.findRegion("items/" + rewardType.image));
         image.setScale(SCALE);
-        entity.add(new ActorComponent(image, ActorComponent.Layer.ENEMIES));
+        entity.add(new ActorComponent(image, ActorComponent.Layer.REWARDS));
         entity.add(new BodyBuilderComponent(world -> {
             BodyDef bodyDef = new BodyDef();
             bodyDef.position.set(position);

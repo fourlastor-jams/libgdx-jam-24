@@ -27,9 +27,10 @@ public class Alive extends EnemyState {
     public void update(Entity entity) {
         super.update(entity);
         Body body = bodies.get(entity).body;
+        Enemy enemy = enemies.get(entity);
         Vector2 position = body.getPosition();
         Vector2 playerPosition = findClosestPlayer();
-        targetVelocity.set(playerPosition).sub(position).nor().scl(2f);
+        targetVelocity.set(playerPosition).sub(position).nor().scl(enemy.type.speed);
         body.applyLinearImpulse(helper.velocityAsImpulse(body, targetVelocity, impulse), body.getWorldCenter(), false);
     }
 

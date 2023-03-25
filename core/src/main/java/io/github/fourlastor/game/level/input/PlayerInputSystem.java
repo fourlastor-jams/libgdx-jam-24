@@ -72,14 +72,15 @@ public class PlayerInputSystem extends IteratingSystem {
 
         @Override
         public void entityAdded(Entity entity) {
-            Player.Settings settings = new Player.Settings(5f, 0.3f);
+            Player.Settings settings = new Player.Settings(0.3f);
             PlayerRequest request = entity.remove(PlayerRequest.class);
             OnGround onGround = onGroundProvider.get();
             InputStateMachine stateMachine = stateMachineFactory.create(entity, onGround);
 
-            entity.add(new Player(request.camera, stateMachine, onGround, settings));
+            entity.add(new Player(request.camera, stateMachine, onGround, settings, request.actor));
             stateMachine.getCurrentState().enter(entity);
             messageDispatcher.addListener(stateMachine, Message.PLAYER_HIT.ordinal());
+            messageDispatcher.addListener(stateMachine, Message.PLAYER_HIT_END.ordinal());
         }
 
         @Override

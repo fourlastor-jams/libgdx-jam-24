@@ -42,11 +42,13 @@ public class OnGround extends PlayerState {
         Player player = players.get(entity);
         AnimatedImage animation = animated.get(entity).animation;
         Actor actor = actors.get(entity).actor;
+        player.actor.setBleeding(enemiesHitting.notEmpty());
         if (hitTimer >= 1) {
             hitTimer = 0f;
             for (Entity enemy : enemiesHitting) {
                 float damage = enemies.get(enemy).type.damage;
                 player.hp -= damage;
+                player.hp = Math.max(0f, player.hp);
             }
         }
         boolean wasStationary = targetVelocity.isZero();
@@ -83,6 +85,7 @@ public class OnGround extends PlayerState {
         if (telegram.message == Message.PLAYER_HIT.ordinal()) {
             Entity enemy = (Entity) telegram.extraInfo;
             enemiesHitting.add(enemy);
+            hitTimer = 1f;
             return true;
         } else if (telegram.message == Message.PLAYER_HIT_END.ordinal()) {
             Entity enemy = (Entity) telegram.extraInfo;

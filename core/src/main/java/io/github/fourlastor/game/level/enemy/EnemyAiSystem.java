@@ -31,6 +31,7 @@ public class EnemyAiSystem extends IteratingSystem {
     private static final Family DELETE_FAMILY = Family.all(Enemy.Delete.class).get();
     private final ComponentMapper<Enemy> enemies;
     private final ComponentMapper<BodyComponent> bodies;
+    private final ComponentMapper<Player> playerComponentMapper;
     private final MessageDispatcher dispatcher;
 
     private final Alive.Factory aliveFactory;
@@ -49,6 +50,7 @@ public class EnemyAiSystem extends IteratingSystem {
     public EnemyAiSystem(
             ComponentMapper<Enemy> enemies,
             ComponentMapper<BodyComponent> bodies,
+            ComponentMapper<Player> playerComponentMapper,
             MessageDispatcher dispatcher,
             Alive.Factory aliveFactory,
             Dead.Factory deadFactory,
@@ -58,6 +60,7 @@ public class EnemyAiSystem extends IteratingSystem {
         super(ENEMY_FAMILY);
         this.enemies = enemies;
         this.bodies = bodies;
+        this.playerComponentMapper = playerComponentMapper;
         this.dispatcher = dispatcher;
         this.aliveFactory = aliveFactory;
         this.deadFactory = deadFactory;
@@ -129,6 +132,8 @@ public class EnemyAiSystem extends IteratingSystem {
             Vector2 position = bodies.get(entity).body.getPosition();
             getEngine().removeEntity(entity);
             getEngine().addEntity(entitiesFactory.reward(rewardType, position));
+            Player player = playerComponentMapper.get(players.get(0));
+            player.killCounter++;
         }
 
         @Override
