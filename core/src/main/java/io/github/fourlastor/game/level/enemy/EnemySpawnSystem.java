@@ -25,11 +25,11 @@ public class EnemySpawnSystem extends EntitySystem {
     private final LinkedList<EnemyWave> waves = new LinkedList<>(asList(
             new EnemyWave(asList(EnemyType.PIGEON_0, EnemyType.PIGEON_1), 30f),
             new EnemyWave(asList(EnemyType.SATCHMO, EnemyType.SPARK), 60f),
-            new EnemyWave(asList(EnemyType.ANGRY_PINEAPPLE_0, EnemyType.ANGRY_PINEAPPLE_1, EnemyType.ANGRY_PINEAPPLE_2), 90f),
+            new EnemyWave(
+                    asList(EnemyType.ANGRY_PINEAPPLE_0, EnemyType.ANGRY_PINEAPPLE_1, EnemyType.ANGRY_PINEAPPLE_2), 90f),
             new EnemyWave(asList(EnemyType.DRAGON_QUEEN, EnemyType.RAELEUS), 120f),
             new EnemyWave(asList(EnemyType.HYDROLIEN, EnemyType.LAVA_EATER), 150f),
-            new EnemyWave(asList(EnemyType.LYZE, EnemyType.PANDA), 180f)
-    ));
+            new EnemyWave(asList(EnemyType.LYZE, EnemyType.PANDA), 180f)));
 
     private EnemyWave wave = waves.poll();
 

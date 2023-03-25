@@ -49,10 +49,8 @@ public class Knocked extends EnemyState {
             percent = Math.min(1, (timer - 0.2f) / 0.2f);
         }
         Color color = actor.getColor();
-        if (percent == 0)
-            color.set(start);
-        else if (percent == 1)
-            color.set(end);
+        if (percent == 0) color.set(start);
+        else if (percent == 1) color.set(end);
         else {
             float r = start.r + (end.r - start.r) * percent;
             float g = start.g + (end.g - start.g) * percent;
