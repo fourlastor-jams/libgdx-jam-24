@@ -24,6 +24,7 @@ public class Bar extends Group {
     }
 
     public void setAmount(float amount) {
+        amount = Math.max(0f, Math.min(1, amount));
         bar.setScaleX(amount);
     }
 }

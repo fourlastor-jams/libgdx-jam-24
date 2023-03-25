@@ -7,6 +7,7 @@ import com.badlogic.ashley.systems.IteratingSystem;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import io.github.fourlastor.game.level.component.ActorComponent;
 import io.github.fourlastor.game.level.component.HpBar;
+import io.github.fourlastor.game.level.component.Player;
 import io.github.fourlastor.game.ui.Bar;
 import javax.inject.Inject;
 
@@ -16,12 +17,15 @@ public class HpBarSystem extends IteratingSystem {
 
     private final ComponentMapper<HpBar> hpBars;
     private final ComponentMapper<ActorComponent> actors;
+    private final ComponentMapper<Player> players;
 
     @Inject
-    public HpBarSystem(ComponentMapper<HpBar> hpBars, ComponentMapper<ActorComponent> actors) {
+    public HpBarSystem(
+            ComponentMapper<HpBar> hpBars, ComponentMapper<ActorComponent> actors, ComponentMapper<Player> players) {
         super(FAMILY);
         this.hpBars = hpBars;
         this.actors = actors;
+        this.players = players;
     }
 
     @Override
@@ -36,5 +40,7 @@ public class HpBarSystem extends IteratingSystem {
         float x = playerActor.getX() + hPlayerW - hBarW;
         float y = playerActor.getY() + hPlayerH - hBarH;
         bar.setPosition(x, y - 0.6f);
+        Player player = players.get(hpBar.player);
+        bar.setAmount(player.hp / player.maxHp);
     }
 }
