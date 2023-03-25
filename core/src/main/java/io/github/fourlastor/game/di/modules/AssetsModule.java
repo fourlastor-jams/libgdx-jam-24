@@ -1,6 +1,7 @@
 package io.github.fourlastor.game.di.modules;
 
 import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
@@ -47,6 +48,13 @@ public class AssetsModule {
         assetManager.load(PATH_TEXTURE_ATLAS, TextureAtlas.class);
         assetManager.load("fonts/play-bold.fnt", BitmapFont.class);
         assetManager.load("fonts/play-regular.fnt", BitmapFont.class);
+
+        assetManager.load("audio/sounds/pickups/xp 0.wav", Sound.class);
+        assetManager.load("audio/sounds/pickups/xp 1.wav", Sound.class);
+        assetManager.load("audio/sounds/pickups/xp 2.wav", Sound.class);
+        assetManager.load("audio/sounds/pickups/pasta.wav", Sound.class);
+        assetManager.load("audio/sounds/enemies/death/pigeon 0.wav", Sound.class);
+
         assetManager.finishLoading();
         return assetManager;
     }

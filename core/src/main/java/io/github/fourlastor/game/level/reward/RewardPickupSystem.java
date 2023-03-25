@@ -6,6 +6,11 @@ import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.EntityListener;
 import com.badlogic.ashley.core.EntitySystem;
 import com.badlogic.ashley.core.Family;
+import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.audio.Sound;
+import com.badlogic.gdx.math.MathUtils;
+
+import io.github.fourlastor.game.SoundController;
 import io.github.fourlastor.game.level.component.Player;
 import io.github.fourlastor.game.level.component.Reward;
 import javax.inject.Inject;
@@ -19,13 +24,25 @@ public class RewardPickupSystem extends EntitySystem {
     private final ComponentMapper<Reward> rewards;
     private final ComponentMapper<Reward.PickUp> pickups;
     private final RewardsListener rewardsListener = new RewardsListener();
+    private final AssetManager assetManager;
+    private final SoundController soundController;
+    private Sound xp0Sound;
+    private Sound xp1Sound;
+    private Sound xp2Sound;
+    private Sound pastaSound;
 
     @Inject
     public RewardPickupSystem(
-            ComponentMapper<Player> players, ComponentMapper<Reward> rewards, ComponentMapper<Reward.PickUp> pickups) {
+            ComponentMapper<Player> players, ComponentMapper<Reward> rewards, ComponentMapper<Reward.PickUp> pickups, AssetManager assetManager, SoundController soundController) {
         this.players = players;
         this.rewards = rewards;
         this.pickups = pickups;
+        this.assetManager = assetManager;
+        xp0Sound = assetManager.get("audio/sounds/pickups/xp 0.wav", Sound.class);
+        xp1Sound = assetManager.get("audio/sounds/pickups/xp 1.wav", Sound.class);
+        xp2Sound = assetManager.get("audio/sounds/pickups/xp 2.wav", Sound.class);
+        pastaSound = assetManager.get("audio/sounds/pickups/pasta.wav", Sound.class);
+        this.soundController = soundController;
     }
 
     @Override
@@ -49,16 +66,20 @@ public class RewardPickupSystem extends EntitySystem {
             switch (type) {
                 case XP_S:
                     player.xp += 10;
+                    soundController.play(xp0Sound);
                     break;
                 case XP_M:
                     player.xp += 20;
+                    soundController.play(xp1Sound);
                     break;
                 case XP_L:
                     player.xp += 30;
+                    soundController.play(xp2Sound);
                     break;
                 case PASTA:
                     player.hp += player.maxHp * 0.25f;
                     player.hp = Math.min(player.maxHp, player.hp);
+                    soundController.play(pastaSound);
                     break;
             }
             getEngine().removeEntity(entity);
