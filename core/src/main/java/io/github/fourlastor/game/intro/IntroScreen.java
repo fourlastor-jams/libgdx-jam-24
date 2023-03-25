@@ -6,21 +6,16 @@ import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.ScreenAdapter;
-import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.math.Interpolation;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.utils.Align;
-import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.viewport.FitViewport;
-import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
-
 import javax.inject.Inject;
 
 public class IntroScreen extends ScreenAdapter {
@@ -51,12 +46,9 @@ public class IntroScreen extends ScreenAdapter {
     public void show() {
         Image image = new Image();
         stage.addActor(image);
-        image.addAction(Actions.sequence(
-                Actions.delay(0f),
-                Actions.run(() -> {
-                    imageSetup();
-                })
-        ));
+        image.addAction(Actions.sequence(Actions.delay(0f), Actions.run(() -> {
+            imageSetup();
+        })));
         inputMultiplexer.addProcessor(processor);
     }
 
@@ -79,28 +71,21 @@ public class IntroScreen extends ScreenAdapter {
         @Override
         public boolean touchUp(int screenX, int screenY, int pointer, int button) {
             character.addAction(Actions.moveTo(0, -screenHeight(), 1.75f, Interpolation.exp10In));
-            textWedding.addAction(Actions.sequence(
-                    Actions.delay(1),
-                    Actions.moveTo(-screenWidth(), 0, 1, Interpolation.exp10In)
-            ));
-            textSurvivor.addAction(Actions.sequence(
-                    Actions.delay(1),
-                    Actions.moveTo(2 * screenWidth(), 0, 1, Interpolation.exp10In)
-            ));
-            character.addAction(Actions.sequence(
-                    Actions.delay(2),
-                    Actions.run(() -> {
-                        // TODO: when the player click, the go to next screen here
-                        System.out.println("Go to level");
-                    })
-            ));
+            textWedding.addAction(
+                    Actions.sequence(Actions.delay(1), Actions.moveTo(-screenWidth(), 0, 1, Interpolation.exp10In)));
+            textSurvivor.addAction(
+                    Actions.sequence(Actions.delay(1), Actions.moveTo(2 * screenWidth(), 0, 1, Interpolation.exp10In)));
+            character.addAction(Actions.sequence(Actions.delay(2), Actions.run(() -> {
+                // TODO: when the player click, the go to next screen here
+                System.out.println("Go to level");
+            })));
             return true;
         }
 
         @Override
         public boolean keyDown(int keycode) {
             if (keycode == Input.Keys.Q) // TODO: remove for production/release
-                Gdx.app.exit();
+            Gdx.app.exit();
             return super.keyDown(keycode);
         }
     };
@@ -114,14 +99,12 @@ public class IntroScreen extends ScreenAdapter {
 
         if (clouds0 != null) {
             clouds0.setPosition(clouds0.getX() - cloudSpeed, clouds0.getY());
-            if (clouds0.getX() + clouds0.getWidth() < 0)
-                clouds0.setPosition(screenWidth(), 0);
+            if (clouds0.getX() + clouds0.getWidth() < 0) clouds0.setPosition(screenWidth(), 0);
         }
 
         if (clouds1 != null) {
             clouds1.setPosition(clouds1.getX() - cloudSpeed, clouds1.getY());
-            if (clouds1.getX() + clouds1.getWidth() < 0)
-                clouds1.setPosition(screenWidth(), 0);
+            if (clouds1.getX() + clouds1.getWidth() < 0) clouds1.setPosition(screenWidth(), 0);
         }
 
         stage.draw();
@@ -131,10 +114,7 @@ public class IntroScreen extends ScreenAdapter {
         // sky
         Image sky = new Image(textureAtlas.findRegion("intro/cover image_sky"));
         sky.getColor().a = .8f;
-        sky.addAction(Actions.sequence(
-                Actions.delay(3),
-                Actions.alpha(1, 3)
-        ));
+        sky.addAction(Actions.sequence(Actions.delay(3), Actions.alpha(1, 3)));
         stage.addActor(sky);
 
         // game controller
@@ -158,19 +138,14 @@ public class IntroScreen extends ScreenAdapter {
                         Actions.rotateTo(-wiggleAmount, wiggleDuration),
                         Actions.rotateTo(wiggleAmount, wiggleDuration),
                         Actions.rotateTo(-wiggleAmount, wiggleDuration),
-                        Actions.delay(5f)
-                )))
-        ));
+                        Actions.delay(5f))))));
 
         // sun
         Image sun = new Image(textureAtlas.findRegion("intro/cover image_sun"));
         stage.addActor(sun);
         sun.getColor().a = 0;
         sun.setOrigin(Align.right);
-        sun.addAction(Actions.sequence(
-                Actions.delay(3f),
-                Actions.fadeIn(3f)
-        ));
+        sun.addAction(Actions.sequence(Actions.delay(3f), Actions.fadeIn(3f)));
 
         // mountains
         Image mountains = new Image(textureAtlas.findRegion("intro/cover image_mountains"));
@@ -183,15 +158,8 @@ public class IntroScreen extends ScreenAdapter {
         birds.setPosition(0, -15);
         birds.addAction(Actions.sequence(
                 Actions.delay(3.5f),
-                Actions.parallel(
-                        Actions.sequence(
-                                Actions.delay(5f),
-                                Actions.alpha(1f, 2f)
-                        ),
-                        Actions.moveTo(0, 0, 6f)
-                ),
-                Actions.moveTo(0, -screenHeight(), 30f)
-        ));
+                Actions.parallel(Actions.sequence(Actions.delay(5f), Actions.alpha(1f, 2f)), Actions.moveTo(0, 0, 6f)),
+                Actions.moveTo(0, -screenHeight(), 30f)));
 
         // bushes
         Image bushes = new Image(textureAtlas.findRegion("intro/cover image_bushes"));
@@ -222,19 +190,13 @@ public class IntroScreen extends ScreenAdapter {
         textWedding = new Image(textureAtlas.findRegion("intro/cover image_text - wedding"));
         stage.addActor(textWedding);
         textWedding.setPosition(-screenWidth(), 0);
-        textWedding.addAction(Actions.sequence(
-                Actions.delay(2),
-                Actions.moveTo(0, 0, 1, Interpolation.exp10Out)
-        ));
+        textWedding.addAction(Actions.sequence(Actions.delay(2), Actions.moveTo(0, 0, 1, Interpolation.exp10Out)));
 
         // text - survivor
         textSurvivor = new Image(textureAtlas.findRegion("intro/cover image_text - survivor"));
         stage.addActor(textSurvivor);
         textSurvivor.setPosition(screenWidth(), 0);
-        textSurvivor.addAction(Actions.sequence(
-                Actions.delay(2.1f),
-                Actions.moveTo(0, 0, 1, Interpolation.exp10Out)
-        ));
+        textSurvivor.addAction(Actions.sequence(Actions.delay(2.1f), Actions.moveTo(0, 0, 1, Interpolation.exp10Out)));
     }
 
     private float screenWidth() {

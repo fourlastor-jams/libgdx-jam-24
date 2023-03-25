@@ -18,7 +18,6 @@ import com.github.tommyettinger.textra.Font;
 import com.github.tommyettinger.textra.TextraLabel;
 import io.github.fourlastor.game.level.component.Player;
 import io.github.fourlastor.game.ui.XpBar;
-
 import javax.inject.Inject;
 import javax.inject.Named;
 
@@ -37,7 +36,11 @@ public class UiSystem extends EntitySystem {
     private TextraLabel killLabel;
 
     @Inject
-    public UiSystem(@Named("ui") Stage stage, AssetManager manager, ComponentMapper<Player> players, TextureAtlas textureAtlas) {
+    public UiSystem(
+            @Named("ui") Stage stage,
+            AssetManager manager,
+            ComponentMapper<Player> players,
+            TextureAtlas textureAtlas) {
         this.stage = stage;
         bold = manager.get("fonts/play-bold.fnt", BitmapFont.class);
         regular = manager.get("fonts/play-regular.fnt", BitmapFont.class);
@@ -91,7 +94,6 @@ public class UiSystem extends EntitySystem {
         }
         stage.act(deltaTime);
         stage.draw();
-
 
         Entity playerEntity = getPlayer();
         if (playerEntity == null || !players.has(playerEntity)) {

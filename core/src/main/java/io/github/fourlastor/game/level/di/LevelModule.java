@@ -25,7 +25,6 @@ import io.github.fourlastor.game.level.system.HpBarSystem;
 import io.github.fourlastor.game.level.system.StageSystem;
 import io.github.fourlastor.game.level.system.UiSystem;
 import io.github.fourlastor.game.level.weapon.whip.WhipSystem;
-
 import javax.inject.Named;
 
 @Module
@@ -56,7 +55,7 @@ public class LevelModule {
         engine.addSystem(rewardPickupSystem);
         engine.addSystem(actorFollowBodySystem);
         engine.addSystem(hpBarSystem);
-//        engine.addSystem(xpBarSystem);
+        //        engine.addSystem(xpBarSystem);
         engine.addSystem(cameraMovementSystem);
         engine.addSystem(clearScreenSystem);
         engine.addSystem(stageSystem);
@@ -84,6 +83,7 @@ public class LevelModule {
     public Viewport uiViewport() {
         return new FitViewport(512.0f, 288.0f);
     }
+
     @Provides
     @ScreenScoped
     @Named("ui")

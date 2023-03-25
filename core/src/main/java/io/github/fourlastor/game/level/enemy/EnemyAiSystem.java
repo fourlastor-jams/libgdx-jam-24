@@ -50,7 +50,8 @@ public class EnemyAiSystem extends IteratingSystem {
     public EnemyAiSystem(
             ComponentMapper<Enemy> enemies,
             ComponentMapper<BodyComponent> bodies,
-            ComponentMapper<Player> playerComponentMapper, MessageDispatcher dispatcher,
+            ComponentMapper<Player> playerComponentMapper,
+            MessageDispatcher dispatcher,
             Alive.Factory aliveFactory,
             Dead.Factory deadFactory,
             EnemyStateMachine.Factory stateMachineFactory,

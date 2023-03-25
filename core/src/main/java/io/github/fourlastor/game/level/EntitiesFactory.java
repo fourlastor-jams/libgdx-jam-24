@@ -75,7 +75,6 @@ public class EntitiesFactory {
         return entity;
     }
 
-
     public Entity player() {
         Entity entity = new Entity();
         Array<TextureAtlas.AtlasRegion> regions = textureAtlas.findRegions("character/walking/walking");
