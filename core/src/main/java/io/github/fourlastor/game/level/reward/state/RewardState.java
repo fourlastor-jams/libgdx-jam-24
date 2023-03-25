@@ -7,7 +7,6 @@ import com.badlogic.gdx.ai.msg.Telegram;
 import io.github.fourlastor.game.level.component.BodyComponent;
 import io.github.fourlastor.game.level.component.Reward;
 import io.github.fourlastor.game.level.physics.BodyHelper;
-
 import javax.inject.Inject;
 
 public abstract class RewardState implements State<Entity> {
@@ -24,7 +23,8 @@ public abstract class RewardState implements State<Entity> {
         final BodyHelper bodyHelper;
 
         @Inject
-        public Dependencies(ComponentMapper<BodyComponent> bodies, ComponentMapper<Reward.State> rewards, BodyHelper bodyHelper) {
+        public Dependencies(
+                ComponentMapper<BodyComponent> bodies, ComponentMapper<Reward.State> rewards, BodyHelper bodyHelper) {
             this.bodies = bodies;
             this.rewards = rewards;
             this.bodyHelper = bodyHelper;
@@ -52,8 +52,7 @@ public abstract class RewardState implements State<Entity> {
     public void enter(Entity entity) {}
 
     @Override
-    public void update(Entity entity) {
-    }
+    public void update(Entity entity) {}
 
     @Override
     public void exit(Entity entity) {}

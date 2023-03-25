@@ -20,10 +20,8 @@ public class Knocked extends EnemyState {
     private final Vector2 impulse = new Vector2();
     private final BodyHelper helper;
 
-    private final SequenceAction changeColor = Actions.sequence(
-            Actions.color(Color.RED, 0.2f),
-            Actions.color(Color.WHITE, 0.2f)
-    );
+    private final SequenceAction changeColor =
+            Actions.sequence(Actions.color(Color.RED, 0.2f), Actions.color(Color.WHITE, 0.2f));
     private float timer;
 
     @AssistedInject

@@ -6,7 +6,6 @@ import com.badlogic.ashley.utils.ImmutableArray;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.scenes.scene2d.Actor;
@@ -35,7 +34,9 @@ public class Dead extends EnemyState {
             @Assisted ImmutableArray<Entity> players,
             Dependencies mappers,
             ComponentMapper<ActorComponent> actors,
-            BodyHelper helper, AssetManager assetManager, SoundController soundController) {
+            BodyHelper helper,
+            AssetManager assetManager,
+            SoundController soundController) {
         super(mappers, players);
         this.actors = actors;
         this.helper = helper;

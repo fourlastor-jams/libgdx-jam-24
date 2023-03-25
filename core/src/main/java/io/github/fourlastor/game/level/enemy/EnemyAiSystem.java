@@ -56,7 +56,8 @@ public class EnemyAiSystem extends IteratingSystem {
             MessageDispatcher dispatcher,
             Alive.Factory aliveFactory,
             Dead.Factory deadFactory,
-            Knocked.Factory knockedFactory, EnemyStateMachine.Factory stateMachineFactory,
+            Knocked.Factory knockedFactory,
+            EnemyStateMachine.Factory stateMachineFactory,
             SilkRNG random,
             EntitiesFactory entitiesFactory) {
         super(ENEMY_FAMILY);

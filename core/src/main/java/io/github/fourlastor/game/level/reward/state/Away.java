@@ -7,7 +7,6 @@ import dagger.assisted.AssistedInject;
 
 public class Away extends Movement {
 
-
     @AssistedInject
     public Away(@Assisted Entity player, Dependencies mappers) {
         super(player, mappers);
@@ -17,7 +16,6 @@ public class Away extends Movement {
     protected boolean chasing() {
         return false;
     }
-
 
     @AssistedFactory
     public interface Factory {

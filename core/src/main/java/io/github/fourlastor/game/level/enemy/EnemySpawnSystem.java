@@ -1,5 +1,7 @@
 package io.github.fourlastor.game.level.enemy;
 
+import static java.util.Arrays.asList;
+
 import com.badlogic.ashley.core.Engine;
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.EntitySystem;
@@ -10,13 +12,10 @@ import com.badlogic.gdx.math.Vector2;
 import io.github.fourlastor.game.level.EntitiesFactory;
 import io.github.fourlastor.game.level.component.Enemy;
 import io.github.fourlastor.game.level.reward.RewardType;
+import java.util.LinkedList;
 import javax.inject.Inject;
 import squidpony.squidmath.Noise;
 import squidpony.squidmath.SilkRNG;
-
-import java.util.LinkedList;
-
-import static java.util.Arrays.asList;
 
 public class EnemySpawnSystem extends EntitySystem {
     private static final Family ENEMY_FAMILY = Family.all(Enemy.class).get();
@@ -24,22 +23,11 @@ public class EnemySpawnSystem extends EntitySystem {
     private static final float PASTA_INTERVAL = 15f;
 
     private final LinkedList<EnemyWave> waves = new LinkedList<>(asList(
-            new EnemyWave(
-                    asList(EnemyType.DRAGON_QUEEN),
-                    70f
-            ),
-            new EnemyWave(
-                    asList(EnemyType.PIGEON_1),
-                    15
-            ),
-            new EnemyWave(
-                    asList(EnemyType.SATCHMO),
-                    30
-            )
-    ));
+            new EnemyWave(asList(EnemyType.DRAGON_QUEEN), 70f),
+            new EnemyWave(asList(EnemyType.PIGEON_1), 15),
+            new EnemyWave(asList(EnemyType.SATCHMO), 30)));
 
     private EnemyWave wave = waves.poll();
-
 
     private final Camera camera;
     private final EntitiesFactory factory;

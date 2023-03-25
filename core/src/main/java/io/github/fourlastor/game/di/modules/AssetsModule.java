@@ -20,7 +20,6 @@ import io.github.fourlastor.ldtk.LdtkLoader;
 import io.github.fourlastor.ldtk.model.LdtkMapData;
 import io.github.fourlastor.text.Text;
 import io.github.fourlastor.text.TextLoader;
-
 import javax.inject.Named;
 import javax.inject.Singleton;
 
@@ -66,7 +65,8 @@ public class AssetsModule {
         assetManager.load("audio/sounds/intro/drama.wav", Sound.class);
 
         assetManager.load("audio/music/Edvard-grieg-morning-mood.ogg", Music.class);
-        assetManager.load("audio/music/362353__pandos__crowd-at-a-british-wedding-reception-venue (1).ogg", Music.class);
+        assetManager.load(
+                "audio/music/362353__pandos__crowd-at-a-british-wedding-reception-venue (1).ogg", Music.class);
 
         assetManager.finishLoading();
         return assetManager;
@@ -89,12 +89,17 @@ public class AssetsModule {
     @Singleton
     @Named("bold")
     BitmapFont bold(TextureAtlas atlas) {
-        return new BitmapFont(Gdx.files.internal("images/included/fonts/play-bold.fnt"), atlas.findRegion("images/included/fonts/play-bold"));
+        return new BitmapFont(
+                Gdx.files.internal("images/included/fonts/play-bold.fnt"),
+                atlas.findRegion("images/included/fonts/play-bold"));
     }
+
     @Provides
     @Singleton
     @Named("regular")
     BitmapFont regular(TextureAtlas atlas) {
-        return new BitmapFont(Gdx.files.internal("images/included/fonts/play-regular.fnt"), atlas.findRegion("images/included/fonts/play-regular"));
+        return new BitmapFont(
+                Gdx.files.internal("images/included/fonts/play-regular.fnt"),
+                atlas.findRegion("images/included/fonts/play-regular"));
     }
 }

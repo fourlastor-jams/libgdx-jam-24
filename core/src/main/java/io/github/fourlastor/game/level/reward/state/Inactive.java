@@ -9,11 +9,8 @@ import io.github.fourlastor.game.level.component.Reward;
 
 public class Inactive extends RewardState {
 
-
     @AssistedInject
-    public Inactive(
-            @Assisted Entity player,
-            Dependencies mappers) {
+    public Inactive(@Assisted Entity player, Dependencies mappers) {
         super(mappers, player);
     }
 

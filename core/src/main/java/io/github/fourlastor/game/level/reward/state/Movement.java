@@ -9,10 +9,7 @@ abstract class Movement extends RewardState {
 
     private float timer = 0f;
 
-
-    public Movement(
-            Entity player,
-            Dependencies mappers) {
+    public Movement(Entity player, Dependencies mappers) {
         super(mappers, player);
     }
 

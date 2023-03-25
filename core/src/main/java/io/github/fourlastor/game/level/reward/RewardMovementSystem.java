@@ -17,14 +17,16 @@ import io.github.fourlastor.game.level.component.Reward;
 import io.github.fourlastor.game.level.reward.state.Away;
 import io.github.fourlastor.game.level.reward.state.Chasing;
 import io.github.fourlastor.game.level.reward.state.Inactive;
-
 import javax.inject.Inject;
 
 public class RewardMovementSystem extends IteratingSystem implements Telegraph {
 
-    private static final Family FAMILY = Family.all(Reward.State.class, BodyComponent.class).get();
-    private static final Family FAMILY_SETUP = Family.all(Reward.class).exclude(Reward.State.class).get();
-    private static final Family FAMILY_PLAYER = Family.all(Player.class, BodyComponent.class).get();
+    private static final Family FAMILY =
+            Family.all(Reward.State.class, BodyComponent.class).get();
+    private static final Family FAMILY_SETUP =
+            Family.all(Reward.class).exclude(Reward.State.class).get();
+    private static final Family FAMILY_PLAYER =
+            Family.all(Player.class, BodyComponent.class).get();
     private final MessageDispatcher dispatcher;
     private final ComponentMapper<Reward.State> rewards;
     private final RewardStateMachine.Factory stateMachineFactory;
@@ -35,7 +37,13 @@ public class RewardMovementSystem extends IteratingSystem implements Telegraph {
     private final SetupListener setupListener = new SetupListener();
 
     @Inject
-    public RewardMovementSystem(MessageDispatcher dispatcher, ComponentMapper<Reward.State> rewards, RewardStateMachine.Factory stateMachineFactory, Away.Factory awayFactory, Chasing.Factory chasingFactory, Inactive.Factory inactiveFactory) {
+    public RewardMovementSystem(
+            MessageDispatcher dispatcher,
+            ComponentMapper<Reward.State> rewards,
+            RewardStateMachine.Factory stateMachineFactory,
+            Away.Factory awayFactory,
+            Chasing.Factory chasingFactory,
+            Inactive.Factory inactiveFactory) {
         super(FAMILY);
         this.dispatcher = dispatcher;
         this.rewards = rewards;
@@ -44,7 +52,6 @@ public class RewardMovementSystem extends IteratingSystem implements Telegraph {
         this.chasingFactory = chasingFactory;
         this.inactiveFactory = inactiveFactory;
     }
-
 
     @Override
     public void addedToEngine(Engine engine) {
@@ -91,15 +98,10 @@ public class RewardMovementSystem extends IteratingSystem implements Telegraph {
             Inactive inactive = inactiveFactory.create(playerEntity);
             Away away = awayFactory.create(playerEntity);
             Chasing chasing = chasingFactory.create(playerEntity);
-            entity.add(new Reward.State(
-                    stateMachineFactory.create(entity, inactive),
-                    away, chasing, inactive
-            ));
+            entity.add(new Reward.State(stateMachineFactory.create(entity, inactive), away, chasing, inactive));
         }
 
         @Override
-        public void entityRemoved(Entity entity) {
-
-        }
+        public void entityRemoved(Entity entity) {}
     }
 }

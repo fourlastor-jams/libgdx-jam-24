@@ -171,12 +171,7 @@ public class EntitiesFactory {
         Image image = new AnimatedImage(animation);
         image.setScale(SCALE);
         image.setAlign(Align.center);
-        image.addAction(Actions.forever(
-                Actions.sequence(
-                        Actions.rotateTo(-7, 0.7f),
-                        Actions.rotateTo(7, 0.7f)
-                )
-        ));
+        image.addAction(Actions.forever(Actions.sequence(Actions.rotateTo(-7, 0.7f), Actions.rotateTo(7, 0.7f))));
         entity.add(new ActorComponent(image, ActorComponent.Layer.ENEMIES));
         entity.add(new Enemy.Request(type));
         entity.add(new BodyBuilderComponent(world -> {

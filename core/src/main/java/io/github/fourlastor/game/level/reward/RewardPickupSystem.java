@@ -9,11 +9,10 @@ import com.badlogic.ashley.core.Family;
 import com.badlogic.gdx.ai.msg.MessageDispatcher;
 import com.badlogic.gdx.ai.msg.Telegram;
 import com.badlogic.gdx.ai.msg.Telegraph;
-import io.github.fourlastor.game.level.Message;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.audio.Sound;
-
 import io.github.fourlastor.game.SoundController;
+import io.github.fourlastor.game.level.Message;
 import io.github.fourlastor.game.level.component.Player;
 import io.github.fourlastor.game.level.component.Reward;
 import javax.inject.Inject;
@@ -35,7 +34,13 @@ public class RewardPickupSystem extends EntitySystem implements Telegraph {
     private final Sound pastaSound;
 
     @Inject
-    public RewardPickupSystem(ComponentMapper<Player> players, ComponentMapper<Reward> rewards, ComponentMapper<Reward.PickUp> pickups, MessageDispatcher dispatcher, AssetManager assetManager, SoundController soundController) {
+    public RewardPickupSystem(
+            ComponentMapper<Player> players,
+            ComponentMapper<Reward> rewards,
+            ComponentMapper<Reward.PickUp> pickups,
+            MessageDispatcher dispatcher,
+            AssetManager assetManager,
+            SoundController soundController) {
         this.players = players;
         this.rewards = rewards;
         this.pickups = pickups;

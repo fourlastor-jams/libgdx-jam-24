@@ -24,7 +24,10 @@ public abstract class EnemyState implements State<Entity> {
         final ComponentMapper<ActorComponent> actors;
 
         @Inject
-        public Dependencies(ComponentMapper<BodyComponent> bodies, ComponentMapper<Enemy> enemies, ComponentMapper<ActorComponent> actors) {
+        public Dependencies(
+                ComponentMapper<BodyComponent> bodies,
+                ComponentMapper<Enemy> enemies,
+                ComponentMapper<ActorComponent> actors) {
             this.bodies = bodies;
             this.enemies = enemies;
             this.actors = actors;

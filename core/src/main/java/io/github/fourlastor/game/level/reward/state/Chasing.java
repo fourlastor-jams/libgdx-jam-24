@@ -7,7 +7,6 @@ import dagger.assisted.AssistedInject;
 
 public class Chasing extends Movement {
 
-
     @AssistedInject
     public Chasing(@Assisted Entity players, Dependencies mappers) {
         super(players, mappers);
@@ -22,7 +21,6 @@ public class Chasing extends Movement {
     protected boolean chasing() {
         return true;
     }
-
 
     @AssistedFactory
     public interface Factory {

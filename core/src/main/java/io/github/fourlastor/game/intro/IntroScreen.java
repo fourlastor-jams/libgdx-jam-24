@@ -19,11 +19,9 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
-
-import javax.inject.Inject;
-
 import io.github.fourlastor.game.SoundController;
 import io.github.fourlastor.game.route.Router;
+import javax.inject.Inject;
 
 public class IntroScreen extends ScreenAdapter {
 
@@ -58,7 +56,12 @@ public class IntroScreen extends ScreenAdapter {
     private float time = 0f;
 
     @Inject
-    public IntroScreen(InputMultiplexer inputMultiplexer, TextureAtlas textureAtlas, SoundController soundController, Router router, AssetManager assetManager) {
+    public IntroScreen(
+            InputMultiplexer inputMultiplexer,
+            TextureAtlas textureAtlas,
+            SoundController soundController,
+            Router router,
+            AssetManager assetManager) {
         this.inputMultiplexer = inputMultiplexer;
         this.textureAtlas = textureAtlas;
         this.soundController = soundController;
@@ -69,7 +72,8 @@ public class IntroScreen extends ScreenAdapter {
 
         introMusic = assetManager.get("audio/music/Edvard-grieg-morning-mood.ogg", Music.class);
         soundController.play(introMusic, .5f, false);
-        chatterMusic = assetManager.get("audio/music/362353__pandos__crowd-at-a-british-wedding-reception-venue (1).ogg", Music.class);
+        chatterMusic = assetManager.get(
+                "audio/music/362353__pandos__crowd-at-a-british-wedding-reception-venue (1).ogg", Music.class);
         soundController.play(chatterMusic, .5f, false);
 
         swooshSound = assetManager.get("audio/sounds/intro/607252__d4xx__swoosh-1.wav");
@@ -116,25 +120,17 @@ public class IntroScreen extends ScreenAdapter {
                     Actions.delay(1),
                     Actions.parallel(
                             Actions.moveTo(-screenWidth(), 0, 1, Interpolation.exp10In),
-                            Actions.sequence(
-                                    Actions.delay(.4f),
-                                    Actions.run(() -> {
-                                        soundController.play(swooshReverseSound);
-                                        soundController.play(dramaSound);
-                                    })
-                            )
-                    )
-            ));
+                            Actions.sequence(Actions.delay(.4f), Actions.run(() -> {
+                                soundController.play(swooshReverseSound);
+                                soundController.play(dramaSound);
+                            })))));
             textSurvivor.addAction(Actions.sequence(
                     Actions.delay(1.25f),
                     Actions.parallel(
                             Actions.moveTo(2 * screenWidth(), 0, 1, Interpolation.exp10In),
                             Actions.sequence(
                                     Actions.delay(.45f),
-                                    Actions.run(() -> soundController.play(swooshReverseSound))
-                            )
-                    )
-            ));
+                                    Actions.run(() -> soundController.play(swooshReverseSound))))));
             character.addAction(Actions.sequence(Actions.delay(2), Actions.run(() -> {
                 introMusic.stop();
                 chatterMusic.stop();
@@ -146,9 +142,8 @@ public class IntroScreen extends ScreenAdapter {
         @Override
         public boolean keyDown(int keycode) {
             if (keycode == Input.Keys.Q) // TODO: remove for production/release
-                Gdx.app.exit();
-            else if (keycode == Input.Keys.E)
-                System.out.println(time);
+            Gdx.app.exit();
+            else if (keycode == Input.Keys.E) System.out.println(time);
             return super.keyDown(keycode);
         }
     };
@@ -261,17 +256,16 @@ public class IntroScreen extends ScreenAdapter {
                 Actions.delay(1f),
                 Actions.run(() -> soundController.play(glassToastSound)),
                 Actions.delay(2.5f),
-                Actions.run(() -> chatterMusic.setVolume(.25f))
-        ));
+                Actions.run(() -> chatterMusic.setVolume(.25f))));
 
         // text - wedding
         textWedding = new Image(textureAtlas.findRegion("intro/cover image_text - wedding"));
         stage.addActor(textWedding);
         textWedding.setPosition(-screenWidth(), 0);
-        textWedding.addAction(Actions.sequence(Actions.delay(2),
+        textWedding.addAction(Actions.sequence(
+                Actions.delay(2),
                 Actions.run(() -> soundController.play(swooshSound)),
-                Actions.moveTo(0, 0, 1, Interpolation.exp10Out)
-        ));
+                Actions.moveTo(0, 0, 1, Interpolation.exp10Out)));
 
         // text - survivor
         textSurvivor = new Image(textureAtlas.findRegion("intro/cover image_text - survivor"));
@@ -280,8 +274,7 @@ public class IntroScreen extends ScreenAdapter {
         textSurvivor.addAction(Actions.sequence(
                 Actions.delay(2.1f),
                 Actions.run(() -> soundController.play(swooshSound)),
-                Actions.moveTo(0, 0, 1, Interpolation.exp10Out)
-        ));
+                Actions.moveTo(0, 0, 1, Interpolation.exp10Out)));
     }
 
     private float screenWidth() {
