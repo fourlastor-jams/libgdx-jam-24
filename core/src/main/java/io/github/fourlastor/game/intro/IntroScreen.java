@@ -66,9 +66,9 @@ public class IntroScreen extends ScreenAdapter {
         viewport = new FitViewport(192, 108);
         stage = new Stage(viewport);
 
-        introMusic = assetManager.get("audio/music/Edvard-grieg-morning-mood.mp3", Music.class);
+        introMusic = assetManager.get("audio/music/Edvard-grieg-morning-mood.ogg", Music.class);
         soundController.play(introMusic, .5f, false);
-        chatterMusic = assetManager.get("audio/music/362353__pandos__crowd-at-a-british-wedding-reception-venue (1).wav", Music.class);
+        chatterMusic = assetManager.get("audio/music/362353__pandos__crowd-at-a-british-wedding-reception-venue (1).ogg", Music.class);
         soundController.play(chatterMusic, .5f, false);
 
         swooshSound = assetManager.get("audio/sounds/intro/607252__d4xx__swoosh-1.wav");

@@ -65,8 +65,8 @@ public class AssetsModule {
         assetManager.load("audio/sounds/intro/661837__rslebs__toast-fork-hitting-glass.wav", Sound.class);
         assetManager.load("audio/sounds/intro/drama.wav", Sound.class);
 
-        assetManager.load("audio/music/Edvard-grieg-morning-mood.mp3", Music.class);
-        assetManager.load("audio/music/362353__pandos__crowd-at-a-british-wedding-reception-venue (1).wav", Music.class);
+        assetManager.load("audio/music/Edvard-grieg-morning-mood.ogg", Music.class);
+        assetManager.load("audio/music/362353__pandos__crowd-at-a-british-wedding-reception-venue (1).ogg", Music.class);
 
         assetManager.finishLoading();
         return assetManager;
