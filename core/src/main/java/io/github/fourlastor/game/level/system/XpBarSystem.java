@@ -38,7 +38,6 @@ public class XpBarSystem extends IteratingSystem {
             return;
         }
         float amount = players.get(playerEntity).xp / 1000f;
-        System.out.println(amount);
         bar.setAmount(amount);
     }
 }
