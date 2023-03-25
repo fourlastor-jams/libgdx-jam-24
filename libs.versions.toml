@@ -14,7 +14,7 @@ shadow = "7.1.2"
 spotless = "6.10.0"
 squidLib = "3.0.6"
 regexodus = "0.1.15"
-textratypist = "0.8.0"
+textratypist = "0.8.2"
 [libraries]
 ashley = { module = "com.badlogicgames.ashley:ashley", version.ref = "ashley" }
 dagger-core = { module = "com.google.dagger:dagger", version.ref = "dagger"}

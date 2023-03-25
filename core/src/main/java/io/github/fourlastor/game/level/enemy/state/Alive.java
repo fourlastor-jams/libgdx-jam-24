@@ -5,6 +5,7 @@ import com.badlogic.ashley.utils.ImmutableArray;
 import com.badlogic.gdx.ai.msg.Telegram;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import dagger.assisted.Assisted;
 import dagger.assisted.AssistedFactory;
 import dagger.assisted.AssistedInject;
@@ -27,9 +28,13 @@ public class Alive extends EnemyState {
     public void update(Entity entity) {
         super.update(entity);
         Body body = bodies.get(entity).body;
+        Enemy enemy = enemies.get(entity);
         Vector2 position = body.getPosition();
         Vector2 playerPosition = findClosestPlayer();
-        targetVelocity.set(playerPosition).sub(position).nor().scl(2f);
+        targetVelocity.set(playerPosition).sub(position).nor().scl(enemy.type.speed);
+        Actor actor = actors.get(entity).actor;
+        float targetScale = Math.abs(actor.getScaleX()) * Math.signum(targetVelocity.x);
+        actor.setScaleX(targetScale);
         body.applyLinearImpulse(helper.velocityAsImpulse(body, targetVelocity, impulse), body.getWorldCenter(), false);
     }
 
@@ -46,6 +51,8 @@ public class Alive extends EnemyState {
         enemy.health -= 10;
         if (enemy.health <= 0) {
             enemy.stateMachine.changeState(enemy.dead);
+        } else {
+            enemy.stateMachine.changeState(enemy.knocked);
         }
         return true;
     }

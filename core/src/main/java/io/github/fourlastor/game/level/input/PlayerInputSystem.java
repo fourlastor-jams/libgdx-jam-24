@@ -12,6 +12,7 @@ import io.github.fourlastor.game.level.component.Animated;
 import io.github.fourlastor.game.level.component.BodyComponent;
 import io.github.fourlastor.game.level.component.Player;
 import io.github.fourlastor.game.level.component.PlayerRequest;
+import io.github.fourlastor.game.level.input.state.Dead;
 import io.github.fourlastor.game.level.input.state.OnGround;
 import javax.inject.Inject;
 import javax.inject.Provider;
@@ -35,7 +36,8 @@ public class PlayerInputSystem extends IteratingSystem {
 
     @Override
     protected void processEntity(Entity entity, float deltaTime) {
-        players.get(entity).stateMachine.update(deltaTime);
+        Player player = players.get(entity);
+        player.stateMachine.update(deltaTime);
     }
 
     @Override
@@ -57,29 +59,33 @@ public class PlayerInputSystem extends IteratingSystem {
     public static class PlayerSetup implements EntityListener {
 
         private final Provider<OnGround> onGroundProvider;
+        private final Provider<Dead> deadProvider;
         private final InputStateMachine.Factory stateMachineFactory;
         private final MessageDispatcher messageDispatcher;
 
         @Inject
         public PlayerSetup(
                 Provider<OnGround> onGroundProvider,
+                Provider<Dead> deadProvider,
                 InputStateMachine.Factory stateMachineFactory,
                 MessageDispatcher messageDispatcher) {
             this.onGroundProvider = onGroundProvider;
+            this.deadProvider = deadProvider;
             this.stateMachineFactory = stateMachineFactory;
             this.messageDispatcher = messageDispatcher;
         }
 
         @Override
         public void entityAdded(Entity entity) {
-            Player.Settings settings = new Player.Settings(5f, 0.3f);
+            Player.Settings settings = new Player.Settings(0.3f);
             PlayerRequest request = entity.remove(PlayerRequest.class);
             OnGround onGround = onGroundProvider.get();
+            Dead dead = deadProvider.get();
             InputStateMachine stateMachine = stateMachineFactory.create(entity, onGround);
-
-            entity.add(new Player(request.camera, stateMachine, onGround, settings));
+            entity.add(new Player(request.camera, stateMachine, onGround, dead, settings, request.actor));
             stateMachine.getCurrentState().enter(entity);
             messageDispatcher.addListener(stateMachine, Message.PLAYER_HIT.ordinal());
+            messageDispatcher.addListener(stateMachine, Message.PLAYER_HIT_END.ordinal());
         }
 
         @Override

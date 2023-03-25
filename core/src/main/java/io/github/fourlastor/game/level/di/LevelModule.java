@@ -17,14 +17,16 @@ import io.github.fourlastor.game.level.enemy.EnemySpawnSystem;
 import io.github.fourlastor.game.level.input.PlayerInputSystem;
 import io.github.fourlastor.game.level.physics.PhysicsDebugSystem;
 import io.github.fourlastor.game.level.physics.PhysicsSystem;
+import io.github.fourlastor.game.level.reward.RewardMovementSystem;
 import io.github.fourlastor.game.level.reward.RewardPickupSystem;
 import io.github.fourlastor.game.level.system.ActorFollowBodySystem;
 import io.github.fourlastor.game.level.system.CameraMovementSystem;
 import io.github.fourlastor.game.level.system.ClearScreenSystem;
 import io.github.fourlastor.game.level.system.HpBarSystem;
 import io.github.fourlastor.game.level.system.StageSystem;
-import io.github.fourlastor.game.level.system.XpBarSystem;
+import io.github.fourlastor.game.level.system.UiSystem;
 import io.github.fourlastor.game.level.weapon.whip.WhipSystem;
+import javax.inject.Named;
 
 @Module
 public class LevelModule {
@@ -34,16 +36,17 @@ public class LevelModule {
     public Engine engine(
             PlayerInputSystem playerInputSystem,
             HpBarSystem hpBarSystem,
-            XpBarSystem xpBarSystem,
             WhipSystem whipSystem,
             EnemyAiSystem enemyAiSystem,
             CameraMovementSystem cameraMovementSystem,
             PhysicsSystem physicsSystem,
             RewardPickupSystem rewardPickupSystem,
+            RewardMovementSystem rewardMovementSystem,
             StageSystem stageSystem,
             ClearScreenSystem clearScreenSystem,
             ActorFollowBodySystem actorFollowBodySystem,
             EnemySpawnSystem enemySpawnSystem,
+            UiSystem uiSystem,
             @SuppressWarnings("unused") // debug only
                     PhysicsDebugSystem physicsDebugSystem) {
         Engine engine = new Engine();
@@ -52,13 +55,14 @@ public class LevelModule {
         engine.addSystem(enemyAiSystem);
         engine.addSystem(physicsSystem);
         engine.addSystem(rewardPickupSystem);
+        engine.addSystem(rewardMovementSystem);
         engine.addSystem(actorFollowBodySystem);
         engine.addSystem(hpBarSystem);
-        engine.addSystem(xpBarSystem);
         engine.addSystem(cameraMovementSystem);
         engine.addSystem(clearScreenSystem);
         engine.addSystem(stageSystem);
         engine.addSystem(enemySpawnSystem);
+        engine.addSystem(uiSystem);
         //        engine.addSystem(physicsDebugSystem);
         return engine;
     }
@@ -72,7 +76,21 @@ public class LevelModule {
     @Provides
     @ScreenScoped
     public Viewport viewport() {
-        return new FitViewport(16f, 9f);
+        return new FitViewport(24f, 13.5f);
+    }
+
+    @Provides
+    @ScreenScoped
+    @Named("ui")
+    public Viewport uiViewport() {
+        return new FitViewport(512.0f, 288.0f);
+    }
+
+    @Provides
+    @ScreenScoped
+    @Named("ui")
+    public Stage uiStage(@Named("ui") Viewport viewport) {
+        return new Stage(viewport);
     }
 
     @Provides
