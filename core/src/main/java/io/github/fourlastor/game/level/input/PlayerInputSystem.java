@@ -83,7 +83,6 @@ public class PlayerInputSystem extends IteratingSystem {
         }
 
         @Override
-        public void entityRemoved(Entity entity) {
-        }
+        public void entityRemoved(Entity entity) {}
     }
 }
