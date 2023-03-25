@@ -14,6 +14,8 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.utils.Align;
+import com.github.tommyettinger.textra.Font;
+import com.github.tommyettinger.textra.TextraLabel;
 import io.github.fourlastor.game.level.component.Player;
 import io.github.fourlastor.game.ui.XpBar;
 
@@ -59,7 +61,15 @@ public class UiSystem extends EntitySystem {
         playerEntities = engine.getEntitiesFor(FAMILY_PLAYER);
         Image weapons = new Image(textureAtlas.findRegion("ui/weapons"));
         weapons.setPosition(x + 7, y - bar.getHeight() * bar.getScaleY() - 19);
+        weapons.setPosition(stage.getWidth() - x - 57, y - bar.getHeight() * bar.getScaleY() - 19);
         stage.addActor(weapons);
+        Image killIcon = new Image(textureAtlas.findRegion("ui/kill_counter"));
+        killIcon.setPosition(x + 7, y - bar.getHeight() * bar.getScaleY() - 7 + 3);
+        stage.addActor(killIcon);
+        TextraLabel killLabel = new TextraLabel("123", new Font(regular).scale(0.4f, 0.4f));
+        killLabel.setPosition(x + 25, y - bar.getHeight() * bar.getScaleY() + 6 + 3);
+        killLabel.setColor(DARK_GRAY);
+        stage.addActor(killLabel);
     }
 
     private float timer = 0f;
