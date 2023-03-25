@@ -75,7 +75,8 @@ public class UiSystem extends EntitySystem {
         if (lastMinute != minutes || lastSecond != seconds) {
             lastSecond = seconds;
             lastMinute = minutes;
-            timerLaberl.setText(String.format("%02d:%02d", minutes, seconds));
+            String text = (minutes > 10 ? minutes : "0" + minutes) + ":" + (seconds > 10 ? seconds : "0" + seconds);
+            timerLaberl.setText(text);
         }
         stage.act(deltaTime);
         stage.draw();
