@@ -13,7 +13,7 @@ import com.badlogic.gdx.utils.Align;
 
 public class XpBar extends WidgetGroup {
 
-    private static final float END_WIDTH = 3f;
+    private static final float END_WIDTH = 6f;
     private static final float HEIGHT = 14f;
     private static final float MIDDLE_WIDTH = 363f;
     private final Image filledStart;

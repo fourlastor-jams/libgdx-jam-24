@@ -1,6 +1,7 @@
 package io.github.fourlastor.game.di.modules;
 
 import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.utils.JsonReader;
@@ -44,6 +45,8 @@ public class AssetsModule {
         assetManager.setLoader(SpineEntity.class, spineLoader);
         assetManager.setLoader(AnimationNode.Group.class, dragonBonesLoader);
         assetManager.load(PATH_TEXTURE_ATLAS, TextureAtlas.class);
+        assetManager.load("fonts/play-bold.fnt", BitmapFont.class);
+        assetManager.load("fonts/play-regular.fnt", BitmapFont.class);
         assetManager.finishLoading();
         return assetManager;
     }
