@@ -4,8 +4,8 @@ import com.badlogic.ashley.core.ComponentMapper;
 import com.badlogic.ashley.core.Engine;
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.EntityListener;
+import com.badlogic.ashley.core.EntitySystem;
 import com.badlogic.ashley.core.Family;
-import com.badlogic.ashley.systems.IntervalSystem;
 import com.badlogic.gdx.ai.msg.MessageDispatcher;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.Contact;
@@ -20,7 +20,7 @@ import io.github.fourlastor.game.level.component.BodyComponent;
 import io.github.fourlastor.game.level.component.Reward;
 import javax.inject.Inject;
 
-public class PhysicsSystem extends IntervalSystem {
+public class PhysicsSystem extends EntitySystem {
 
     private static final Family FAMILY_BUILDER =
             Family.all(BodyBuilderComponent.class).get();
@@ -40,7 +40,6 @@ public class PhysicsSystem extends IntervalSystem {
             ComponentMapper<BodyBuilderComponent> bodyBuilders,
             ComponentMapper<BodyComponent> bodies,
             MessageDispatcher messageDispatcher) {
-        super(STEP);
         this.world = world;
         this.bodyBuilders = bodyBuilders;
         this.bodies = bodies;
@@ -49,7 +48,17 @@ public class PhysicsSystem extends IntervalSystem {
         cleaner = new Cleaner();
     }
 
+    private float timer = 0f;
+
     @Override
+    public void update(float deltaTime) {
+        timer += deltaTime;
+        if (timer >= STEP) {
+            updateInterval();
+            timer -= STEP;
+        }
+    }
+
     protected void updateInterval() {
         world.step(STEP, 6, 2);
     }

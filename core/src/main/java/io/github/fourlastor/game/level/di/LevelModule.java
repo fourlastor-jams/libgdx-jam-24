@@ -55,7 +55,6 @@ public class LevelModule {
         engine.addSystem(rewardPickupSystem);
         engine.addSystem(actorFollowBodySystem);
         engine.addSystem(hpBarSystem);
-        //        engine.addSystem(xpBarSystem);
         engine.addSystem(cameraMovementSystem);
         engine.addSystem(clearScreenSystem);
         engine.addSystem(stageSystem);

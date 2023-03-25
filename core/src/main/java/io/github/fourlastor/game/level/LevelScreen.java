@@ -7,24 +7,20 @@ import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import javax.inject.Inject;
 
-import io.github.fourlastor.game.SoundController;
-
 public class LevelScreen extends ScreenAdapter {
 
     private final Engine engine;
     private final Viewport viewport;
     private final EntitiesFactory entitiesFactory;
-    private final SoundController soundController;
 
     private final World world;
 
     @Inject
-    public LevelScreen(Engine engine, Viewport viewport, EntitiesFactory entitiesFactory, World world, SoundController soundController) {
+    public LevelScreen(Engine engine, Viewport viewport, EntitiesFactory entitiesFactory, World world) {
         this.engine = engine;
         this.viewport = viewport;
         this.entitiesFactory = entitiesFactory;
         this.world = world;
-        this.soundController = soundController;
     }
 
     @Override
