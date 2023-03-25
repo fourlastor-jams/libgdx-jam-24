@@ -1,6 +1,7 @@
 package io.github.fourlastor.game.di.modules;
 
 import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
@@ -54,6 +55,18 @@ public class AssetsModule {
         assetManager.load("audio/sounds/pickups/xp 2.wav", Sound.class);
         assetManager.load("audio/sounds/pickups/pasta.wav", Sound.class);
         assetManager.load("audio/sounds/enemies/death/pigeon 0.wav", Sound.class);
+        assetManager.load("audio/sounds/intro/607252__d4xx__swoosh-1.wav", Sound.class);
+        assetManager.load("audio/sounds/intro/607252__d4xx__swoosh-1_REVERSE.wav", Sound.class);
+        assetManager.load("audio/sounds/intro/411494__inspectorj__jews-harp-single-a-h1.wav", Sound.class);
+        assetManager.load("audio/sounds/intro/436107__drfortyseven__ahem-1.wav", Sound.class);
+        assetManager.load("audio/sounds/intro/rumble 0.wav", Sound.class);
+        assetManager.load("audio/sounds/intro/rumble 1.wav", Sound.class);
+        assetManager.load("audio/sounds/intro/pigeons flying.wav", Sound.class);
+        assetManager.load("audio/sounds/intro/661837__rslebs__toast-fork-hitting-glass.wav", Sound.class);
+        assetManager.load("audio/sounds/intro/drama.wav", Sound.class);
+
+        assetManager.load("audio/music/Edvard-grieg-morning-mood.mp3", Music.class);
+        assetManager.load("audio/music/362353__pandos__crowd-at-a-british-wedding-reception-venue (1).wav", Music.class);
 
         assetManager.finishLoading();
         return assetManager;

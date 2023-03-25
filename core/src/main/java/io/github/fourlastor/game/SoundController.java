@@ -1,5 +1,6 @@
 package io.github.fourlastor.game;
 
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.math.MathUtils;
 
@@ -13,6 +14,17 @@ public class SoundController {
     @Inject
     public SoundController() {
 
+    }
+
+    public void play(Music music, float volume, boolean repeat) {
+        music.setVolume(volume);
+        if (repeat)
+            music.setLooping(true);
+        music.play();
+    }
+
+    public void play(Music music) {
+        play(music, 1f, false);
     }
 
     public void play(Sound sound, float volume) {

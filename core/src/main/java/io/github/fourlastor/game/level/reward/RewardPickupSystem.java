@@ -35,11 +35,7 @@ public class RewardPickupSystem extends EntitySystem implements Telegraph {
     private final Sound pastaSound;
 
     @Inject
-    public RewardPickupSystem(
-            ComponentMapper<Player> players,
-            ComponentMapper<Reward> rewards,
-            ComponentMapper<Reward.PickUp> pickups,
-            MessageDispatcher dispatcher, AssetManager assetManager, SoundController soundController) {
+    public RewardPickupSystem(ComponentMapper<Player> players, ComponentMapper<Reward> rewards, ComponentMapper<Reward.PickUp> pickups, MessageDispatcher dispatcher, AssetManager assetManager, SoundController soundController) {
         this.players = players;
         this.rewards = rewards;
         this.pickups = pickups;
