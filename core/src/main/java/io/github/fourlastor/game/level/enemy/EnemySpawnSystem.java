@@ -21,10 +21,10 @@ import static java.util.Arrays.asList;
 
 public class EnemySpawnSystem extends EntitySystem {
     private static final Family ENEMY_FAMILY = Family.all(Enemy.class).get();
-    private static final float SPAWN_INTERVAL = 5f;
+    private static final float SPAWN_INTERVAL = 3f;
     private static final float PASTA_INTERVAL = 15f;
-    private static final int MAX_ENEMIES_COUNT = 300;
-    private static final int SPAWN_ENEMIES_COUNT = 30;
+    private static final int MAX_ENEMIES_COUNT = 1000;
+    private static final int SPAWN_ENEMIES_COUNT = 5;
     private static final float MAX_VIEWPORT_GARBAGE = 2f;
     private static final float END_SPAWN_LIMIT = MAX_VIEWPORT_GARBAGE - 0.1f;
     private static final float START_SPAWN_LIMIT = 1.3f;
