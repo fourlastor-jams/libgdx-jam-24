@@ -63,6 +63,11 @@ public class Player implements Component {
         levelXpAddition *= NEXT_LEVEL_RATIO;
         nextLevelXp += levelXpAddition;
         xp = remainder;
+        if (level % 2 == 0) {
+            weaponDamage += 10;
+        } else {
+            whipWaitTime -= Math.max(0.1f, 0.3f);
+        }
     }
 
     public boolean hasPowerUp(PowerUp powerUp) {
