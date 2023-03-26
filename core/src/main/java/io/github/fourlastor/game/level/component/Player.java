@@ -24,6 +24,7 @@ public class Player implements Component {
     public float xp = 0f;
 
     public int level = 1;
+    public int weaponDamage = 10;
     private float levelXpAddition = 100;
     public float nextLevelXp = levelXpAddition; // 100, 200, 300, 500, 1000
     public float maxHp = 1000f;
@@ -48,12 +49,16 @@ public class Player implements Component {
     public void addXp(float newXp) {
         xp += newXp;
         if (xp >= nextLevelXp) {
-            float remainder = xp - nextLevelXp;
-            level += 1;
-            levelXpAddition *= NEXT_LEVEL_RATIO;
-            nextLevelXp += levelXpAddition;
-            xp = remainder;
+            levelUp();
         }
+    }
+
+    private void levelUp() {
+        float remainder = xp - nextLevelXp;
+        level += 1;
+        levelXpAddition *= NEXT_LEVEL_RATIO;
+        nextLevelXp += levelXpAddition;
+        xp = remainder;
     }
 
     public static class Settings {

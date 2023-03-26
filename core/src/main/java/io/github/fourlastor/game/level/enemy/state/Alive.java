@@ -39,7 +39,7 @@ public class Alive extends EnemyState {
     }
 
     private Vector2 findClosestPlayer() {
-        return bodies.get(players.get(0)).body.getPosition();
+        return bodies.get(playersEntities.get(0)).body.getPosition();
     }
 
     @Override
@@ -48,7 +48,7 @@ public class Alive extends EnemyState {
             return false;
         }
         Enemy enemy = enemies.get(entity);
-        enemy.health -= 10;
+        enemy.health -= players.get(playersEntities.get(0)).weaponDamage;
         if (enemy.health <= 0) {
             enemy.stateMachine.changeState(enemy.dead);
         } else {

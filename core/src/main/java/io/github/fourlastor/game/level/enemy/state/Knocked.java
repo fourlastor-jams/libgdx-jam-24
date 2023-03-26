@@ -86,7 +86,7 @@ public class Knocked extends EnemyState {
     }
 
     private Vector2 findClosestPlayer() {
-        return bodies.get(players.get(0)).body.getPosition();
+        return bodies.get(playersEntities.get(0)).body.getPosition();
     }
 
     @AssistedFactory
