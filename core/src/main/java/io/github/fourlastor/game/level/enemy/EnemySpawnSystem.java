@@ -1,7 +1,5 @@
 package io.github.fourlastor.game.level.enemy;
 
-import static java.util.Arrays.asList;
-
 import com.badlogic.ashley.core.Engine;
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.EntitySystem;
@@ -12,15 +10,19 @@ import com.badlogic.gdx.math.Vector2;
 import io.github.fourlastor.game.level.EntitiesFactory;
 import io.github.fourlastor.game.level.component.Enemy;
 import io.github.fourlastor.game.level.reward.RewardType;
-import java.util.LinkedList;
-import javax.inject.Inject;
-import squidpony.squidmath.Noise;
 import squidpony.squidmath.SilkRNG;
+
+import javax.inject.Inject;
+import java.util.LinkedList;
+
+import static java.util.Arrays.asList;
 
 public class EnemySpawnSystem extends EntitySystem {
     private static final Family ENEMY_FAMILY = Family.all(Enemy.class).get();
     private static final float SPAWN_INTERVAL = 2f;
     private static final float PASTA_INTERVAL = 15f;
+    private static final int MAX_ENEMIES_COUNT = 300;
+    private static final int SPAWN_ENEMIES_COUNT = 5;
 
     private final LinkedList<EnemyWave> waves = new LinkedList<>(asList(
             new EnemyWave(asList(EnemyType.PIGEON_0, EnemyType.PIGEON_1), 30f),
@@ -36,7 +38,6 @@ public class EnemySpawnSystem extends EntitySystem {
     private final Camera camera;
     private final EntitiesFactory factory;
     private final SilkRNG random;
-    private final Noise.Noise3D noise;
 
     private float totalTime = 0f;
     private float spawnTime = 0f;
@@ -44,11 +45,10 @@ public class EnemySpawnSystem extends EntitySystem {
     private ImmutableArray<Entity> entities;
 
     @Inject
-    public EnemySpawnSystem(Camera camera, EntitiesFactory factory, SilkRNG random, Noise.Noise3D noise) {
+    public EnemySpawnSystem(Camera camera, EntitiesFactory factory, SilkRNG random) {
         this.camera = camera;
         this.factory = factory;
         this.random = random;
-        this.noise = noise;
     }
 
     @Override
@@ -63,12 +63,14 @@ public class EnemySpawnSystem extends EntitySystem {
         totalTime += deltaTime;
         spawnTime += deltaTime;
         pastaTime += deltaTime;
+        // changing waves
         if (wave.time <= totalTime) {
             if (!waves.isEmpty()) {
                 wave = waves.poll();
             }
         }
-        if (entities.size() < 300 && spawnTime > SPAWN_INTERVAL) {
+        // spawning enemies
+        if (entities.size() < MAX_ENEMIES_COUNT && spawnTime > SPAWN_INTERVAL) {
             spawnTime = 0f;
             spawnEnemies();
         }
@@ -104,37 +106,10 @@ public class EnemySpawnSystem extends EntitySystem {
 
     private void spawnEnemies() {
         Engine engine = getEngine();
-
-        float width = camera.viewportWidth;
-        float height = camera.viewportHeight;
-        float left = camera.position.x - width / 2;
-        float right = left + width;
-        float bottom = camera.position.y - height / 2;
-        float top = bottom + height;
-        for (float x = left - width; x < right + width; x += 5) {
-            if (shouldSpawn(x, bottom - height)) {
-                Entity enemy = factory.enemy(new Vector2(x, bottom - height), randomType());
-                engine.addEntity(enemy);
-            }
-            if (shouldSpawn(x, top + height)) {
-                Entity enemy = factory.enemy(new Vector2(x, top + height), randomType());
-                engine.addEntity(enemy);
-            }
+        for (int i = 0; i < SPAWN_ENEMIES_COUNT; i++) {
+            Entity enemy = factory.enemy(randomLocationOutsideViewport(), randomType());
+            engine.addEntity(enemy);
         }
-        for (float y = bottom - height; y < top + height; y += 5) {
-            if (shouldSpawn(left - width, y)) {
-                Entity enemy = factory.enemy(new Vector2(left - width, y), randomType());
-                engine.addEntity(enemy);
-            }
-            if (shouldSpawn(right + width, y)) {
-                Entity enemy = factory.enemy(new Vector2(left - width, y), randomType());
-                engine.addEntity(enemy);
-            }
-        }
-    }
-
-    private boolean shouldSpawn(float x, float y) {
-        return Math.abs(noise.getNoise(x, y, totalTime)) > 0.2;
     }
 
     private EnemyType randomType() {
