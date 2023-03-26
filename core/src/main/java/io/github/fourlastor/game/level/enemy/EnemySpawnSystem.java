@@ -32,14 +32,14 @@ public class EnemySpawnSystem extends EntitySystem {
     private static final float START_SPAWN_LIMIT = 1.3f;
 
     private final LinkedList<EnemyWave> waves = new LinkedList<>(asList(
-            new EnemyWave(asList(EnemyType.PIGEON_0, EnemyType.PIGEON_1), Collections.emptyList(), 10),
-            new EnemyWave(asList(EnemyType.PIGEON_0, EnemyType.PIGEON_1), asList(EnemyType.PIGEON_1), 10),
-            new EnemyWave(asList(EnemyType.SATCHMO, EnemyType.SPARK), asList(EnemyType.SATCHMO, EnemyType.SPARK), 10),
+            new EnemyWave(asList(EnemyType.PIGEON_0, EnemyType.PIGEON_1), Collections.emptyList(), 60),
+            new EnemyWave(asList(EnemyType.PIGEON_0, EnemyType.PIGEON_1), asList(EnemyType.PIGEON_1), 60),
+            new EnemyWave(asList(EnemyType.SATCHMO, EnemyType.SPARK), asList(EnemyType.SATCHMO, EnemyType.SPARK), 60*2),
             new EnemyWave(
-                    asList(EnemyType.ANGRY_PINEAPPLE_0, EnemyType.ANGRY_PINEAPPLE_1, EnemyType.ANGRY_PINEAPPLE_2), asList(EnemyType.ANGRY_PINEAPPLE_0, EnemyType.ANGRY_PINEAPPLE_1, EnemyType.ANGRY_PINEAPPLE_2), 10),
-            new EnemyWave(asList(EnemyType.DRAGON_QUEEN, EnemyType.RAELEUS), asList(EnemyType.DRAGON_QUEEN, EnemyType.RAELEUS), 10),
-            new EnemyWave(asList(EnemyType.HYDROLIEN, EnemyType.LAVA_EATER), asList(EnemyType.HYDROLIEN, EnemyType.LAVA_EATER), 10),
-            new EnemyWave(asList(EnemyType.LYZE, EnemyType.PANDA), asList(EnemyType.LYZE, EnemyType.PANDA), 10)));
+                    asList(EnemyType.ANGRY_PINEAPPLE_0, EnemyType.ANGRY_PINEAPPLE_1, EnemyType.ANGRY_PINEAPPLE_2), asList(EnemyType.ANGRY_PINEAPPLE_0, EnemyType.ANGRY_PINEAPPLE_1, EnemyType.ANGRY_PINEAPPLE_2), 60*3),
+            new EnemyWave(asList(EnemyType.DRAGON_QUEEN, EnemyType.RAELEUS), asList(EnemyType.DRAGON_QUEEN, EnemyType.RAELEUS), 60*2),
+            new EnemyWave(asList(EnemyType.HYDROLIEN, EnemyType.LAVA_EATER), asList(EnemyType.HYDROLIEN, EnemyType.LAVA_EATER), 60*2),
+            new EnemyWave(asList(EnemyType.LYZE, EnemyType.PANDA), asList(EnemyType.LYZE, EnemyType.PANDA), 60*2)));
 
     private final ComponentMapper<BodyComponent> bodies;
 
