@@ -8,6 +8,7 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.utils.JsonReader;
+
 import dagger.Module;
 import dagger.Provides;
 import io.github.fourlastor.harlequin.animation.AnimationNode;
@@ -20,6 +21,7 @@ import io.github.fourlastor.ldtk.LdtkLoader;
 import io.github.fourlastor.ldtk.model.LdtkMapData;
 import io.github.fourlastor.text.Text;
 import io.github.fourlastor.text.TextLoader;
+
 import javax.inject.Named;
 import javax.inject.Singleton;
 
@@ -53,7 +55,11 @@ public class AssetsModule {
         assetManager.load("audio/sounds/pickups/xp 1.wav", Sound.class);
         assetManager.load("audio/sounds/pickups/xp 2.wav", Sound.class);
         assetManager.load("audio/sounds/pickups/pasta.wav", Sound.class);
+
         assetManager.load("audio/sounds/enemies/death/pigeon 0.wav", Sound.class);
+
+        assetManager.load("audio/sounds/player/whip.wav", Sound.class);
+
         assetManager.load("audio/sounds/intro/607252__d4xx__swoosh-1.wav", Sound.class);
         assetManager.load("audio/sounds/intro/607252__d4xx__swoosh-1_REVERSE.wav", Sound.class);
         assetManager.load("audio/sounds/intro/411494__inspectorj__jews-harp-single-a-h1.wav", Sound.class);
@@ -65,8 +71,8 @@ public class AssetsModule {
         assetManager.load("audio/sounds/intro/drama.wav", Sound.class);
 
         assetManager.load("audio/music/Edvard-grieg-morning-mood.ogg", Music.class);
-        assetManager.load(
-                "audio/music/362353__pandos__crowd-at-a-british-wedding-reception-venue (1).ogg", Music.class);
+        assetManager.load("audio/music/362353__pandos__crowd-at-a-british-wedding-reception-venue (1).ogg", Music.class);
+        assetManager.load("audio/music/429347__doctor_dreamchip__2018-05-19.ogg", Music.class);
 
         assetManager.finishLoading();
         return assetManager;
