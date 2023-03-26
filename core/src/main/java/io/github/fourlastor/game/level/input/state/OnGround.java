@@ -12,7 +12,6 @@ import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.utils.ObjectSet;
-
 import io.github.fourlastor.game.SoundController;
 import io.github.fourlastor.game.level.Message;
 import io.github.fourlastor.game.level.component.Player;
@@ -73,16 +72,16 @@ public class OnGround extends PlayerState {
         boolean wasStationary = targetVelocity.isZero();
         targetVelocity.x = 0;
         targetVelocity.y = 0;
-        if (Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
+        if (isLeftPressed()) {
             targetVelocity.x -= 1;
         }
-        if (Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {
+        if (isRightPressed()) {
             targetVelocity.x += 1;
         }
-        if (Gdx.input.isKeyPressed(Input.Keys.DOWN)) {
+        if (isDownPressed()) {
             targetVelocity.y -= 1;
         }
-        if (Gdx.input.isKeyPressed(Input.Keys.UP)) {
+        if (isUpPressed()) {
             targetVelocity.y += 1;
         }
         boolean isStationary = targetVelocity.isZero();
@@ -100,6 +99,22 @@ public class OnGround extends PlayerState {
         if (player.hp <= 0) {
             player.stateMachine.changeState(player.dead);
         }
+    }
+
+    private boolean isUpPressed() {
+        return Gdx.input.isKeyPressed(Input.Keys.UP) || Gdx.input.isKeyPressed(Input.Keys.W);
+    }
+
+    private boolean isDownPressed() {
+        return Gdx.input.isKeyPressed(Input.Keys.DOWN) || Gdx.input.isKeyPressed(Input.Keys.S);
+    }
+
+    private boolean isRightPressed() {
+        return Gdx.input.isKeyPressed(Input.Keys.RIGHT) || Gdx.input.isKeyPressed(Input.Keys.D);
+    }
+
+    private boolean isLeftPressed() {
+        return Gdx.input.isKeyPressed(Input.Keys.LEFT) || Gdx.input.isKeyPressed(Input.Keys.A);
     }
 
     @Override
