@@ -2,6 +2,7 @@ package io.github.fourlastor.game.level.component;
 
 import com.badlogic.ashley.core.Component;
 import com.badlogic.gdx.graphics.Camera;
+import com.badlogic.gdx.utils.ObjectSet;
 import io.github.fourlastor.game.level.input.InputStateMachine;
 import io.github.fourlastor.game.level.input.state.Dead;
 import io.github.fourlastor.game.level.input.state.OnGround;
@@ -21,6 +22,8 @@ public class Player implements Component {
     public final Settings settings;
     public final PlayerActor actor;
     public float movementTime = 0f;
+
+    public ObjectSet<PowerUp> powerUps = new ObjectSet<>(PowerUp.values().length);
     public float xp = 0f;
 
     public int level = 1;
@@ -61,6 +64,10 @@ public class Player implements Component {
         xp = remainder;
     }
 
+    public boolean hasPowerUp(PowerUp powerUp) {
+        return powerUps.contains(powerUp);
+    }
+
     public static class Settings {
 
         public static final float PLAYER_SPEED = 5f;
@@ -70,5 +77,11 @@ public class Player implements Component {
         public Settings(float accelerationTime) {
             this.accelerationTime = accelerationTime;
         }
+    }
+
+    public enum PowerUp {
+        BACK_ATTACK,
+        TOP_ATTACK,
+        BOTTOM_ATTACK,
     }
 }
