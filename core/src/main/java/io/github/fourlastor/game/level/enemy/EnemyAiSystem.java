@@ -139,7 +139,7 @@ public class EnemyAiSystem extends IteratingSystem {
                 player.upgradePowerUp();
             }
             Set<RewardType> rewards = enemy.type.rewards;
-            if (random.nextBoolean()) {
+            if (random.nextFloat() >= 0.3) {
                 RewardType rewardType = random.getRandomElement(rewards);
                 Vector2 position = bodies.get(entity).body.getPosition();
                 getEngine().addEntity(entitiesFactory.reward(rewardType, position));
