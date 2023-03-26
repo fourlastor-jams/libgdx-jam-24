@@ -18,9 +18,10 @@ import io.github.fourlastor.game.level.enemy.state.Alive;
 import io.github.fourlastor.game.level.enemy.state.Dead;
 import io.github.fourlastor.game.level.enemy.state.Knocked;
 import io.github.fourlastor.game.level.reward.RewardType;
-import java.util.Set;
-import javax.inject.Inject;
 import squidpony.squidmath.SilkRNG;
+
+import javax.inject.Inject;
+import java.util.Set;
 
 public class EnemyAiSystem extends IteratingSystem {
 
@@ -133,10 +134,12 @@ public class EnemyAiSystem extends IteratingSystem {
         @Override
         public void entityAdded(Entity entity) {
             Set<RewardType> rewards = enemies.get(entity).type.rewards;
-            RewardType rewardType = random.getRandomElement(rewards);
-            Vector2 position = bodies.get(entity).body.getPosition();
+            if (random.nextBoolean()) {
+                RewardType rewardType = random.getRandomElement(rewards);
+                Vector2 position = bodies.get(entity).body.getPosition();
+                getEngine().addEntity(entitiesFactory.reward(rewardType, position));
+            }
             getEngine().removeEntity(entity);
-            getEngine().addEntity(entitiesFactory.reward(rewardType, position));
             Player player = playerComponentMapper.get(players.get(0));
             player.killCounter++;
         }
