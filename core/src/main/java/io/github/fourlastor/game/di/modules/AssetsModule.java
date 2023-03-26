@@ -57,6 +57,7 @@ public class AssetsModule {
         assetManager.load("audio/sounds/pickups/pasta.wav", Sound.class);
 
         assetManager.load("audio/sounds/enemies/death/pigeon 0.wav", Sound.class);
+        assetManager.load("audio/sounds/enemies/hurt.wav", Sound.class);
 
         assetManager.load("audio/sounds/player/whip.wav", Sound.class);
         assetManager.load("audio/sounds/player/hurt.wav", Sound.class);

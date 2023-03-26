@@ -24,12 +24,14 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.utils.Align;
 import com.github.tommyettinger.textra.Font;
 import com.github.tommyettinger.textra.TextraLabel;
+import com.github.tommyettinger.textra.TypingLabel;
 
 import io.github.fourlastor.game.SoundController;
 import io.github.fourlastor.game.level.Message;
 import io.github.fourlastor.game.level.component.Player;
 import io.github.fourlastor.game.route.Router;
 import io.github.fourlastor.game.ui.XpBar;
+
 import javax.inject.Inject;
 import javax.inject.Named;
 
@@ -52,7 +54,8 @@ public class UiSystem extends EntitySystem implements Telegraph {
     private XpBar bar;
     private ImmutableArray<Entity> playerEntities;
     private TextraLabel killLabel;
-    private Image gameOver;
+    private TypingLabel restartLabel;
+    private Image gameOverImage;
     private boolean inGameOver = false;
 
     @Inject
@@ -105,6 +108,16 @@ public class UiSystem extends EntitySystem implements Telegraph {
         stage.addActor(killLabel);
         dispatcher.addListener(this, Message.GAME_OVER.ordinal());
         inputMultiplexer.addProcessor(retryProcessor);
+
+        gameOverImage = new Image(textureAtlas.findRegion("ui/game_over"));
+        gameOverImage.setPosition(stage.getWidth() / 2, stage.getHeight() / 2, Align.center);
+        gameOverImage.setVisible(false);
+        stage.addActor(gameOverImage);
+
+        this.restartLabel = new TypingLabel("{SICK}press 'R' to restart...", new Font(regular).scale(0.4f, 0.4f));
+        restartLabel.setPosition(stage.getWidth() / 2 - 55, stage.getHeight() / 2 - 28);
+        restartLabel.getColor().a = 0f;
+        stage.addActor(restartLabel);
     }
 
     @Override
@@ -141,10 +154,6 @@ public class UiSystem extends EntitySystem implements Telegraph {
         float amount = player.xp / player.maxXp;
         bar.setAmount(amount);
         killLabel.setText(String.valueOf(player.killCounter));
-        gameOver = new Image(textureAtlas.findRegion("ui/game_over"));
-        gameOver.setPosition(stage.getWidth() / 2, stage.getHeight() / 2, Align.center);
-        gameOver.setVisible(false);
-        stage.addActor(gameOver);
     }
 
     private Entity getPlayer() {
@@ -155,13 +164,17 @@ public class UiSystem extends EntitySystem implements Telegraph {
     public boolean handleMessage(Telegram msg) {
         if (msg.message == Message.GAME_OVER.ordinal()) {
             inGameOver = true;
-            gameOver.addAction(Actions.sequence(
+            gameOverImage.addAction(Actions.sequence(
                     Actions.run(() -> {
-                        gameOver.setVisible(true);
-                        gameOver.setPosition(gameOver.getX(), 0);
+                        gameOverImage.setVisible(true);
+                        gameOverImage.setPosition(gameOverImage.getX(), 0);
                         soundController.play(assetManager.get("audio/sounds/382310__myfox14__game-over-arcade.wav", Sound.class));
                     }),
-                    Actions.moveTo(gameOver.getX(), gameOver.getY(), 1)));
+                    Actions.moveTo(gameOverImage.getX(), gameOverImage.getY(), 1)));
+            restartLabel.addAction(Actions.sequence(
+                    Actions.delay(1.5f),
+                    Actions.alpha(.85f, 3f)
+            ));
             return true;
         }
         return false;
