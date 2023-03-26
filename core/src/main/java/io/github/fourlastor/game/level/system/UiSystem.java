@@ -25,7 +25,6 @@ import com.badlogic.gdx.utils.Align;
 import com.github.tommyettinger.textra.Font;
 import com.github.tommyettinger.textra.TextraLabel;
 import com.github.tommyettinger.textra.TypingLabel;
-
 import io.github.fourlastor.game.SoundController;
 import io.github.fourlastor.game.level.Message;
 import io.github.fourlastor.game.level.component.Player;
@@ -146,7 +145,7 @@ public class UiSystem extends EntitySystem implements Telegraph {
         if (lastMinute != minutes || lastSecond != seconds) {
             lastSecond = seconds;
             lastMinute = minutes;
-            String text = (minutes > 10 ? minutes : "0" + minutes) + ":" + (seconds > 10 ? seconds : "0" + seconds);
+            String text = (minutes >= 10 ? minutes : "0" + minutes) + ":" + (seconds >= 10 ? seconds : "0" + seconds);
             timerLabel.setText(text);
         }
         stage.act(deltaTime);
