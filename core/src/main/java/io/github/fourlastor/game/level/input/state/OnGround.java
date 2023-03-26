@@ -4,27 +4,38 @@ import com.badlogic.ashley.core.Entity;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.ai.msg.Telegram;
+import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.audio.Sound;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.utils.ObjectSet;
+
+import io.github.fourlastor.game.SoundController;
 import io.github.fourlastor.game.level.Message;
 import io.github.fourlastor.game.level.component.Player;
 import io.github.fourlastor.game.level.physics.BodyHelper;
 import io.github.fourlastor.harlequin.ui.AnimatedImage;
+
 import javax.inject.Inject;
 
 public class OnGround extends PlayerState {
 
     private final BodyHelper helper;
     private final ObjectSet<Entity> enemiesHitting = new ObjectSet<>();
+    private final SoundController soundController;
+    private final AssetManager assetManager;
 
     private float hitTimer = 0f;
 
     @Inject
-    public OnGround(Mappers mappers, BodyHelper helper) {
+    public OnGround(Mappers mappers, BodyHelper helper, SoundController soundController, AssetManager assetManager) {
         super(mappers);
         this.helper = helper;
+        this.soundController = soundController;
+        this.assetManager = assetManager;
     }
 
     @Override
@@ -49,6 +60,14 @@ public class OnGround extends PlayerState {
                 float damage = enemies.get(enemy).type.damage;
                 player.hp -= damage;
                 player.hp = Math.max(0f, player.hp);
+                soundController.play(assetManager.get("audio/sounds/player/hurt.wav", Sound.class), .1f);
+            }
+            if (enemiesHitting.notEmpty()) {
+                player.actor.clearActions();
+                player.actor.addAction(Actions.sequence(
+                        Actions.color(Color.RED, .1f),
+                        Actions.color(Color.WHITE, .1f)
+                ));
             }
         }
         boolean wasStationary = targetVelocity.isZero();
