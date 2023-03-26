@@ -12,7 +12,7 @@ public enum EnemyType {
     PIGEON_0(0.2f, 1, 0.3f, 0.4f, "pigeon-0", 5, "pigeon 0.wav", RewardType.XP_S),
     PIGEON_1(0.3f, 15, 0.25f, 0.3f, "pigeon-1", 7, "pigeon 0.wav", RewardType.XP_S),
     SATCHMO(0.5f, 30, 0.2f, 0.1f, "satchmo", 15, "satchmo.wav", RewardType.XP_S),
-    SPARK(0.5f, 20, 0.32f, 0.1f, "spark", 10, "325462__insanity54__laugh001.wav", RewardType.XP_S),
+    SPARK(0.5f, 20, 0.32f, 0.1f, "spark", 10, "325462__insanity54__laugh001.ogg", RewardType.XP_S),
     ANGRY_PINEAPPLE_0(
             0.5f, 30, 0.3f, 0.1f, "angry-pineapple-0", 10, "fruit squish.wav", RewardType.XP_M, RewardType.XP_S),
     ANGRY_PINEAPPLE_1(

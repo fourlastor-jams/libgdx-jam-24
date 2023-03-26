@@ -42,7 +42,7 @@ public class Dead extends EnemyState {
         this.helper = helper;
         this.assetManager = assetManager;
         this.soundController = soundController;
-        deathSound = assetManager.get("audio/sounds/enemies/death/pigeon 0.wav");
+        deathSound = assetManager.get("audio/sounds/enemies/death/"+enemies.get());
     }
 
     @Override

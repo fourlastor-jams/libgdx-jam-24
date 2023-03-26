@@ -57,6 +57,15 @@ public class AssetsModule {
         assetManager.load("audio/sounds/pickups/pasta.wav", Sound.class);
 
         assetManager.load("audio/sounds/enemies/death/pigeon 0.wav", Sound.class);
+        assetManager.load("audio/sounds/enemies/death/174499__unfa__boiling-towel.wav", Sound.class);
+        assetManager.load("audio/sounds/enemies/death/325462__insanity54__laugh001.ogg", Sound.class);
+        assetManager.load("audio/sounds/enemies/death/bear death.wav", Sound.class);
+        assetManager.load("audio/sounds/enemies/death/dragonQueen0.wav", Sound.class);
+        assetManager.load("audio/sounds/enemies/death/fox bark.wav", Sound.class);
+        assetManager.load("audio/sounds/enemies/death/fruit squish.wav", Sound.class);
+        assetManager.load("audio/sounds/enemies/death/horse.wav", Sound.class);
+        assetManager.load("audio/sounds/enemies/death/owl hoot.wav", Sound.class);
+        assetManager.load("audio/sounds/enemies/death/satchmo.wav", Sound.class);
         assetManager.load("audio/sounds/enemies/hurt.wav", Sound.class);
 
         assetManager.load("audio/sounds/player/whip.wav", Sound.class);
