@@ -22,7 +22,7 @@ public class Player implements Component {
     public float movementTime = 0f;
     public float xp = 0f;
     public float maxXp = 1000f;
-    public float maxHp = 100f;
+    public float maxHp = 1000f;
     public float hp = maxHp;
     public int killCounter = 0;
 
