@@ -64,7 +64,6 @@ public class EnemySpawnSystem extends EntitySystem {
         spawnTime += deltaTime;
         pastaTime += deltaTime;
         if (wave.time <= totalTime) {
-            System.out.println(totalTime);
             if (!waves.isEmpty()) {
                 wave = waves.poll();
             }
