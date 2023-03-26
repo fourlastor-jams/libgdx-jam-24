@@ -106,7 +106,7 @@ public class EnemySpawnSystem extends EntitySystem {
     }
 
     private Vector2 randomLocationOutsideViewport() {
-        return randomLocationOutsideViewport(0);
+        return randomLocationOutsideViewport(1);
     }
 
     private final Vector2 ray = new Vector2();
