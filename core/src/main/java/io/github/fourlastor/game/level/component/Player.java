@@ -68,6 +68,16 @@ public class Player implements Component {
         return powerUps.contains(powerUp);
     }
 
+    public void upgradePowerUp() {
+        if (!hasPowerUp(PowerUp.BACK_ATTACK)) {
+            powerUps.add(PowerUp.BACK_ATTACK);
+        } else if (!hasPowerUp(PowerUp.TOP_ATTACK)) {
+            powerUps.add(PowerUp.TOP_ATTACK);
+        } else if (!hasPowerUp(PowerUp.BOTTOM_ATTACK)) {
+            powerUps.add(PowerUp.BOTTOM_ATTACK);
+        }
+    }
+
     public static class Settings {
 
         public static final float PLAYER_SPEED = 5f;
