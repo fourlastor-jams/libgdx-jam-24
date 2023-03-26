@@ -91,13 +91,21 @@ public class EntitiesFactory {
         effect.setPosition(1f, 1f);
         PlayerActor image = new PlayerActor(animation, effect);
 
-        Image whipActor = new Image(textureAtlas.findRegion("character/whip"));
-        float whipW = whipActor.getWidth();
-        float whipH = whipActor.getHeight();
-        whipActor.setSize(whipW, whipH);
+        Image frontWhip = new Image(textureAtlas.findRegion("character/whip"));
+        float whipW = frontWhip.getWidth();
+        float whipH = frontWhip.getHeight();
         int whipX = 24;
         int whipY = 4;
-        whipActor.setPosition(whipX, whipY);
+        frontWhip.setPosition(whipX, whipY);
+        Image backWhip = new Image(textureAtlas.findRegion("character/whip"));
+        backWhip.setPosition(-whipX + 18, whipY);
+        backWhip.setScale(-1, 1);
+        Image topWhip = new Image(textureAtlas.findRegion("character/whip"));
+        topWhip.setPosition(27, 41);
+        topWhip.rotateBy(90);
+        Image bottomWhip = new Image(textureAtlas.findRegion("character/whip"));
+        bottomWhip.rotateBy(-90);
+        bottomWhip.setPosition(-7, -2);
 
         Group group = new Group();
         group.setScale(SCALE);
@@ -106,7 +114,10 @@ public class EntitiesFactory {
         float playerHeight = image.getHeight();
         group.setSize(playerWidth, playerHeight);
         group.addActor(image);
-        group.addActor(whipActor);
+        group.addActor(frontWhip);
+        group.addActor(backWhip);
+        group.addActor(topWhip);
+        group.addActor(bottomWhip);
         entity.add(new BodyBuilderComponent(world -> {
             BodyDef bodyDef = new BodyDef();
             bodyDef.type = BodyDef.BodyType.KinematicBody;
@@ -125,22 +136,26 @@ public class EntitiesFactory {
             whipShape.setAsBox(43f * SCALE / 2, 2f * SCALE / 2, new Vector2(-19f * SCALE / 2, 18f * SCALE), 0f);
             float hx = whipW * SCALE / 2f;
             float hy = whipH * SCALE / 2f;
-            whipShape.setAsBox(
-                    hx,
-                    hy,
-                    new Vector2((whipX - playerWidth / 2) * SCALE + hx, (whipY - playerHeight / 2) * SCALE + hy),
-                    0f);
+            Vector2 frontShape =
+                    new Vector2((whipX - playerWidth / 2) * SCALE + hx, (whipY - playerHeight / 2) * SCALE + hy);
+            Vector2 backShape =
+                    new Vector2((-whipX + playerWidth / 2) * SCALE - hx, (whipY - playerHeight / 2) * SCALE + hy);
+            Vector2 topShape = new Vector2(
+                    (-whipX - 2 + playerWidth / 2) * SCALE + hy, (whipY - playerHeight / 2) * SCALE + 2 * hx);
+            Vector2 bottomShape = new Vector2(
+                    (-whipX - 2 + playerWidth / 2) * SCALE + hy, (whipY - playerHeight / 2) * SCALE - hx - 0.2f);
             whipDef.shape = whipShape;
             whipDef.isSensor = true;
             whipDef.filter.categoryBits = BodyData.Category.WEAPON.bits;
             whipDef.filter.maskBits = BodyData.Mask.WEAPON.bits;
-            body.createFixture(whipDef).setUserData(BodyData.Type.WEAPON_R);
-            whipShape.setAsBox(
-                    hx,
-                    hy,
-                    new Vector2((-whipX + playerWidth / 2) * SCALE - hx, (whipY - playerHeight / 2) * SCALE + hy),
-                    0f);
-            body.createFixture(whipDef).setUserData(BodyData.Type.WEAPON_L);
+            whipShape.setAsBox(hx, hy, frontShape, 0f);
+            body.createFixture(whipDef).setUserData(BodyData.Type.WEAPON_BACK);
+            whipShape.setAsBox(hx, hy, backShape, 0f);
+            body.createFixture(whipDef).setUserData(BodyData.Type.WEAPON_FRONT);
+            whipShape.setAsBox(hy, hx, topShape, 0f);
+            body.createFixture(whipDef).setUserData(BodyData.Type.WEAPON_TOP);
+            whipShape.setAsBox(hy, hx, bottomShape, 0f);
+            body.createFixture(whipDef).setUserData(BodyData.Type.WEAPON_BOTTOM);
             whipShape.dispose();
             shape.dispose();
             return body;
@@ -148,7 +163,7 @@ public class EntitiesFactory {
         entity.add(new ActorComponent(group, ActorComponent.Layer.CHARACTER));
         entity.add(new PlayerRequest(camera, image));
         entity.add(new Animated(image));
-        entity.add(new Whip.Request(whipActor));
+        entity.add(new Whip.Request(frontWhip, backWhip, topWhip, bottomWhip));
         return entity;
     }
 
@@ -161,19 +176,19 @@ public class EntitiesFactory {
         return entity;
     }
 
-    public Entity enemy(Vector2 position, EnemyType type) {
+    public Entity enemy(Vector2 position, EnemyType type, boolean boss) {
         Entity entity = new Entity();
 
         float period = type.frameDuration + random.nextFloat() * -type.frameDuration / 2f;
         Animation<TextureRegionDrawable> animation =
-                new GdxAnimation<>(period, enemyWalk(type.animationPath), Animation.PlayMode.LOOP_PING_PONG);
+                new GdxAnimation<>(period, enemyWalk(type.animationPath, boss), Animation.PlayMode.LOOP_PING_PONG);
 
         Image image = new AnimatedImage(animation);
         image.setScale(SCALE);
         image.setAlign(Align.center);
         image.addAction(Actions.forever(Actions.sequence(Actions.rotateTo(-7, 0.7f), Actions.rotateTo(7, 0.7f))));
         entity.add(new ActorComponent(image, ActorComponent.Layer.ENEMIES));
-        entity.add(new Enemy.Request(type));
+        entity.add(new Enemy.Request(type, boss));
         entity.add(new BodyBuilderComponent(world -> {
             BodyDef bodyDef = new BodyDef();
             bodyDef.position.set(position);
@@ -193,7 +208,8 @@ public class EntitiesFactory {
         return entity;
     }
 
-    private Array<TextureRegionDrawable> enemyWalk(String basePath) {
+    private Array<TextureRegionDrawable> enemyWalk(String basePath, boolean boss) {
+        basePath = boss ? basePath + "/boss" : basePath;
         String path = "enemy/" + basePath + "/walking";
         if (!enemyRegions.containsKey(path)) {
             Array<TextureAtlas.AtlasRegion> regions = textureAtlas.findRegions(path);

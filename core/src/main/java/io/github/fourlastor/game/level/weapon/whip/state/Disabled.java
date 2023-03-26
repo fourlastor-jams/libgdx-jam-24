@@ -1,5 +1,6 @@
 package io.github.fourlastor.game.level.weapon.whip.state;
 
+import com.badlogic.ashley.core.Entity;
 import io.github.fourlastor.game.level.component.Whip;
 import javax.inject.Inject;
 
@@ -11,8 +12,8 @@ public class Disabled extends WhipState {
     }
 
     @Override
-    protected float timer() {
-        return 2;
+    protected float timer(Entity entity) {
+        return players.get(entity).whipWaitTime;
     }
 
     @Override

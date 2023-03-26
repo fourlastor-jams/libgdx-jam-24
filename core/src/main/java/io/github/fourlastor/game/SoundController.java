@@ -8,8 +8,8 @@ import javax.inject.Singleton;
 
 @Singleton
 public class SoundController {
-    private float soundVolume = 0.7f;
-    private float musicVolume = 0.5f;
+    private float soundVolume = 0.5f;
+    private float musicVolume = 0.1f;
 
     @Inject
     public SoundController() {}

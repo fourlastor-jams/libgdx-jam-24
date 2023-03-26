@@ -82,15 +82,15 @@ public class RewardPickupSystem extends EntitySystem implements Telegraph {
             RewardType type = rewards.get(entity).type;
             switch (type) {
                 case XP_S:
-                    player.xp += 10;
+                    player.addXp(10);
                     soundController.play(xp0Sound);
                     break;
                 case XP_M:
-                    player.xp += 20;
+                    player.addXp(50);
                     soundController.play(xp1Sound);
                     break;
                 case XP_L:
-                    player.xp += 30;
+                    player.addXp(100);
                     soundController.play(xp2Sound);
                     break;
                 case PASTA:

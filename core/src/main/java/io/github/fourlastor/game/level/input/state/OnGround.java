@@ -4,10 +4,15 @@ import com.badlogic.ashley.core.Entity;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.ai.msg.Telegram;
+import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.audio.Sound;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.utils.ObjectSet;
+import io.github.fourlastor.game.SoundController;
 import io.github.fourlastor.game.level.Message;
 import io.github.fourlastor.game.level.component.Player;
 import io.github.fourlastor.game.level.physics.BodyHelper;
@@ -18,13 +23,17 @@ public class OnGround extends PlayerState {
 
     private final BodyHelper helper;
     private final ObjectSet<Entity> enemiesHitting = new ObjectSet<>();
+    private final SoundController soundController;
+    private final AssetManager assetManager;
 
     private float hitTimer = 0f;
 
     @Inject
-    public OnGround(Mappers mappers, BodyHelper helper) {
+    public OnGround(Mappers mappers, BodyHelper helper, SoundController soundController, AssetManager assetManager) {
         super(mappers);
         this.helper = helper;
+        this.soundController = soundController;
+        this.assetManager = assetManager;
     }
 
     @Override
@@ -49,21 +58,27 @@ public class OnGround extends PlayerState {
                 float damage = enemies.get(enemy).type.damage;
                 player.hp -= damage;
                 player.hp = Math.max(0f, player.hp);
+                soundController.play(assetManager.get("audio/sounds/player/hurt.wav", Sound.class), .1f);
+            }
+            if (enemiesHitting.notEmpty()) {
+                player.actor.clearActions();
+                player.actor.addAction(
+                        Actions.sequence(Actions.color(Color.RED, .1f), Actions.color(Color.WHITE, .1f)));
             }
         }
         boolean wasStationary = targetVelocity.isZero();
         targetVelocity.x = 0;
         targetVelocity.y = 0;
-        if (Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
+        if (isLeftPressed()) {
             targetVelocity.x -= 1;
         }
-        if (Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {
+        if (isRightPressed()) {
             targetVelocity.x += 1;
         }
-        if (Gdx.input.isKeyPressed(Input.Keys.DOWN)) {
+        if (isDownPressed()) {
             targetVelocity.y -= 1;
         }
-        if (Gdx.input.isKeyPressed(Input.Keys.UP)) {
+        if (isUpPressed()) {
             targetVelocity.y += 1;
         }
         boolean isStationary = targetVelocity.isZero();
@@ -81,6 +96,22 @@ public class OnGround extends PlayerState {
         if (player.hp <= 0) {
             player.stateMachine.changeState(player.dead);
         }
+    }
+
+    private boolean isUpPressed() {
+        return Gdx.input.isKeyPressed(Input.Keys.UP) || Gdx.input.isKeyPressed(Input.Keys.W);
+    }
+
+    private boolean isDownPressed() {
+        return Gdx.input.isKeyPressed(Input.Keys.DOWN) || Gdx.input.isKeyPressed(Input.Keys.S);
+    }
+
+    private boolean isRightPressed() {
+        return Gdx.input.isKeyPressed(Input.Keys.RIGHT) || Gdx.input.isKeyPressed(Input.Keys.D);
+    }
+
+    private boolean isLeftPressed() {
+        return Gdx.input.isKeyPressed(Input.Keys.LEFT) || Gdx.input.isKeyPressed(Input.Keys.A);
     }
 
     @Override

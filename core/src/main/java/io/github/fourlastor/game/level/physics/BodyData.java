@@ -37,7 +37,9 @@ public class BodyData {
         PLAYER,
         ENEMY,
         REWARD,
-        WEAPON_L,
-        WEAPON_R,
+        WEAPON_FRONT,
+        WEAPON_BACK,
+        WEAPON_TOP,
+        WEAPON_BOTTOM,
     }
 }

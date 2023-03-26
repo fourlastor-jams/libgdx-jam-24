@@ -84,7 +84,8 @@ public class WhipSystem extends IteratingSystem implements Telegraph {
             Enabled enabled = enabledFactory.get();
             Disabled disabled = disabledFactory.get();
             WhipStateMachine stateMachine = stateMachineFactory.create(entity, disabled);
-            entity.add(new Whip(stateMachine, enabled, disabled, request.actor));
+            entity.add(new Whip(
+                    stateMachine, enabled, disabled, request.front, request.back, request.top, request.bottom));
         }
 
         @Override

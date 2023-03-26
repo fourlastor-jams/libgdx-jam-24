@@ -2,6 +2,8 @@ package io.github.fourlastor.game.level.enemy.state;
 
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.utils.ImmutableArray;
+import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
@@ -9,6 +11,7 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import dagger.assisted.Assisted;
 import dagger.assisted.AssistedFactory;
 import dagger.assisted.AssistedInject;
+import io.github.fourlastor.game.SoundController;
 import io.github.fourlastor.game.level.component.Enemy;
 import io.github.fourlastor.game.level.physics.BodyHelper;
 
@@ -17,19 +20,29 @@ public class Knocked extends EnemyState {
     private final Vector2 targetVelocity = new Vector2();
     private final Vector2 impulse = new Vector2();
     private final BodyHelper helper;
+    private final SoundController soundController;
+    private final AssetManager assetManager;
 
     private float timer;
 
     @AssistedInject
-    public Knocked(@Assisted ImmutableArray<Entity> players, Dependencies mappers, BodyHelper helper) {
+    public Knocked(
+            @Assisted ImmutableArray<Entity> players,
+            Dependencies mappers,
+            BodyHelper helper,
+            SoundController soundController,
+            AssetManager assetManager) {
         super(mappers, players);
         this.helper = helper;
+        this.soundController = soundController;
+        this.assetManager = assetManager;
     }
 
     @Override
     public void enter(Entity entity) {
         super.enter(entity);
         timer = 0;
+        soundController.play(assetManager.get("audio/sounds/enemies/hurt.wav", Sound.class), .3f);
     }
 
     @Override
@@ -78,7 +91,7 @@ public class Knocked extends EnemyState {
     }
 
     private Vector2 findClosestPlayer() {
-        return bodies.get(players.get(0)).body.getPosition();
+        return bodies.get(playersEntities.get(0)).body.getPosition();
     }
 
     @AssistedFactory

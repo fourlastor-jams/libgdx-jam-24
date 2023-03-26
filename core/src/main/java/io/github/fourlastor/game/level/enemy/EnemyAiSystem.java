@@ -109,7 +109,7 @@ public class EnemyAiSystem extends IteratingSystem {
             Knocked knocked = knockedFactory.create(players);
             EnemyStateMachine stateMachine = stateMachineFactory.create(entity, alive);
             dispatcher.addListener(stateMachine, Message.ENEMY_HIT.ordinal());
-            entity.add(new Enemy(stateMachine, alive, dead, knocked, request.type));
+            entity.add(new Enemy(stateMachine, alive, dead, knocked, request.boss, request.type));
         }
 
         @Override
@@ -132,12 +132,18 @@ public class EnemyAiSystem extends IteratingSystem {
 
         @Override
         public void entityAdded(Entity entity) {
-            Set<RewardType> rewards = enemies.get(entity).type.rewards;
-            RewardType rewardType = random.getRandomElement(rewards);
-            Vector2 position = bodies.get(entity).body.getPosition();
-            getEngine().removeEntity(entity);
-            getEngine().addEntity(entitiesFactory.reward(rewardType, position));
+            Enemy enemy = enemies.get(entity);
             Player player = playerComponentMapper.get(players.get(0));
+            if (enemy.boss) {
+                player.upgradePowerUp();
+            }
+            Set<RewardType> rewards = enemy.type.rewards;
+            if (random.nextFloat() >= 0.3) {
+                RewardType rewardType = random.getRandomElement(rewards);
+                Vector2 position = bodies.get(entity).body.getPosition();
+                getEngine().addEntity(entitiesFactory.reward(rewardType, position));
+            }
+            getEngine().removeEntity(entity);
             player.killCounter++;
         }
 

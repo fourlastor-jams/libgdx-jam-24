@@ -12,16 +12,19 @@ import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.ai.msg.MessageDispatcher;
 import com.badlogic.gdx.ai.msg.Telegram;
 import com.badlogic.gdx.ai.msg.Telegraph;
+import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
-import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.utils.Align;
 import com.github.tommyettinger.textra.Font;
 import com.github.tommyettinger.textra.TextraLabel;
+import com.github.tommyettinger.textra.TypingLabel;
+import io.github.fourlastor.game.SoundController;
 import io.github.fourlastor.game.level.Message;
 import io.github.fourlastor.game.level.component.Player;
 import io.github.fourlastor.game.route.Router;
@@ -42,11 +45,14 @@ public class UiSystem extends EntitySystem implements Telegraph {
     private final InputMultiplexer inputMultiplexer;
     private final Router router;
     private final RetryProcessor retryProcessor = new RetryProcessor();
-    private Label timerLabel;
+    private final SoundController soundController;
+    private final AssetManager assetManager;
+    private TextraLabel timerLabel;
     private XpBar bar;
     private ImmutableArray<Entity> playerEntities;
     private TextraLabel killLabel;
-    private Image gameOver;
+    private TypingLabel restartLabel;
+    private Image gameOverImage;
     private boolean inGameOver = false;
 
     @Inject
@@ -58,7 +64,9 @@ public class UiSystem extends EntitySystem implements Telegraph {
             TextureAtlas textureAtlas,
             MessageDispatcher dispatcher,
             InputMultiplexer inputMultiplexer,
-            Router router) {
+            Router router,
+            SoundController soundController,
+            AssetManager assetManager) {
         this.stage = stage;
         this.bold = bold;
         this.regular = regular;
@@ -67,14 +75,17 @@ public class UiSystem extends EntitySystem implements Telegraph {
         this.dispatcher = dispatcher;
         this.inputMultiplexer = inputMultiplexer;
         this.router = router;
+        this.soundController = soundController;
+        this.assetManager = assetManager;
     }
 
     @Override
     public void addedToEngine(Engine engine) {
         super.addedToEngine(engine);
         timer = 0;
-        timerLabel = new Label("00:00", new Label.LabelStyle(bold, DARK_GRAY));
-        timerLabel.setPosition(stage.getWidth() / 2, stage.getHeight() - 40f, Align.center);
+        timerLabel = new TextraLabel("00:00", new Font(bold).scale(0.8f, 0.8f));
+        timerLabel.setColor(DARK_GRAY);
+        timerLabel.setPosition(stage.getWidth() / 2 - timerLabel.getPrefWidth() / 2, stage.getHeight() - 30f);
         stage.addActor(timerLabel);
         bar = new XpBar(textureAtlas, regular);
         bar.setScale(0.95f * stage.getWidth() / bar.getWidth());
@@ -97,6 +108,16 @@ public class UiSystem extends EntitySystem implements Telegraph {
         stage.addActor(killLabel);
         dispatcher.addListener(this, Message.GAME_OVER.ordinal());
         inputMultiplexer.addProcessor(retryProcessor);
+
+        gameOverImage = new Image(textureAtlas.findRegion("ui/game_over"));
+        gameOverImage.setPosition(stage.getWidth() / 2, stage.getHeight() / 2, Align.center);
+        gameOverImage.setVisible(false);
+        stage.addActor(gameOverImage);
+
+        this.restartLabel = new TypingLabel("{SICK}press 'R' to restart...", new Font(regular).scale(0.4f, 0.4f));
+        restartLabel.setPosition(stage.getWidth() / 2 - 55, stage.getHeight() / 2 - 28);
+        restartLabel.getColor().a = 0f;
+        stage.addActor(restartLabel);
     }
 
     @Override
@@ -125,18 +146,14 @@ public class UiSystem extends EntitySystem implements Telegraph {
         if (lastMinute != minutes || lastSecond != seconds) {
             lastSecond = seconds;
             lastMinute = minutes;
-            String text = (minutes > 10 ? minutes : "0" + minutes) + ":" + (seconds > 10 ? seconds : "0" + seconds);
+            String text = (minutes >= 10 ? minutes : "0" + minutes) + ":" + (seconds >= 10 ? seconds : "0" + seconds);
             timerLabel.setText(text);
         }
         stage.act(deltaTime);
         stage.draw();
-        float amount = player.xp / player.maxXp;
-        bar.setAmount(amount);
+        float amount = player.xp / player.nextLevelXp;
+        bar.setAmount(amount, player.level);
         killLabel.setText(String.valueOf(player.killCounter));
-        gameOver = new Image(textureAtlas.findRegion("ui/game_over"));
-        gameOver.setPosition(stage.getWidth() / 2, stage.getHeight() / 2, Align.center);
-        gameOver.setVisible(false);
-        stage.addActor(gameOver);
     }
 
     private Entity getPlayer() {
@@ -147,12 +164,15 @@ public class UiSystem extends EntitySystem implements Telegraph {
     public boolean handleMessage(Telegram msg) {
         if (msg.message == Message.GAME_OVER.ordinal()) {
             inGameOver = true;
-            gameOver.addAction(Actions.sequence(
+            gameOverImage.addAction(Actions.sequence(
                     Actions.run(() -> {
-                        gameOver.setVisible(true);
-                        gameOver.setPosition(gameOver.getX(), 0);
+                        gameOverImage.setVisible(true);
+                        gameOverImage.setPosition(gameOverImage.getX(), 0);
+                        soundController.play(
+                                assetManager.get("audio/sounds/382310__myfox14__game-over-arcade.wav", Sound.class));
                     }),
-                    Actions.moveTo(gameOver.getX(), gameOver.getY(), 1)));
+                    Actions.moveTo(gameOverImage.getX(), gameOverImage.getY(), 1)));
+            restartLabel.addAction(Actions.sequence(Actions.delay(1.5f), Actions.alpha(.85f, 3f)));
             return true;
         }
         return false;

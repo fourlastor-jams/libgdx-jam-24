@@ -6,22 +6,38 @@ import com.badlogic.gdx.ai.msg.Telegram;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.Group;
+import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.actions.Actions;
+import com.github.tommyettinger.textra.Font;
+import com.github.tommyettinger.textra.TextraLabel;
 import dagger.assisted.Assisted;
 import dagger.assisted.AssistedFactory;
 import dagger.assisted.AssistedInject;
 import io.github.fourlastor.game.level.component.Enemy;
 import io.github.fourlastor.game.level.physics.BodyHelper;
+import javax.inject.Named;
+import squidpony.squidmath.SilkRNG;
 
 public class Alive extends EnemyState {
 
     private final Vector2 targetVelocity = new Vector2();
     private final Vector2 impulse = new Vector2();
+    private final SilkRNG random;
     private final BodyHelper helper;
+    private final Font font;
 
     @AssistedInject
-    public Alive(@Assisted ImmutableArray<Entity> players, Dependencies mappers, BodyHelper helper) {
+    public Alive(
+            @Assisted ImmutableArray<Entity> players,
+            Dependencies mappers,
+            SilkRNG random,
+            BodyHelper helper,
+            @Named("hp") Font font) {
         super(mappers, players);
+        this.random = random;
         this.helper = helper;
+        this.font = font;
     }
 
     @Override
@@ -39,7 +55,7 @@ public class Alive extends EnemyState {
     }
 
     private Vector2 findClosestPlayer() {
-        return bodies.get(players.get(0)).body.getPosition();
+        return bodies.get(playersEntities.get(0)).body.getPosition();
     }
 
     @Override
@@ -48,7 +64,18 @@ public class Alive extends EnemyState {
             return false;
         }
         Enemy enemy = enemies.get(entity);
-        enemy.health -= 10;
+        int baseDamage = players.get(playersEntities.get(0)).weaponDamage;
+        float weaponDamage = baseDamage + baseDamage * (random.nextFloat(0.5f) - 0.25f);
+        Actor actor = actors.get(entity).actor;
+        Stage stage = actor.getStage();
+        TextraLabel hpLabel = new TextraLabel(String.valueOf(Math.round(weaponDamage)), font);
+        Group group = new Group();
+        group.setScale(0f);
+        group.addActor(hpLabel);
+        group.addAction(Actions.sequence(Actions.scaleTo(1 / 64f, 1 / 64f, 0.5f), Actions.removeActor()));
+        group.setPosition(actor.getX(), actor.getY() + actor.getHeight() * actor.getScaleY());
+        stage.addActor(group);
+        enemy.health -= weaponDamage;
         if (enemy.health <= 0) {
             enemy.stateMachine.changeState(enemy.dead);
         } else {

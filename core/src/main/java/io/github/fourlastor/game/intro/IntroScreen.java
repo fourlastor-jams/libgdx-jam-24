@@ -71,7 +71,7 @@ public class IntroScreen extends ScreenAdapter {
         stage = new Stage(viewport);
 
         introMusic = assetManager.get("audio/music/Edvard-grieg-morning-mood.ogg", Music.class);
-        soundController.play(introMusic, .5f, false);
+        soundController.play(introMusic, 1f, false);
         chatterMusic = assetManager.get(
                 "audio/music/362353__pandos__crowd-at-a-british-wedding-reception-venue (1).ogg", Music.class);
         soundController.play(chatterMusic, .5f, false);

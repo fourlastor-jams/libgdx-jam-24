@@ -159,8 +159,12 @@ public class PhysicsSystem extends EntitySystem {
         }
 
         private boolean isWeapon(Fixture fixture) {
+            //            return Object userData = fixture.getFilterData().maskBits == BodyData.Mask.WEAPON.bits;
             Object userData = fixture.getUserData();
-            return userData == BodyData.Type.WEAPON_L || userData == BodyData.Type.WEAPON_R;
+            return userData == BodyData.Type.WEAPON_FRONT
+                    || userData == BodyData.Type.WEAPON_BACK
+                    || userData == BodyData.Type.WEAPON_TOP
+                    || userData == BodyData.Type.WEAPON_BOTTOM;
         }
 
         private boolean isEnemy(Fixture fixture) {

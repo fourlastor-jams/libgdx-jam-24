@@ -8,6 +8,7 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.utils.JsonReader;
+import com.github.tommyettinger.textra.Font;
 import dagger.Module;
 import dagger.Provides;
 import io.github.fourlastor.harlequin.animation.AnimationNode;
@@ -53,7 +54,24 @@ public class AssetsModule {
         assetManager.load("audio/sounds/pickups/xp 1.wav", Sound.class);
         assetManager.load("audio/sounds/pickups/xp 2.wav", Sound.class);
         assetManager.load("audio/sounds/pickups/pasta.wav", Sound.class);
+
         assetManager.load("audio/sounds/enemies/death/pigeon 0.wav", Sound.class);
+        assetManager.load("audio/sounds/enemies/death/174499__unfa__boiling-towel.wav", Sound.class);
+        assetManager.load("audio/sounds/enemies/death/325462__insanity54__laugh001.ogg", Sound.class);
+        assetManager.load("audio/sounds/enemies/death/bear death.wav", Sound.class);
+        assetManager.load("audio/sounds/enemies/death/dragonQueen0.wav", Sound.class);
+        assetManager.load("audio/sounds/enemies/death/fox bark.wav", Sound.class);
+        assetManager.load("audio/sounds/enemies/death/fruit squish.wav", Sound.class);
+        assetManager.load("audio/sounds/enemies/death/horse.wav", Sound.class);
+        assetManager.load("audio/sounds/enemies/death/owl hoot.wav", Sound.class);
+        assetManager.load("audio/sounds/enemies/death/satchmo.wav", Sound.class);
+        assetManager.load("audio/sounds/enemies/hurt.wav", Sound.class);
+
+        assetManager.load("audio/sounds/player/whip.wav", Sound.class);
+        assetManager.load("audio/sounds/player/hurt.wav", Sound.class);
+
+        assetManager.load("audio/sounds/382310__myfox14__game-over-arcade.wav", Sound.class);
+
         assetManager.load("audio/sounds/intro/607252__d4xx__swoosh-1.wav", Sound.class);
         assetManager.load("audio/sounds/intro/607252__d4xx__swoosh-1_REVERSE.wav", Sound.class);
         assetManager.load("audio/sounds/intro/411494__inspectorj__jews-harp-single-a-h1.wav", Sound.class);
@@ -67,6 +85,7 @@ public class AssetsModule {
         assetManager.load("audio/music/Edvard-grieg-morning-mood.ogg", Music.class);
         assetManager.load(
                 "audio/music/362353__pandos__crowd-at-a-british-wedding-reception-venue (1).ogg", Music.class);
+        assetManager.load("audio/music/429347__doctor_dreamchip__2018-05-19.ogg", Music.class);
 
         assetManager.finishLoading();
         return assetManager;
@@ -101,5 +120,12 @@ public class AssetsModule {
         return new BitmapFont(
                 Gdx.files.internal("images/included/fonts/play-regular.fnt"),
                 atlas.findRegion("images/included/fonts/play-regular"));
+    }
+
+    @Provides
+    @Singleton
+    @Named("hp")
+    Font hpFont(@Named("regular") BitmapFont original) {
+        return new Font(original);
     }
 }
