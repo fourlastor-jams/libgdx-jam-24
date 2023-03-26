@@ -20,7 +20,6 @@ import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
-import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.utils.Align;
 import com.github.tommyettinger.textra.Font;
 import com.github.tommyettinger.textra.TextraLabel;
@@ -49,7 +48,7 @@ public class UiSystem extends EntitySystem implements Telegraph {
     private final RetryProcessor retryProcessor = new RetryProcessor();
     private final SoundController soundController;
     private final AssetManager assetManager;
-    private Label timerLabel;
+    private TextraLabel timerLabel;
     private XpBar bar;
     private ImmutableArray<Entity> playerEntities;
     private TextraLabel killLabel;
@@ -83,8 +82,9 @@ public class UiSystem extends EntitySystem implements Telegraph {
     public void addedToEngine(Engine engine) {
         super.addedToEngine(engine);
         timer = 0;
-        timerLabel = new Label("00:00", new Label.LabelStyle(bold, DARK_GRAY));
-        timerLabel.setPosition(stage.getWidth() / 2, stage.getHeight() - 40f, Align.center);
+        timerLabel = new TextraLabel("00:00", new Font(bold).scale(0.8f, 0.8f));
+        timerLabel.setColor(DARK_GRAY);
+        timerLabel.setPosition(stage.getWidth() / 2 - timerLabel.getPrefWidth() / 2, stage.getHeight() - 30f);
         stage.addActor(timerLabel);
         bar = new XpBar(textureAtlas, regular);
         bar.setScale(0.95f * stage.getWidth() / bar.getWidth());
