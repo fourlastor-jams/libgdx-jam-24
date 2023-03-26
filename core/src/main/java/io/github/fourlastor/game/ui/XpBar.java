@@ -75,7 +75,6 @@ public class XpBar extends WidgetGroup {
     }
 
     public void setAmount(float amount, int level) {
-        System.out.println(level);
         amount = Math.min(1f, Math.max(0f, amount));
         if (amount == this.amount && level == this.level) {
             return;
