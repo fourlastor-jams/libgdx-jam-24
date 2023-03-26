@@ -60,6 +60,8 @@ public class AssetsModule {
 
         assetManager.load("audio/sounds/player/whip.wav", Sound.class);
 
+        assetManager.load("audio/sounds/382310__myfox14__game-over-arcade.wav", Sound.class);
+
         assetManager.load("audio/sounds/intro/607252__d4xx__swoosh-1.wav", Sound.class);
         assetManager.load("audio/sounds/intro/607252__d4xx__swoosh-1_REVERSE.wav", Sound.class);
         assetManager.load("audio/sounds/intro/411494__inspectorj__jews-harp-single-a-h1.wav", Sound.class);

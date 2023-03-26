@@ -12,6 +12,8 @@ import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.ai.msg.MessageDispatcher;
 import com.badlogic.gdx.ai.msg.Telegram;
 import com.badlogic.gdx.ai.msg.Telegraph;
+import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
@@ -22,6 +24,8 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.utils.Align;
 import com.github.tommyettinger.textra.Font;
 import com.github.tommyettinger.textra.TextraLabel;
+
+import io.github.fourlastor.game.SoundController;
 import io.github.fourlastor.game.level.Message;
 import io.github.fourlastor.game.level.component.Player;
 import io.github.fourlastor.game.route.Router;
@@ -42,6 +46,8 @@ public class UiSystem extends EntitySystem implements Telegraph {
     private final InputMultiplexer inputMultiplexer;
     private final Router router;
     private final RetryProcessor retryProcessor = new RetryProcessor();
+    private final SoundController soundController;
+    private final AssetManager assetManager;
     private Label timerLabel;
     private XpBar bar;
     private ImmutableArray<Entity> playerEntities;
@@ -58,7 +64,7 @@ public class UiSystem extends EntitySystem implements Telegraph {
             TextureAtlas textureAtlas,
             MessageDispatcher dispatcher,
             InputMultiplexer inputMultiplexer,
-            Router router) {
+            Router router, SoundController soundController, AssetManager assetManager) {
         this.stage = stage;
         this.bold = bold;
         this.regular = regular;
@@ -67,6 +73,8 @@ public class UiSystem extends EntitySystem implements Telegraph {
         this.dispatcher = dispatcher;
         this.inputMultiplexer = inputMultiplexer;
         this.router = router;
+        this.soundController = soundController;
+        this.assetManager = assetManager;
     }
 
     @Override
@@ -151,6 +159,7 @@ public class UiSystem extends EntitySystem implements Telegraph {
                     Actions.run(() -> {
                         gameOver.setVisible(true);
                         gameOver.setPosition(gameOver.getX(), 0);
+                        soundController.play(assetManager.get("audio/sounds/382310__myfox14__game-over-arcade.wav", Sound.class));
                     }),
                     Actions.moveTo(gameOver.getX(), gameOver.getY(), 1)));
             return true;
