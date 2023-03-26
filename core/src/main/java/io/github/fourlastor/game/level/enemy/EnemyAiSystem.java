@@ -110,7 +110,7 @@ public class EnemyAiSystem extends IteratingSystem {
             Knocked knocked = knockedFactory.create(players);
             EnemyStateMachine stateMachine = stateMachineFactory.create(entity, alive);
             dispatcher.addListener(stateMachine, Message.ENEMY_HIT.ordinal());
-            entity.add(new Enemy(stateMachine, alive, dead, knocked, request.type));
+            entity.add(new Enemy(stateMachine, alive, dead, knocked, request.boss, request.type));
         }
 
         @Override

@@ -173,19 +173,19 @@ public class EntitiesFactory {
         return entity;
     }
 
-    public Entity enemy(Vector2 position, EnemyType type) {
+    public Entity enemy(Vector2 position, EnemyType type, boolean boss) {
         Entity entity = new Entity();
 
         float period = type.frameDuration + random.nextFloat() * -type.frameDuration / 2f;
         Animation<TextureRegionDrawable> animation =
-                new GdxAnimation<>(period, enemyWalk(type.animationPath), Animation.PlayMode.LOOP_PING_PONG);
+                new GdxAnimation<>(period, enemyWalk(type.animationPath, boss), Animation.PlayMode.LOOP_PING_PONG);
 
         Image image = new AnimatedImage(animation);
         image.setScale(SCALE);
         image.setAlign(Align.center);
         image.addAction(Actions.forever(Actions.sequence(Actions.rotateTo(-7, 0.7f), Actions.rotateTo(7, 0.7f))));
         entity.add(new ActorComponent(image, ActorComponent.Layer.ENEMIES));
-        entity.add(new Enemy.Request(type));
+        entity.add(new Enemy.Request(type, boss));
         entity.add(new BodyBuilderComponent(world -> {
             BodyDef bodyDef = new BodyDef();
             bodyDef.position.set(position);
@@ -205,7 +205,8 @@ public class EntitiesFactory {
         return entity;
     }
 
-    private Array<TextureRegionDrawable> enemyWalk(String basePath) {
+    private Array<TextureRegionDrawable> enemyWalk(String basePath, boolean boss) {
+        basePath = boss ? basePath + "/boss" : basePath;
         String path = "enemy/" + basePath + "/walking";
         if (!enemyRegions.containsKey(path)) {
             Array<TextureAtlas.AtlasRegion> regions = textureAtlas.findRegions(path);
