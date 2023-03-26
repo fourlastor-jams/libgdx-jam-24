@@ -15,6 +15,7 @@ import io.github.fourlastor.game.level.component.BodyComponent;
 import io.github.fourlastor.game.level.component.Whip;
 import io.github.fourlastor.game.level.weapon.whip.state.Disabled;
 import io.github.fourlastor.game.level.weapon.whip.state.Enabled;
+
 import javax.inject.Inject;
 import javax.inject.Provider;
 
@@ -84,7 +85,7 @@ public class WhipSystem extends IteratingSystem implements Telegraph {
             Enabled enabled = enabledFactory.get();
             Disabled disabled = disabledFactory.get();
             WhipStateMachine stateMachine = stateMachineFactory.create(entity, disabled);
-            entity.add(new Whip(stateMachine, enabled, disabled, request.actor));
+            entity.add(new Whip(stateMachine, enabled, disabled, request.front, request.back, request.top, request.bottom));
         }
 
         @Override

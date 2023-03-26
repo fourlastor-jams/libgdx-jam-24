@@ -11,6 +11,7 @@ import io.github.fourlastor.game.level.component.BodyComponent;
 import io.github.fourlastor.game.level.component.Whip;
 import io.github.fourlastor.game.level.physics.BodyData;
 import io.github.fourlastor.game.level.physics.BodyHelper;
+
 import javax.inject.Inject;
 
 public abstract class WhipState implements State<Entity> {
@@ -67,20 +68,29 @@ public abstract class WhipState implements State<Entity> {
     private void updateHitBoxes(Body body, boolean flipped) {
         for (Fixture fixture : body.getFixtureList()) {
             Object type = fixture.getUserData();
-            if (type != BodyData.Type.WEAPON_L && type != BodyData.Type.WEAPON_R) {
+            if (!isWeapon(type)) {
                 continue;
             }
-            BodyData.Type target = flipped ? BodyData.Type.WEAPON_L : BodyData.Type.WEAPON_R;
+            // TODO if updated, weapon L and R can show up together
+            BodyData.Type target = flipped ? BodyData.Type.WEAPON_FRONT : BodyData.Type.WEAPON_BACK;
             BodyData.Mask mask = canCollide() && target == type ? BodyData.Mask.WEAPON : BodyData.Mask.DISABLED;
             bodyHelper.updateFilterData(fixture, mask);
         }
     }
 
+    private boolean isWeapon(Object type) {
+        return type == BodyData.Type.WEAPON_FRONT || type == BodyData.Type.WEAPON_BACK || type == BodyData.Type.WEAPON_TOP || type == BodyData.Type.WEAPON_BOTTOM;
+    }
+
     @Override
     public void update(Entity entity) {
         Whip whip = whips.get(entity);
+        // player is flipped
         boolean flipped = actors.get(entity).actor.getScaleX() < 0;
-        whip.actor.setVisible(canCollide());
+        whip.front.setVisible(canCollide());
+        whip.back.setVisible(false);
+        whip.top.setVisible(false);
+        whip.bottom.setVisible(false);
         updateHitBoxes(bodies.get(entity).body, flipped);
         timer += delta();
         if (timer >= timer()) {

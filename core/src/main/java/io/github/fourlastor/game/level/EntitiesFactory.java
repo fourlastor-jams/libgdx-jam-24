@@ -146,13 +146,13 @@ public class EntitiesFactory {
             whipDef.filter.categoryBits = BodyData.Category.WEAPON.bits;
             whipDef.filter.maskBits = BodyData.Mask.WEAPON.bits;
             whipShape.setAsBox(hx, hy, frontShape, 0f);
-            body.createFixture(whipDef).setUserData(BodyData.Type.WEAPON_R);
+            body.createFixture(whipDef).setUserData(BodyData.Type.WEAPON_BACK);
             whipShape.setAsBox(hx, hy, backShape, 0f);
-            body.createFixture(whipDef).setUserData(BodyData.Type.WEAPON_L);
+            body.createFixture(whipDef).setUserData(BodyData.Type.WEAPON_FRONT);
             whipShape.setAsBox(hy, hx, topShape, 0f);
-            body.createFixture(whipDef).setUserData(BodyData.Type.WEAPON_T);
+            body.createFixture(whipDef).setUserData(BodyData.Type.WEAPON_TOP);
             whipShape.setAsBox(hy, hx, bottomShape, 0f);
-            body.createFixture(whipDef).setUserData(BodyData.Type.WEAPON_B);
+            body.createFixture(whipDef).setUserData(BodyData.Type.WEAPON_BOTTOM);
             whipShape.dispose();
             shape.dispose();
             return body;
@@ -160,7 +160,7 @@ public class EntitiesFactory {
         entity.add(new ActorComponent(group, ActorComponent.Layer.CHARACTER));
         entity.add(new PlayerRequest(camera, image));
         entity.add(new Animated(image));
-        entity.add(new Whip.Request(frontWhip));
+        entity.add(new Whip.Request(frontWhip, backWhip, topWhip, bottomWhip));
         return entity;
     }
 
