@@ -2,15 +2,13 @@ package io.github.fourlastor.game.level;
 
 import com.badlogic.ashley.core.Engine;
 import com.badlogic.ashley.core.Entity;
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import io.github.fourlastor.game.SoundController;
-import io.github.fourlastor.game.level.component.Player;
+
 import javax.inject.Inject;
 
 public class LevelScreen extends ScreenAdapter {
@@ -20,7 +18,6 @@ public class LevelScreen extends ScreenAdapter {
     private final EntitiesFactory entitiesFactory;
 
     private final World world;
-    private Entity player;
 
     @Inject
     public LevelScreen(
@@ -47,14 +44,11 @@ public class LevelScreen extends ScreenAdapter {
     @Override
     public void render(float delta) {
         engine.update(delta);
-        if (Gdx.input.isKeyJustPressed(Input.Keys.Y)) {
-            player.getComponent(Player.class).addXp(50f);
-        }
     }
 
     @Override
     public void show() {
-        player = entitiesFactory.player();
+        Entity player = entitiesFactory.player();
         engine.addEntity(player);
         engine.addEntity(entitiesFactory.bg());
         engine.addEntity(entitiesFactory.hpBar(player));
