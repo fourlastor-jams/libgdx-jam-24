@@ -8,7 +8,6 @@ import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import io.github.fourlastor.game.SoundController;
-
 import javax.inject.Inject;
 
 public class LevelScreen extends ScreenAdapter {
