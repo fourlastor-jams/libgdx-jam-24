@@ -150,8 +150,8 @@ public class UiSystem extends EntitySystem implements Telegraph {
         }
         stage.act(deltaTime);
         stage.draw();
-        float amount = player.xp / player.maxXp;
-        bar.setAmount(amount);
+        float amount = player.xp / player.nextLevelXp;
+        bar.setAmount(amount, player.level);
         killLabel.setText(String.valueOf(player.killCounter));
     }
 

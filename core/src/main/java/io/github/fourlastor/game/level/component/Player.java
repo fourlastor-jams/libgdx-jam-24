@@ -12,6 +12,7 @@ import io.github.fourlastor.game.ui.PlayerActor;
  */
 public class Player implements Component {
 
+    private static final float NEXT_LEVEL_RATIO = 1.14f;
     public final Camera camera;
     public final InputStateMachine stateMachine;
     public final OnGround onGround;
@@ -21,7 +22,10 @@ public class Player implements Component {
     public final PlayerActor actor;
     public float movementTime = 0f;
     public float xp = 0f;
-    public float maxXp = 1000f;
+
+    public int level = 1;
+    private float levelXpAddition = 100;
+    public float nextLevelXp = levelXpAddition; // 100, 200, 300, 500, 1000
     public float maxHp = 1000f;
     public float hp = maxHp;
     public int killCounter = 0;
@@ -39,6 +43,17 @@ public class Player implements Component {
         this.dead = dead;
         this.settings = settings;
         this.actor = actor;
+    }
+
+    public void addXp(float newXp) {
+        xp += newXp;
+        if (xp >= nextLevelXp) {
+            float remainder = xp - nextLevelXp;
+            level += 1;
+            levelXpAddition *= NEXT_LEVEL_RATIO;
+            nextLevelXp += levelXpAddition;
+            xp = remainder;
+        }
     }
 
     public static class Settings {

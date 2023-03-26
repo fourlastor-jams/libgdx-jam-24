@@ -2,32 +2,32 @@ package io.github.fourlastor.game.level;
 
 import com.badlogic.ashley.core.Engine;
 import com.badlogic.ashley.core.Entity;
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.viewport.Viewport;
-import javax.inject.Inject;
-
 import io.github.fourlastor.game.SoundController;
+import io.github.fourlastor.game.level.component.Player;
+
+import javax.inject.Inject;
 
 public class LevelScreen extends ScreenAdapter {
 
     private final Engine engine;
     private final Viewport viewport;
     private final EntitiesFactory entitiesFactory;
-    private final SoundController soundController;
-    private final AssetManager assetManager;
 
     private final World world;
+    private Entity player;
 
     @Inject
     public LevelScreen(Engine engine, Viewport viewport, EntitiesFactory entitiesFactory, SoundController soundController, AssetManager assetManager, World world) {
         this.engine = engine;
         this.viewport = viewport;
         this.entitiesFactory = entitiesFactory;
-        this.soundController = soundController;
-        this.assetManager = assetManager;
         this.world = world;
 
         Music levelMusic = assetManager.get("audio/music/429347__doctor_dreamchip__2018-05-19.ogg");
@@ -42,11 +42,14 @@ public class LevelScreen extends ScreenAdapter {
     @Override
     public void render(float delta) {
         engine.update(delta);
+        if (Gdx.input.isKeyJustPressed(Input.Keys.Y)) {
+            player.getComponent(Player.class).addXp(50f);
+        }
     }
 
     @Override
     public void show() {
-        Entity player = entitiesFactory.player();
+        player = entitiesFactory.player();
         engine.addEntity(player);
         engine.addEntity(entitiesFactory.bg());
         engine.addEntity(entitiesFactory.hpBar(player));
