@@ -1,5 +1,6 @@
 package io.github.fourlastor.game.level.enemy;
 
+import com.badlogic.ashley.core.ComponentMapper;
 import com.badlogic.ashley.core.Engine;
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.EntitySystem;
@@ -8,6 +9,7 @@ import com.badlogic.ashley.utils.ImmutableArray;
 import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.math.Vector2;
 import io.github.fourlastor.game.level.EntitiesFactory;
+import io.github.fourlastor.game.level.component.BodyComponent;
 import io.github.fourlastor.game.level.component.Enemy;
 import io.github.fourlastor.game.level.reward.RewardType;
 import squidpony.squidmath.SilkRNG;
@@ -19,10 +21,13 @@ import static java.util.Arrays.asList;
 
 public class EnemySpawnSystem extends EntitySystem {
     private static final Family ENEMY_FAMILY = Family.all(Enemy.class).get();
-    private static final float SPAWN_INTERVAL = 2f;
+    private static final float SPAWN_INTERVAL = 5f;
     private static final float PASTA_INTERVAL = 15f;
     private static final int MAX_ENEMIES_COUNT = 300;
-    private static final int SPAWN_ENEMIES_COUNT = 5;
+    private static final int SPAWN_ENEMIES_COUNT = 30;
+    private static final float MAX_VIEWPORT_GARBAGE = 2f;
+    private static final float END_SPAWN_LIMIT = MAX_VIEWPORT_GARBAGE - 0.1f;
+    private static final float START_SPAWN_LIMIT = 1.3f;
 
     private final LinkedList<EnemyWave> waves = new LinkedList<>(asList(
             new EnemyWave(asList(EnemyType.PIGEON_0, EnemyType.PIGEON_1), 30f),
@@ -33,7 +38,10 @@ public class EnemySpawnSystem extends EntitySystem {
             new EnemyWave(asList(EnemyType.HYDROLIEN, EnemyType.LAVA_EATER), 150f),
             new EnemyWave(asList(EnemyType.LYZE, EnemyType.PANDA), 180f)));
 
+    private final ComponentMapper<BodyComponent> bodies;
+
     private EnemyWave wave = waves.poll();
+    private int currentWave = 1;
 
     private final Camera camera;
     private final EntitiesFactory factory;
@@ -45,7 +53,8 @@ public class EnemySpawnSystem extends EntitySystem {
     private ImmutableArray<Entity> entities;
 
     @Inject
-    public EnemySpawnSystem(Camera camera, EntitiesFactory factory, SilkRNG random) {
+    public EnemySpawnSystem(ComponentMapper<BodyComponent> bodies, Camera camera, EntitiesFactory factory, SilkRNG random) {
+        this.bodies = bodies;
         this.camera = camera;
         this.factory = factory;
         this.random = random;
@@ -67,6 +76,7 @@ public class EnemySpawnSystem extends EntitySystem {
         if (wave.time <= totalTime) {
             if (!waves.isEmpty()) {
                 wave = waves.poll();
+                currentWave += 1;
             }
         }
         // spawning enemies
@@ -74,9 +84,20 @@ public class EnemySpawnSystem extends EntitySystem {
             spawnTime = 0f;
             spawnEnemies();
         }
+        // spawn pasta
         if (pastaTime > PASTA_INTERVAL) {
             pastaTime = 0f;
             spawnPasta();
+        }
+        // cleanup enemies
+        for (Entity enemy : entities) {
+            Vector2 position = bodies.get(enemy).body.getPosition();
+            if (
+                    camera.position.dst(position.x, position.y, camera.position.z)
+                            > viewportRadius(camera.viewportWidth, camera.viewportHeight) * MAX_VIEWPORT_GARBAGE
+            ) {
+                getEngine().removeEntity(enemy);
+            }
         }
     }
 
@@ -85,29 +106,34 @@ public class EnemySpawnSystem extends EntitySystem {
     }
 
     private Vector2 randomLocationOutsideViewport() {
-        boolean horizontalSpawn = random.nextBoolean();
-        boolean atStart = random.nextBoolean();
-        float gradient = random.nextFloat();
-        float left = camera.position.x - camera.viewportWidth / 2;
-        float right = left + camera.viewportWidth;
-        float bottom = camera.position.y - camera.viewportHeight / 2;
-        float top = bottom + camera.viewportHeight;
-        float x;
-        float y;
-        if (horizontalSpawn) {
-            x = camera.viewportWidth * gradient + left;
-            y = atStart ? bottom : top;
-        } else {
-            x = atStart ? left : right;
-            y = camera.viewportHeight * gradient + bottom;
-        }
+        return randomLocationOutsideViewport(0);
+    }
+
+    private final Vector2 ray = new Vector2();
+
+    private Vector2 randomLocationOutsideViewport(float paddingGradient) {
+        float viewportWidth = camera.viewportWidth;
+        float viewportHeight = camera.viewportHeight;
+        // pick a random angle
+        double alpha = random.nextDouble(Math.PI * 2);
+        float viewportRadius = viewportRadius(viewportWidth, viewportHeight);
+        float radius = viewportRadius * paddingGradient;
+        float x = camera.position.x + (float) (Math.cos(alpha) * radius);
+        float y = camera.position.y + (float) (Math.sin(alpha) * radius);
+
         return new Vector2(x, y);
+    }
+
+    private float viewportRadius(float viewportWidth, float viewportHeight) {
+        return ray.set(camera.position.x + viewportWidth / 2, camera.position.y + viewportHeight / 2).dst(camera.position.x, camera.position.y);
     }
 
     private void spawnEnemies() {
         Engine engine = getEngine();
-        for (int i = 0; i < SPAWN_ENEMIES_COUNT; i++) {
-            Entity enemy = factory.enemy(randomLocationOutsideViewport(), randomType());
+        for (int i = 0; i < SPAWN_ENEMIES_COUNT * currentWave; i++) {
+            Entity enemy = factory.enemy(randomLocationOutsideViewport(
+                    START_SPAWN_LIMIT + random.nextFloat() * (END_SPAWN_LIMIT - START_SPAWN_LIMIT)
+            ), randomType());
             engine.addEntity(enemy);
         }
     }
