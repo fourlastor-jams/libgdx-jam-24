@@ -39,5 +39,7 @@ public class BodyData {
         REWARD,
         WEAPON_L,
         WEAPON_R,
+        WEAPON_T,
+        WEAPON_B,
     }
 }

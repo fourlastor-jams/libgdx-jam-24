@@ -38,11 +38,12 @@ import io.github.fourlastor.game.ui.PlayerActor;
 import io.github.fourlastor.harlequin.animation.Animation;
 import io.github.fourlastor.harlequin.animation.GdxAnimation;
 import io.github.fourlastor.harlequin.ui.AnimatedImage;
+import squidpony.squidmath.SilkRNG;
+
+import javax.inject.Inject;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
-import javax.inject.Inject;
-import squidpony.squidmath.SilkRNG;
 
 /**
  * Factory to create various entities: player, buildings, enemies..
@@ -91,13 +92,21 @@ public class EntitiesFactory {
         effect.setPosition(1f, 1f);
         PlayerActor image = new PlayerActor(animation, effect);
 
-        Image whipActor = new Image(textureAtlas.findRegion("character/whip"));
-        float whipW = whipActor.getWidth();
-        float whipH = whipActor.getHeight();
-        whipActor.setSize(whipW, whipH);
+        Image frontWhip = new Image(textureAtlas.findRegion("character/whip"));
+        float whipW = frontWhip.getWidth();
+        float whipH = frontWhip.getHeight();
         int whipX = 24;
         int whipY = 4;
-        whipActor.setPosition(whipX, whipY);
+        frontWhip.setPosition(whipX, whipY);
+        Image backWhip = new Image(textureAtlas.findRegion("character/whip"));
+        backWhip.setPosition(-whipX + 18, whipY);
+        backWhip.setScale(-1, 1);
+        Image topWhip = new Image(textureAtlas.findRegion("character/whip"));
+        topWhip.setPosition(27, 41);
+        topWhip.rotateBy(90);
+        Image bottomWhip = new Image(textureAtlas.findRegion("character/whip"));
+        bottomWhip.rotateBy(-90);
+        bottomWhip.setPosition(-7, -2);
 
         Group group = new Group();
         group.setScale(SCALE);
@@ -106,7 +115,10 @@ public class EntitiesFactory {
         float playerHeight = image.getHeight();
         group.setSize(playerWidth, playerHeight);
         group.addActor(image);
-        group.addActor(whipActor);
+        group.addActor(frontWhip);
+        group.addActor(backWhip);
+        group.addActor(topWhip);
+        group.addActor(bottomWhip);
         entity.add(new BodyBuilderComponent(world -> {
             BodyDef bodyDef = new BodyDef();
             bodyDef.type = BodyDef.BodyType.KinematicBody;
@@ -125,22 +137,22 @@ public class EntitiesFactory {
             whipShape.setAsBox(43f * SCALE / 2, 2f * SCALE / 2, new Vector2(-19f * SCALE / 2, 18f * SCALE), 0f);
             float hx = whipW * SCALE / 2f;
             float hy = whipH * SCALE / 2f;
-            whipShape.setAsBox(
-                    hx,
-                    hy,
-                    new Vector2((whipX - playerWidth / 2) * SCALE + hx, (whipY - playerHeight / 2) * SCALE + hy),
-                    0f);
+            Vector2 frontShape = new Vector2((whipX - playerWidth / 2) * SCALE + hx, (whipY - playerHeight / 2) * SCALE + hy);
+            Vector2 backShape = new Vector2((-whipX + playerWidth / 2) * SCALE - hx, (whipY - playerHeight / 2) * SCALE + hy);
+            Vector2 topShape = new Vector2((-whipX - 2+ playerWidth / 2) * SCALE + hy, (whipY - playerHeight / 2) * SCALE + 2 * hx );
+            Vector2 bottomShape = new Vector2((-whipX - 2 + playerWidth / 2) * SCALE + hy, (whipY - playerHeight / 2) * SCALE - hx - 0.2f);
             whipDef.shape = whipShape;
             whipDef.isSensor = true;
             whipDef.filter.categoryBits = BodyData.Category.WEAPON.bits;
             whipDef.filter.maskBits = BodyData.Mask.WEAPON.bits;
+            whipShape.setAsBox(hx, hy, frontShape, 0f);
             body.createFixture(whipDef).setUserData(BodyData.Type.WEAPON_R);
-            whipShape.setAsBox(
-                    hx,
-                    hy,
-                    new Vector2((-whipX + playerWidth / 2) * SCALE - hx, (whipY - playerHeight / 2) * SCALE + hy),
-                    0f);
+            whipShape.setAsBox(hx, hy, backShape, 0f);
             body.createFixture(whipDef).setUserData(BodyData.Type.WEAPON_L);
+            whipShape.setAsBox(hy, hx, topShape, 0f);
+            body.createFixture(whipDef).setUserData(BodyData.Type.WEAPON_T);
+            whipShape.setAsBox(hy, hx, bottomShape, 0f);
+            body.createFixture(whipDef).setUserData(BodyData.Type.WEAPON_B);
             whipShape.dispose();
             shape.dispose();
             return body;
@@ -148,7 +160,7 @@ public class EntitiesFactory {
         entity.add(new ActorComponent(group, ActorComponent.Layer.CHARACTER));
         entity.add(new PlayerRequest(camera, image));
         entity.add(new Animated(image));
-        entity.add(new Whip.Request(whipActor));
+        entity.add(new Whip.Request(frontWhip));
         return entity;
     }
 
