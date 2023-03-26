@@ -5,7 +5,6 @@ import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.audio.Sound;
 import io.github.fourlastor.game.SoundController;
 import io.github.fourlastor.game.level.component.Whip;
-
 import javax.inject.Inject;
 
 public class Enabled extends WhipState {

@@ -16,7 +16,14 @@ public class Whip implements Component {
     public final Actor top;
     public final Actor bottom;
 
-    public Whip(WhipStateMachine stateMachine, Enabled enabled, Disabled disabled, Actor front, Actor back, Actor top, Actor bottom) {
+    public Whip(
+            WhipStateMachine stateMachine,
+            Enabled enabled,
+            Disabled disabled,
+            Actor front,
+            Actor back,
+            Actor top,
+            Actor bottom) {
         this.stateMachine = stateMachine;
         this.enabled = enabled;
         this.disabled = disabled;
@@ -27,7 +34,6 @@ public class Whip implements Component {
     }
 
     public static class Request implements Component {
-
 
         public final Actor front;
         public final Actor back;

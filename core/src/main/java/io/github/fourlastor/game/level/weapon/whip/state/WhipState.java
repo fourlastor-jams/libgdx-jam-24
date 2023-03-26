@@ -12,7 +12,6 @@ import io.github.fourlastor.game.level.component.Player;
 import io.github.fourlastor.game.level.component.Whip;
 import io.github.fourlastor.game.level.physics.BodyData;
 import io.github.fourlastor.game.level.physics.BodyHelper;
-
 import javax.inject.Inject;
 
 public abstract class WhipState implements State<Entity> {
@@ -37,7 +36,8 @@ public abstract class WhipState implements State<Entity> {
                 ComponentMapper<ActorComponent> actors,
                 ComponentMapper<BodyComponent> bodies,
                 ComponentMapper<Whip> whips,
-                ComponentMapper<Player> players, BodyHelper bodyHelper) {
+                ComponentMapper<Player> players,
+                BodyHelper bodyHelper) {
             this.actors = actors;
             this.bodies = bodies;
             this.whips = whips;
@@ -99,7 +99,10 @@ public abstract class WhipState implements State<Entity> {
     }
 
     private boolean isWeapon(Object type) {
-        return type == BodyData.Type.WEAPON_FRONT || type == BodyData.Type.WEAPON_BACK || type == BodyData.Type.WEAPON_TOP || type == BodyData.Type.WEAPON_BOTTOM;
+        return type == BodyData.Type.WEAPON_FRONT
+                || type == BodyData.Type.WEAPON_BACK
+                || type == BodyData.Type.WEAPON_TOP
+                || type == BodyData.Type.WEAPON_BOTTOM;
     }
 
     @Override

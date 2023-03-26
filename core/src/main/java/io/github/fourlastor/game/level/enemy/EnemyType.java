@@ -2,7 +2,6 @@ package io.github.fourlastor.game.level.enemy;
 
 import io.github.fourlastor.game.level.component.Player.Settings;
 import io.github.fourlastor.game.level.reward.RewardType;
-
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
@@ -21,7 +20,16 @@ public enum EnemyType {
     DRAGON_QUEEN(0.5f, 60, 0.2f, 0.2f, "dragon-queen", 10, "dragonQueen0.wav", RewardType.XP_M, RewardType.XP_S),
     RAELEUS(0.5f, 50, 0.3f, 0.2f, "raeleus", 10, "horse.wav", RewardType.XP_M, RewardType.XP_S),
     HYDROLIEN(0.5f, 80, 0.3f, 0.2f, "hydrolien", 10, "fox bark.wav", RewardType.XP_M, RewardType.XP_S),
-    LAVA_EATER(0.5f, 80, 0.3f, 0.2f, "lava-eater", 10, "174499__unfa__boiling-towel.wav", RewardType.XP_M, RewardType.XP_S),
+    LAVA_EATER(
+            0.5f,
+            80,
+            0.3f,
+            0.2f,
+            "lava-eater",
+            10,
+            "174499__unfa__boiling-towel.wav",
+            RewardType.XP_M,
+            RewardType.XP_S),
     LYZE(0.5f, 80, 0.3f, 0.2f, "lyze", 10, "owl hoot.wav", RewardType.XP_M, RewardType.XP_S),
     PANDA(0.5f, 80, 0.3f, 0.2f, "panda", 10, "bear death.wav", RewardType.XP_M, RewardType.XP_S),
     ;
@@ -42,7 +50,8 @@ public enum EnemyType {
             float frameDuration,
             String animationPath,
             float damage,
-            String deathSound, RewardType... rewards) {
+            String deathSound,
+            RewardType... rewards) {
         this.size = size;
         this.maxHealth = maxHealth;
         this.speed = speed * Settings.PLAYER_SPEED;

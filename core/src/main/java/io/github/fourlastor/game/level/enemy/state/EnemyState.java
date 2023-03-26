@@ -9,7 +9,6 @@ import io.github.fourlastor.game.level.component.ActorComponent;
 import io.github.fourlastor.game.level.component.BodyComponent;
 import io.github.fourlastor.game.level.component.Enemy;
 import io.github.fourlastor.game.level.component.Player;
-
 import javax.inject.Inject;
 
 public abstract class EnemyState implements State<Entity> {

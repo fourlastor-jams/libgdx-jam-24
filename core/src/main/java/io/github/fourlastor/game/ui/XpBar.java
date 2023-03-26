@@ -102,10 +102,7 @@ public class XpBar extends WidgetGroup {
                                 filledEnd.setVisible(visible);
                                 levelLabel.restart();
                             }),
-                            setProgressAction
-
-                    )
-            );
+                            setProgressAction));
         }
         filledMiddle.addAction(action);
     }

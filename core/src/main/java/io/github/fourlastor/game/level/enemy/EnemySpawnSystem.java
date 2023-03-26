@@ -1,5 +1,7 @@
 package io.github.fourlastor.game.level.enemy;
 
+import static java.util.Arrays.asList;
+
 import com.badlogic.ashley.core.ComponentMapper;
 import com.badlogic.ashley.core.Engine;
 import com.badlogic.ashley.core.Entity;
@@ -12,14 +14,11 @@ import io.github.fourlastor.game.level.EntitiesFactory;
 import io.github.fourlastor.game.level.component.BodyComponent;
 import io.github.fourlastor.game.level.component.Enemy;
 import io.github.fourlastor.game.level.reward.RewardType;
-import squidpony.squidmath.SilkRNG;
-
-import javax.inject.Inject;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
-
-import static java.util.Arrays.asList;
+import javax.inject.Inject;
+import squidpony.squidmath.SilkRNG;
 
 public class EnemySpawnSystem extends EntitySystem {
     private static final Family ENEMY_FAMILY = Family.all(Enemy.class).get();
@@ -34,12 +33,21 @@ public class EnemySpawnSystem extends EntitySystem {
     private final LinkedList<EnemyWave> waves = new LinkedList<>(asList(
             new EnemyWave(asList(EnemyType.PIGEON_0, EnemyType.PIGEON_1), Collections.emptyList(), 60),
             new EnemyWave(asList(EnemyType.PIGEON_0, EnemyType.PIGEON_1), asList(EnemyType.PIGEON_1), 60),
-            new EnemyWave(asList(EnemyType.SATCHMO, EnemyType.SPARK), asList(EnemyType.SATCHMO, EnemyType.SPARK), 60*2),
             new EnemyWave(
-                    asList(EnemyType.ANGRY_PINEAPPLE_0, EnemyType.ANGRY_PINEAPPLE_1, EnemyType.ANGRY_PINEAPPLE_2), asList(EnemyType.ANGRY_PINEAPPLE_0, EnemyType.ANGRY_PINEAPPLE_1, EnemyType.ANGRY_PINEAPPLE_2), 60*3),
-            new EnemyWave(asList(EnemyType.DRAGON_QUEEN, EnemyType.RAELEUS), asList(EnemyType.DRAGON_QUEEN, EnemyType.RAELEUS), 60*2),
-            new EnemyWave(asList(EnemyType.HYDROLIEN, EnemyType.LAVA_EATER), asList(EnemyType.HYDROLIEN, EnemyType.LAVA_EATER), 60*2),
-            new EnemyWave(asList(EnemyType.LYZE, EnemyType.PANDA), asList(EnemyType.LYZE, EnemyType.PANDA), 60*2)));
+                    asList(EnemyType.SATCHMO, EnemyType.SPARK), asList(EnemyType.SATCHMO, EnemyType.SPARK), 60 * 2),
+            new EnemyWave(
+                    asList(EnemyType.ANGRY_PINEAPPLE_0, EnemyType.ANGRY_PINEAPPLE_1, EnemyType.ANGRY_PINEAPPLE_2),
+                    asList(EnemyType.ANGRY_PINEAPPLE_0, EnemyType.ANGRY_PINEAPPLE_1, EnemyType.ANGRY_PINEAPPLE_2),
+                    60 * 3),
+            new EnemyWave(
+                    asList(EnemyType.DRAGON_QUEEN, EnemyType.RAELEUS),
+                    asList(EnemyType.DRAGON_QUEEN, EnemyType.RAELEUS),
+                    60 * 2),
+            new EnemyWave(
+                    asList(EnemyType.HYDROLIEN, EnemyType.LAVA_EATER),
+                    asList(EnemyType.HYDROLIEN, EnemyType.LAVA_EATER),
+                    60 * 2),
+            new EnemyWave(asList(EnemyType.LYZE, EnemyType.PANDA), asList(EnemyType.LYZE, EnemyType.PANDA), 60 * 2)));
 
     private final ComponentMapper<BodyComponent> bodies;
 
@@ -57,7 +65,8 @@ public class EnemySpawnSystem extends EntitySystem {
     private boolean newWave = false;
 
     @Inject
-    public EnemySpawnSystem(ComponentMapper<BodyComponent> bodies, Camera camera, EntitiesFactory factory, SilkRNG random) {
+    public EnemySpawnSystem(
+            ComponentMapper<BodyComponent> bodies, Camera camera, EntitiesFactory factory, SilkRNG random) {
         this.bodies = bodies;
         this.camera = camera;
         this.factory = factory;
@@ -102,10 +111,8 @@ public class EnemySpawnSystem extends EntitySystem {
         // cleanup enemies
         for (Entity enemy : entities) {
             Vector2 position = bodies.get(enemy).body.getPosition();
-            if (
-                    camera.position.dst(position.x, position.y, camera.position.z)
-                            > viewportRadius(camera.viewportWidth, camera.viewportHeight) * MAX_VIEWPORT_GARBAGE
-            ) {
+            if (camera.position.dst(position.x, position.y, camera.position.z)
+                    > viewportRadius(camera.viewportWidth, camera.viewportHeight) * MAX_VIEWPORT_GARBAGE) {
                 getEngine().removeEntity(enemy);
             }
         }
@@ -116,9 +123,11 @@ public class EnemySpawnSystem extends EntitySystem {
             return;
         }
         Engine engine = getEngine();
-        Entity enemy = factory.enemy(randomLocationOutsideViewport(
-                START_SPAWN_LIMIT + random.nextFloat() * (END_SPAWN_LIMIT - START_SPAWN_LIMIT)
-        ), randomType(wave.bosses), true);
+        Entity enemy = factory.enemy(
+                randomLocationOutsideViewport(
+                        START_SPAWN_LIMIT + random.nextFloat() * (END_SPAWN_LIMIT - START_SPAWN_LIMIT)),
+                randomType(wave.bosses),
+                true);
         engine.addEntity(enemy);
     }
 
@@ -146,15 +155,18 @@ public class EnemySpawnSystem extends EntitySystem {
     }
 
     private float viewportRadius(float viewportWidth, float viewportHeight) {
-        return ray.set(camera.position.x + viewportWidth / 2, camera.position.y + viewportHeight / 2).dst(camera.position.x, camera.position.y);
+        return ray.set(camera.position.x + viewportWidth / 2, camera.position.y + viewportHeight / 2)
+                .dst(camera.position.x, camera.position.y);
     }
 
     private void spawnEnemies() {
         Engine engine = getEngine();
         for (int i = 0; i < SPAWN_ENEMIES_COUNT * currentWave; i++) {
-            Entity enemy = factory.enemy(randomLocationOutsideViewport(
-                    START_SPAWN_LIMIT + random.nextFloat() * (END_SPAWN_LIMIT - START_SPAWN_LIMIT)
-            ), randomType(wave.types), false);
+            Entity enemy = factory.enemy(
+                    randomLocationOutsideViewport(
+                            START_SPAWN_LIMIT + random.nextFloat() * (END_SPAWN_LIMIT - START_SPAWN_LIMIT)),
+                    randomType(wave.types),
+                    false);
             engine.addEntity(enemy);
         }
     }

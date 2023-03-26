@@ -48,7 +48,8 @@ public class Dead extends EnemyState {
         super.enter(entity);
         timer = 0f;
         blackTimer = 0f;
-        Sound sound = assetManager.get("audio/sounds/enemies/death/"+enemies.get(entity).type.deathSound, Sound.class);
+        Sound sound =
+                assetManager.get("audio/sounds/enemies/death/" + enemies.get(entity).type.deathSound, Sound.class);
         soundController.play(sound);
 
         Body body = bodies.get(entity).body;

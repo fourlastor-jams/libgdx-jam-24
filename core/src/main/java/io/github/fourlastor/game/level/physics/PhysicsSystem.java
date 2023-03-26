@@ -18,7 +18,6 @@ import io.github.fourlastor.game.level.Message;
 import io.github.fourlastor.game.level.component.BodyBuilderComponent;
 import io.github.fourlastor.game.level.component.BodyComponent;
 import io.github.fourlastor.game.level.component.Reward;
-
 import javax.inject.Inject;
 
 public class PhysicsSystem extends EntitySystem {
@@ -160,9 +159,12 @@ public class PhysicsSystem extends EntitySystem {
         }
 
         private boolean isWeapon(Fixture fixture) {
-//            return Object userData = fixture.getFilterData().maskBits == BodyData.Mask.WEAPON.bits;
+            //            return Object userData = fixture.getFilterData().maskBits == BodyData.Mask.WEAPON.bits;
             Object userData = fixture.getUserData();
-            return userData == BodyData.Type.WEAPON_FRONT || userData == BodyData.Type.WEAPON_BACK || userData == BodyData.Type.WEAPON_TOP || userData == BodyData.Type.WEAPON_BOTTOM;
+            return userData == BodyData.Type.WEAPON_FRONT
+                    || userData == BodyData.Type.WEAPON_BACK
+                    || userData == BodyData.Type.WEAPON_TOP
+                    || userData == BodyData.Type.WEAPON_BOTTOM;
         }
 
         private boolean isEnemy(Fixture fixture) {

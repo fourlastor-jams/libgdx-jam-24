@@ -26,7 +26,12 @@ public class Knocked extends EnemyState {
     private float timer;
 
     @AssistedInject
-    public Knocked(@Assisted ImmutableArray<Entity> players, Dependencies mappers, BodyHelper helper, SoundController soundController, AssetManager assetManager) {
+    public Knocked(
+            @Assisted ImmutableArray<Entity> players,
+            Dependencies mappers,
+            BodyHelper helper,
+            SoundController soundController,
+            AssetManager assetManager) {
         super(mappers, players);
         this.helper = helper;
         this.soundController = soundController;

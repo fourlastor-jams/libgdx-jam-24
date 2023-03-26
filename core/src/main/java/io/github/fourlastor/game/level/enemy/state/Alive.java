@@ -16,9 +16,8 @@ import dagger.assisted.AssistedFactory;
 import dagger.assisted.AssistedInject;
 import io.github.fourlastor.game.level.component.Enemy;
 import io.github.fourlastor.game.level.physics.BodyHelper;
-import squidpony.squidmath.SilkRNG;
-
 import javax.inject.Named;
+import squidpony.squidmath.SilkRNG;
 
 public class Alive extends EnemyState {
 
@@ -29,7 +28,12 @@ public class Alive extends EnemyState {
     private final Font font;
 
     @AssistedInject
-    public Alive(@Assisted ImmutableArray<Entity> players, Dependencies mappers, SilkRNG random, BodyHelper helper, @Named("hp") Font font) {
+    public Alive(
+            @Assisted ImmutableArray<Entity> players,
+            Dependencies mappers,
+            SilkRNG random,
+            BodyHelper helper,
+            @Named("hp") Font font) {
         super(mappers, players);
         this.random = random;
         this.helper = helper;
@@ -68,10 +72,7 @@ public class Alive extends EnemyState {
         Group group = new Group();
         group.setScale(0f);
         group.addActor(hpLabel);
-        group.addAction(Actions.sequence(
-                Actions.scaleTo(1/64f, 1/64f, 0.5f),
-                Actions.removeActor()
-        ));
+        group.addAction(Actions.sequence(Actions.scaleTo(1 / 64f, 1 / 64f, 0.5f), Actions.removeActor()));
         group.setPosition(actor.getX(), actor.getY() + actor.getHeight() * actor.getScaleY());
         stage.addActor(group);
         enemy.health -= weaponDamage;

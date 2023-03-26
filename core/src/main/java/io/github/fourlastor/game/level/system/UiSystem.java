@@ -29,7 +29,6 @@ import io.github.fourlastor.game.level.Message;
 import io.github.fourlastor.game.level.component.Player;
 import io.github.fourlastor.game.route.Router;
 import io.github.fourlastor.game.ui.XpBar;
-
 import javax.inject.Inject;
 import javax.inject.Named;
 
@@ -65,7 +64,9 @@ public class UiSystem extends EntitySystem implements Telegraph {
             TextureAtlas textureAtlas,
             MessageDispatcher dispatcher,
             InputMultiplexer inputMultiplexer,
-            Router router, SoundController soundController, AssetManager assetManager) {
+            Router router,
+            SoundController soundController,
+            AssetManager assetManager) {
         this.stage = stage;
         this.bold = bold;
         this.regular = regular;
@@ -167,13 +168,11 @@ public class UiSystem extends EntitySystem implements Telegraph {
                     Actions.run(() -> {
                         gameOverImage.setVisible(true);
                         gameOverImage.setPosition(gameOverImage.getX(), 0);
-                        soundController.play(assetManager.get("audio/sounds/382310__myfox14__game-over-arcade.wav", Sound.class));
+                        soundController.play(
+                                assetManager.get("audio/sounds/382310__myfox14__game-over-arcade.wav", Sound.class));
                     }),
                     Actions.moveTo(gameOverImage.getX(), gameOverImage.getY(), 1)));
-            restartLabel.addAction(Actions.sequence(
-                    Actions.delay(1.5f),
-                    Actions.alpha(.85f, 3f)
-            ));
+            restartLabel.addAction(Actions.sequence(Actions.delay(1.5f), Actions.alpha(.85f, 3f)));
             return true;
         }
         return false;

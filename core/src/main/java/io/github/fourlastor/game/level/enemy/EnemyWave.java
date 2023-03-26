@@ -8,11 +8,7 @@ public class EnemyWave {
     public final List<EnemyType> bosses;
     public final float time;
 
-    public EnemyWave(
-            List<EnemyType> types,
-            List<EnemyType> bosses,
-            float time
-    ) {
+    public EnemyWave(List<EnemyType> types, List<EnemyType> bosses, float time) {
         this.types = types;
         this.bosses = bosses;
         this.time = time;

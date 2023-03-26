@@ -17,7 +17,6 @@ import io.github.fourlastor.game.level.Message;
 import io.github.fourlastor.game.level.component.Player;
 import io.github.fourlastor.game.level.physics.BodyHelper;
 import io.github.fourlastor.harlequin.ui.AnimatedImage;
-
 import javax.inject.Inject;
 
 public class OnGround extends PlayerState {
@@ -63,10 +62,8 @@ public class OnGround extends PlayerState {
             }
             if (enemiesHitting.notEmpty()) {
                 player.actor.clearActions();
-                player.actor.addAction(Actions.sequence(
-                        Actions.color(Color.RED, .1f),
-                        Actions.color(Color.WHITE, .1f)
-                ));
+                player.actor.addAction(
+                        Actions.sequence(Actions.color(Color.RED, .1f), Actions.color(Color.WHITE, .1f)));
             }
         }
         boolean wasStationary = targetVelocity.isZero();

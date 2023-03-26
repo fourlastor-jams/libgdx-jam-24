@@ -18,7 +18,8 @@ public class Enemy implements Component {
     public final int maxHealth;
     public int health;
 
-    public Enemy(EnemyStateMachine stateMachine, Alive alive, Dead dead, Knocked knocked, boolean boss, EnemyType type) {
+    public Enemy(
+            EnemyStateMachine stateMachine, Alive alive, Dead dead, Knocked knocked, boolean boss, EnemyType type) {
         this.stateMachine = stateMachine;
         this.alive = alive;
         this.dead = dead;

@@ -18,10 +18,9 @@ import io.github.fourlastor.game.level.enemy.state.Alive;
 import io.github.fourlastor.game.level.enemy.state.Dead;
 import io.github.fourlastor.game.level.enemy.state.Knocked;
 import io.github.fourlastor.game.level.reward.RewardType;
-import squidpony.squidmath.SilkRNG;
-
-import javax.inject.Inject;
 import java.util.Set;
+import javax.inject.Inject;
+import squidpony.squidmath.SilkRNG;
 
 public class EnemyAiSystem extends IteratingSystem {
 

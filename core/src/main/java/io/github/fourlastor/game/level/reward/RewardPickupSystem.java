@@ -15,7 +15,6 @@ import io.github.fourlastor.game.SoundController;
 import io.github.fourlastor.game.level.Message;
 import io.github.fourlastor.game.level.component.Player;
 import io.github.fourlastor.game.level.component.Reward;
-
 import javax.inject.Inject;
 
 public class RewardPickupSystem extends EntitySystem implements Telegraph {

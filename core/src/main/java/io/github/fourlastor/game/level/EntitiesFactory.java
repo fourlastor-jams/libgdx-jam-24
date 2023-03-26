@@ -38,12 +38,11 @@ import io.github.fourlastor.game.ui.PlayerActor;
 import io.github.fourlastor.harlequin.animation.Animation;
 import io.github.fourlastor.harlequin.animation.GdxAnimation;
 import io.github.fourlastor.harlequin.ui.AnimatedImage;
-import squidpony.squidmath.SilkRNG;
-
-import javax.inject.Inject;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
+import javax.inject.Inject;
+import squidpony.squidmath.SilkRNG;
 
 /**
  * Factory to create various entities: player, buildings, enemies..
@@ -137,10 +136,14 @@ public class EntitiesFactory {
             whipShape.setAsBox(43f * SCALE / 2, 2f * SCALE / 2, new Vector2(-19f * SCALE / 2, 18f * SCALE), 0f);
             float hx = whipW * SCALE / 2f;
             float hy = whipH * SCALE / 2f;
-            Vector2 frontShape = new Vector2((whipX - playerWidth / 2) * SCALE + hx, (whipY - playerHeight / 2) * SCALE + hy);
-            Vector2 backShape = new Vector2((-whipX + playerWidth / 2) * SCALE - hx, (whipY - playerHeight / 2) * SCALE + hy);
-            Vector2 topShape = new Vector2((-whipX - 2+ playerWidth / 2) * SCALE + hy, (whipY - playerHeight / 2) * SCALE + 2 * hx );
-            Vector2 bottomShape = new Vector2((-whipX - 2 + playerWidth / 2) * SCALE + hy, (whipY - playerHeight / 2) * SCALE - hx - 0.2f);
+            Vector2 frontShape =
+                    new Vector2((whipX - playerWidth / 2) * SCALE + hx, (whipY - playerHeight / 2) * SCALE + hy);
+            Vector2 backShape =
+                    new Vector2((-whipX + playerWidth / 2) * SCALE - hx, (whipY - playerHeight / 2) * SCALE + hy);
+            Vector2 topShape = new Vector2(
+                    (-whipX - 2 + playerWidth / 2) * SCALE + hy, (whipY - playerHeight / 2) * SCALE + 2 * hx);
+            Vector2 bottomShape = new Vector2(
+                    (-whipX - 2 + playerWidth / 2) * SCALE + hy, (whipY - playerHeight / 2) * SCALE - hx - 0.2f);
             whipDef.shape = whipShape;
             whipDef.isSensor = true;
             whipDef.filter.categoryBits = BodyData.Category.WEAPON.bits;
