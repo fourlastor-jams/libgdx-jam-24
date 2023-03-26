@@ -27,7 +27,6 @@ public class Dead extends EnemyState {
     private final BodyHelper helper;
     private final AssetManager assetManager;
     private final SoundController soundController;
-    private Sound deathSound;
 
     @AssistedInject
     public Dead(
@@ -42,7 +41,6 @@ public class Dead extends EnemyState {
         this.helper = helper;
         this.assetManager = assetManager;
         this.soundController = soundController;
-        deathSound = assetManager.get("audio/sounds/enemies/death/"+enemies.get());
     }
 
     @Override
@@ -50,7 +48,8 @@ public class Dead extends EnemyState {
         super.enter(entity);
         timer = 0f;
         blackTimer = 0f;
-        soundController.play(deathSound);
+        Sound sound = assetManager.get("audio/sounds/enemies/death/"+enemies.get(entity).type.deathSound, Sound.class);
+        soundController.play(sound);
 
         Body body = bodies.get(entity).body;
         body.setLinearVelocity(0, 0);
