@@ -8,7 +8,7 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.utils.JsonReader;
-
+import com.github.tommyettinger.textra.Font;
 import dagger.Module;
 import dagger.Provides;
 import io.github.fourlastor.harlequin.animation.AnimationNode;
@@ -120,5 +120,12 @@ public class AssetsModule {
         return new BitmapFont(
                 Gdx.files.internal("images/included/fonts/play-regular.fnt"),
                 atlas.findRegion("images/included/fonts/play-regular"));
+    }
+
+    @Provides
+    @Singleton
+    @Named("hp")
+    Font hpFont(@Named("regular") BitmapFont original) {
+        return new Font(original);
     }
 }
