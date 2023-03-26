@@ -20,7 +20,7 @@ public abstract class WhipState implements State<Entity> {
     private final ComponentMapper<ActorComponent> actors;
     protected final ComponentMapper<BodyComponent> bodies;
     protected final ComponentMapper<Whip> whips;
-    private final ComponentMapper<Player> players;
+    protected final ComponentMapper<Player> players;
     private final BodyHelper bodyHelper;
 
     public static class Dependencies {
@@ -113,7 +113,7 @@ public abstract class WhipState implements State<Entity> {
         whip.bottom.setVisible(bottomIsActive(player));
         updateHitBoxes(bodies.get(entity).body, playerFlipped, player);
         timer += delta();
-        if (timer >= timer()) {
+        if (timer >= timer(entity)) {
             whip.stateMachine.changeState(nextState(whip));
         }
     }
@@ -134,7 +134,7 @@ public abstract class WhipState implements State<Entity> {
         return player.hasPowerUp(Player.PowerUp.BOTTOM_ATTACK) && canCollide();
     }
 
-    protected abstract float timer();
+    protected abstract float timer(Entity entity);
 
     protected abstract boolean canCollide();
 

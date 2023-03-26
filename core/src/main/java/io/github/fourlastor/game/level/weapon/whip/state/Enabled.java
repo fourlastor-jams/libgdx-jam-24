@@ -3,9 +3,9 @@ package io.github.fourlastor.game.level.weapon.whip.state;
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.audio.Sound;
-
 import io.github.fourlastor.game.SoundController;
 import io.github.fourlastor.game.level.component.Whip;
+
 import javax.inject.Inject;
 
 public class Enabled extends WhipState {
@@ -30,7 +30,7 @@ public class Enabled extends WhipState {
     }
 
     @Override
-    protected float timer() {
+    protected float timer(Entity entity) {
         return 0.2f;
     }
 

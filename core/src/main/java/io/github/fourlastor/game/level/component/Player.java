@@ -28,6 +28,7 @@ public class Player implements Component {
 
     public int level = 1;
     public int weaponDamage = 10;
+    public float whipWaitTime = 2;
     private float levelXpAddition = 100;
     public float nextLevelXp = levelXpAddition; // 100, 200, 300, 500, 1000
     public float maxHp = 1000f;
