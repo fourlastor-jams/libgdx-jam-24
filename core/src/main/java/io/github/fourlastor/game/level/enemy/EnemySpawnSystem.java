@@ -15,7 +15,9 @@ import io.github.fourlastor.game.level.reward.RewardType;
 import squidpony.squidmath.SilkRNG;
 
 import javax.inject.Inject;
+import java.util.Collections;
 import java.util.LinkedList;
+import java.util.List;
 
 import static java.util.Arrays.asList;
 
@@ -30,13 +32,14 @@ public class EnemySpawnSystem extends EntitySystem {
     private static final float START_SPAWN_LIMIT = 1.3f;
 
     private final LinkedList<EnemyWave> waves = new LinkedList<>(asList(
-            new EnemyWave(asList(EnemyType.PIGEON_0, EnemyType.PIGEON_1), 30f),
-            new EnemyWave(asList(EnemyType.SATCHMO, EnemyType.SPARK), 60f),
+            new EnemyWave(asList(EnemyType.PIGEON_0, EnemyType.PIGEON_1), Collections.emptyList(), 10),
+            new EnemyWave(asList(EnemyType.PIGEON_0, EnemyType.PIGEON_1), asList(EnemyType.PIGEON_1), 10),
+            new EnemyWave(asList(EnemyType.SATCHMO, EnemyType.SPARK), asList(EnemyType.SATCHMO, EnemyType.SPARK), 10),
             new EnemyWave(
-                    asList(EnemyType.ANGRY_PINEAPPLE_0, EnemyType.ANGRY_PINEAPPLE_1, EnemyType.ANGRY_PINEAPPLE_2), 90f),
-            new EnemyWave(asList(EnemyType.DRAGON_QUEEN, EnemyType.RAELEUS), 120f),
-            new EnemyWave(asList(EnemyType.HYDROLIEN, EnemyType.LAVA_EATER), 150f),
-            new EnemyWave(asList(EnemyType.LYZE, EnemyType.PANDA), 180f)));
+                    asList(EnemyType.ANGRY_PINEAPPLE_0, EnemyType.ANGRY_PINEAPPLE_1, EnemyType.ANGRY_PINEAPPLE_2), asList(EnemyType.ANGRY_PINEAPPLE_0, EnemyType.ANGRY_PINEAPPLE_1, EnemyType.ANGRY_PINEAPPLE_2), 10),
+            new EnemyWave(asList(EnemyType.DRAGON_QUEEN, EnemyType.RAELEUS), asList(EnemyType.DRAGON_QUEEN, EnemyType.RAELEUS), 10),
+            new EnemyWave(asList(EnemyType.HYDROLIEN, EnemyType.LAVA_EATER), asList(EnemyType.HYDROLIEN, EnemyType.LAVA_EATER), 10),
+            new EnemyWave(asList(EnemyType.LYZE, EnemyType.PANDA), asList(EnemyType.LYZE, EnemyType.PANDA), 10)));
 
     private final ComponentMapper<BodyComponent> bodies;
 
@@ -51,6 +54,7 @@ public class EnemySpawnSystem extends EntitySystem {
     private float spawnTime = 0f;
     private float pastaTime = 0f;
     private ImmutableArray<Entity> entities;
+    private boolean newWave = false;
 
     @Inject
     public EnemySpawnSystem(ComponentMapper<BodyComponent> bodies, Camera camera, EntitiesFactory factory, SilkRNG random) {
@@ -74,15 +78,21 @@ public class EnemySpawnSystem extends EntitySystem {
         pastaTime += deltaTime;
         // changing waves
         if (wave.time <= totalTime) {
+            totalTime = 0;
             if (!waves.isEmpty()) {
                 wave = waves.poll();
                 currentWave += 1;
+                newWave = true;
             }
         }
         // spawning enemies
         if (entities.size() < MAX_ENEMIES_COUNT && spawnTime > SPAWN_INTERVAL) {
             spawnTime = 0f;
             spawnEnemies();
+            if (newWave) {
+                newWave = false;
+                spawnBosses();
+            }
         }
         // spawn pasta
         if (pastaTime > PASTA_INTERVAL) {
@@ -99,6 +109,17 @@ public class EnemySpawnSystem extends EntitySystem {
                 getEngine().removeEntity(enemy);
             }
         }
+    }
+
+    private void spawnBosses() {
+        if (wave.bosses.isEmpty()) {
+            return;
+        }
+        Engine engine = getEngine();
+        Entity enemy = factory.enemy(randomLocationOutsideViewport(
+                START_SPAWN_LIMIT + random.nextFloat() * (END_SPAWN_LIMIT - START_SPAWN_LIMIT)
+        ), randomType(wave.bosses), true);
+        engine.addEntity(enemy);
     }
 
     private void spawnPasta() {
@@ -133,12 +154,12 @@ public class EnemySpawnSystem extends EntitySystem {
         for (int i = 0; i < SPAWN_ENEMIES_COUNT * currentWave; i++) {
             Entity enemy = factory.enemy(randomLocationOutsideViewport(
                     START_SPAWN_LIMIT + random.nextFloat() * (END_SPAWN_LIMIT - START_SPAWN_LIMIT)
-            ), randomType());
+            ), randomType(wave.types), false);
             engine.addEntity(enemy);
         }
     }
 
-    private EnemyType randomType() {
-        return random.getRandomElement(wave.types);
+    private EnemyType randomType(List<EnemyType> types) {
+        return random.getRandomElement(types);
     }
 }
