@@ -1,7 +1,5 @@
 package io.github.fourlastor.game.level.enemy;
 
-import static java.util.Arrays.asList;
-
 import com.badlogic.ashley.core.ComponentMapper;
 import com.badlogic.ashley.core.Engine;
 import com.badlogic.ashley.core.Entity;
@@ -14,11 +12,14 @@ import io.github.fourlastor.game.level.EntitiesFactory;
 import io.github.fourlastor.game.level.component.BodyComponent;
 import io.github.fourlastor.game.level.component.Enemy;
 import io.github.fourlastor.game.level.reward.RewardType;
+import squidpony.squidmath.SilkRNG;
+
+import javax.inject.Inject;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
-import javax.inject.Inject;
-import squidpony.squidmath.SilkRNG;
+
+import static java.util.Arrays.asList;
 
 public class EnemySpawnSystem extends EntitySystem {
     private static final Family ENEMY_FAMILY = Family.all(Enemy.class).get();
@@ -98,10 +99,10 @@ public class EnemySpawnSystem extends EntitySystem {
         if (entities.size() < MAX_ENEMIES_COUNT && spawnTime > SPAWN_INTERVAL) {
             spawnTime = 0f;
             spawnEnemies();
-            if (newWave) {
-                newWave = false;
-                spawnBosses();
-            }
+        }
+        if (newWave) {
+            newWave = false;
+            spawnBosses();
         }
         // spawn pasta
         if (pastaTime > PASTA_INTERVAL) {
