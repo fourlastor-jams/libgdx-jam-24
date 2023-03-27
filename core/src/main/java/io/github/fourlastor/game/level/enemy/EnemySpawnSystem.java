@@ -23,7 +23,7 @@ import squidpony.squidmath.SilkRNG;
 public class EnemySpawnSystem extends EntitySystem {
     private static final Family ENEMY_FAMILY = Family.all(Enemy.class).get();
     private static final float SPAWN_INTERVAL = 3f;
-    private static final float PASTA_INTERVAL = 15f;
+    private static final float PASTA_INTERVAL = 24f;
     private static final int MAX_ENEMIES_COUNT = 1000;
     private static final int SPAWN_ENEMIES_COUNT = 5;
     private static final float MAX_VIEWPORT_GARBAGE = 2f;
@@ -34,15 +34,17 @@ public class EnemySpawnSystem extends EntitySystem {
             new EnemyWave(asList(EnemyType.PIGEON_0, EnemyType.PIGEON_1), Collections.emptyList(), 60),
             new EnemyWave(asList(EnemyType.PIGEON_0, EnemyType.PIGEON_1), asList(EnemyType.PIGEON_1), 60),
             new EnemyWave(
-                    asList(EnemyType.SATCHMO, EnemyType.SPARK), asList(EnemyType.SATCHMO, EnemyType.SPARK), 60 * 2),
-            new EnemyWave(
-                    asList(EnemyType.ANGRY_PINEAPPLE_0, EnemyType.ANGRY_PINEAPPLE_1, EnemyType.ANGRY_PINEAPPLE_2),
-                    asList(EnemyType.ANGRY_PINEAPPLE_0, EnemyType.ANGRY_PINEAPPLE_1, EnemyType.ANGRY_PINEAPPLE_2),
-                    60 * 3),
-            new EnemyWave(
-                    asList(EnemyType.DRAGON_QUEEN, EnemyType.RAELEUS),
-                    asList(EnemyType.DRAGON_QUEEN, EnemyType.RAELEUS),
+                    asList(EnemyType.PIGEON_0, EnemyType.SATCHMO, EnemyType.SPARK, EnemyType.SATCHMO, EnemyType.SPARK),
+                    asList(EnemyType.SATCHMO, EnemyType.SPARK),
                     60 * 2),
+            new EnemyWave(
+                    asList(EnemyType.ANGRY_PINEAPPLE_0, EnemyType.ANGRY_PINEAPPLE_1, EnemyType.ANGRY_PINEAPPLE_2),
+                    asList(EnemyType.ANGRY_PINEAPPLE_0, EnemyType.ANGRY_PINEAPPLE_1, EnemyType.ANGRY_PINEAPPLE_2),
+                    60 * 3.5f),
+            new EnemyWave(
+                    asList(EnemyType.DRAGON_QUEEN, EnemyType.RAELEUS),
+                    asList(EnemyType.DRAGON_QUEEN, EnemyType.RAELEUS),
+                    60 * 3.5f),
             new EnemyWave(
                     asList(EnemyType.HYDROLIEN, EnemyType.LAVA_EATER),
                     asList(EnemyType.HYDROLIEN, EnemyType.LAVA_EATER),

@@ -18,7 +18,7 @@ import io.github.fourlastor.game.level.enemy.state.Alive;
 import io.github.fourlastor.game.level.enemy.state.Dead;
 import io.github.fourlastor.game.level.enemy.state.Knocked;
 import io.github.fourlastor.game.level.reward.RewardType;
-import java.util.Set;
+import java.util.List;
 import javax.inject.Inject;
 import squidpony.squidmath.SilkRNG;
 
@@ -137,7 +137,7 @@ public class EnemyAiSystem extends IteratingSystem {
             if (enemy.boss) {
                 player.upgradePowerUp();
             }
-            Set<RewardType> rewards = enemy.type.rewards;
+            List<RewardType> rewards = enemy.type.rewards;
             if (random.nextFloat() >= 0.3) {
                 RewardType rewardType = random.getRandomElement(rewards);
                 Vector2 position = bodies.get(entity).body.getPosition();

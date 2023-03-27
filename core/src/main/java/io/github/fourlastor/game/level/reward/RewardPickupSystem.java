@@ -86,15 +86,15 @@ public class RewardPickupSystem extends EntitySystem implements Telegraph {
                     soundController.play(xp0Sound);
                     break;
                 case XP_M:
-                    player.addXp(50);
+                    player.addXp(100);
                     soundController.play(xp1Sound);
                     break;
                 case XP_L:
-                    player.addXp(100);
+                    player.addXp(1_000);
                     soundController.play(xp2Sound);
                     break;
                 case PASTA:
-                    player.hp += player.maxHp * 0.25f;
+                    player.hp += player.maxHp * 0.2325f;
                     player.hp = Math.min(player.maxHp, player.hp);
                     soundController.play(pastaSound);
                     break;
