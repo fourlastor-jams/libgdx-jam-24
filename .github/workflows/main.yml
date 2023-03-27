@@ -10,7 +10,7 @@ on:
 jobs:
   build:
     env:
-      ITCH_PROJECT: 'sandramoen/libgdx-jam-24'
+      ITCH_PROJECT: 'sandramoen/wedding-survivor'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
