@@ -90,7 +90,11 @@ public class XpBar extends WidgetGroup {
                 Actions.scaleTo(amount, 1f, 0.15f, Interpolation.pow2),
                 Actions.run(() -> filledEnd.setVisible(visible)));
         if (!levelUp) {
-            action = setProgressAction;
+            action = Actions.sequence(setProgressAction, Actions.run(() -> {
+                levelLabel.setVariable("level", String.valueOf(level));
+                levelLabel.restart();
+                levelLabel.skipToTheEnd();
+            }));
         } else {
             action = Actions.sequence(
                     Actions.scaleTo(1, 1f, 0.15f, Interpolation.pow2),
