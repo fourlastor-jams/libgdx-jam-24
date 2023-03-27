@@ -17,6 +17,7 @@ public class ActorComponent implements Component {
         BG,
         REWARDS,
         ENEMIES,
+        BOSSES,
         CHARACTER,
     }
 }
