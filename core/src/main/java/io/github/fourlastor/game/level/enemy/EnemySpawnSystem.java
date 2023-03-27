@@ -1,5 +1,7 @@
 package io.github.fourlastor.game.level.enemy;
 
+import static java.util.Arrays.asList;
+
 import com.badlogic.ashley.core.ComponentMapper;
 import com.badlogic.ashley.core.Engine;
 import com.badlogic.ashley.core.Entity;
@@ -12,14 +14,11 @@ import io.github.fourlastor.game.level.EntitiesFactory;
 import io.github.fourlastor.game.level.component.BodyComponent;
 import io.github.fourlastor.game.level.component.Enemy;
 import io.github.fourlastor.game.level.reward.RewardType;
-import squidpony.squidmath.SilkRNG;
-
-import javax.inject.Inject;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
-
-import static java.util.Arrays.asList;
+import javax.inject.Inject;
+import squidpony.squidmath.SilkRNG;
 
 public class EnemySpawnSystem extends EntitySystem {
     private static final Family ENEMY_FAMILY = Family.all(Enemy.class).get();
@@ -68,7 +67,11 @@ public class EnemySpawnSystem extends EntitySystem {
 
     @Inject
     public EnemySpawnSystem(
-            ComponentMapper<BodyComponent> bodies, ComponentMapper<Enemy> enemies, Camera camera, EntitiesFactory factory, SilkRNG random) {
+            ComponentMapper<BodyComponent> bodies,
+            ComponentMapper<Enemy> enemies,
+            Camera camera,
+            EntitiesFactory factory,
+            SilkRNG random) {
         this.bodies = bodies;
         this.enemies = enemies;
         this.camera = camera;
