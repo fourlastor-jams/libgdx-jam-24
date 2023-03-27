@@ -38,11 +38,12 @@ import io.github.fourlastor.game.ui.PlayerActor;
 import io.github.fourlastor.harlequin.animation.Animation;
 import io.github.fourlastor.harlequin.animation.GdxAnimation;
 import io.github.fourlastor.harlequin.ui.AnimatedImage;
+import squidpony.squidmath.SilkRNG;
+
+import javax.inject.Inject;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
-import javax.inject.Inject;
-import squidpony.squidmath.SilkRNG;
 
 /**
  * Factory to create various entities: player, buildings, enemies..
@@ -187,7 +188,8 @@ public class EntitiesFactory {
         image.setScale(SCALE);
         image.setAlign(Align.center);
         image.addAction(Actions.forever(Actions.sequence(Actions.rotateTo(-7, 0.7f), Actions.rotateTo(7, 0.7f))));
-        entity.add(new ActorComponent(image, ActorComponent.Layer.ENEMIES));
+        ActorComponent.Layer enemies = boss ? ActorComponent.Layer.BOSSES : ActorComponent.Layer.ENEMIES;
+        entity.add(new ActorComponent(image, enemies));
         entity.add(new Enemy.Request(type, boss));
         entity.add(new BodyBuilderComponent(world -> {
             BodyDef bodyDef = new BodyDef();
