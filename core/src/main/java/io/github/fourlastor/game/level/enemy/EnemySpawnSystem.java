@@ -44,7 +44,7 @@ public class EnemySpawnSystem extends EntitySystem {
             new EnemyWave(
                     asList(EnemyType.DRAGON_QUEEN, EnemyType.RAELEUS),
                     asList(EnemyType.DRAGON_QUEEN, EnemyType.RAELEUS),
-                    60 * 2),
+                    60 * 3.5f),
             new EnemyWave(
                     asList(EnemyType.HYDROLIEN, EnemyType.LAVA_EATER),
                     asList(EnemyType.HYDROLIEN, EnemyType.LAVA_EATER),
