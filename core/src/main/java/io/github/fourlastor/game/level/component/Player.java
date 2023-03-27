@@ -1,8 +1,11 @@
 package io.github.fourlastor.game.level.component;
 
 import com.badlogic.ashley.core.Component;
+import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.utils.ObjectSet;
+import io.github.fourlastor.game.SoundController;
 import io.github.fourlastor.game.level.input.InputStateMachine;
 import io.github.fourlastor.game.level.input.state.Dead;
 import io.github.fourlastor.game.level.input.state.OnGround;
@@ -27,13 +30,16 @@ public class Player implements Component {
     public float xp = 0f;
 
     public int level = 1;
-    public int weaponDamage = 10;
-    public float whipWaitTime = 2;
+    public int weaponDamage = 9;
+    public float whipWaitTime = 2.2f;
     private float levelXpAddition = 100;
     public float nextLevelXp = levelXpAddition; // 100, 200, 300, 500, 1000
-    public float maxHp = 1000f;
+    public float maxHp = 850f;
     public float hp = maxHp;
     public int killCounter = 0;
+
+    private final SoundController soundController;
+    private final AssetManager assetManager;
 
     public Player(
             Camera camera,
@@ -41,13 +47,17 @@ public class Player implements Component {
             OnGround onGround,
             Dead dead,
             Settings settings,
-            PlayerActor actor) {
+            PlayerActor actor,
+            SoundController soundController,
+            AssetManager assetManager) {
         this.camera = camera;
         this.stateMachine = stateMachine;
         this.onGround = onGround;
         this.dead = dead;
         this.settings = settings;
         this.actor = actor;
+        this.soundController = soundController;
+        this.assetManager = assetManager;
     }
 
     public void addXp(float newXp) {
@@ -58,16 +68,17 @@ public class Player implements Component {
     }
 
     private void levelUp() {
+        soundController.play(assetManager.get("audio/sounds/player/levelUp.wav", Sound.class), .75f);
         float remainder = xp - nextLevelXp;
         level += 1;
         levelXpAddition *= NEXT_LEVEL_RATIO;
         nextLevelXp += levelXpAddition;
         xp = remainder;
         if (level % 2 == 0) {
-            weaponDamage += 10;
-        } else {
-            whipWaitTime -= Math.max(0.1f, 0.3f);
+            whipWaitTime -= 0.1f;
+            whipWaitTime = Math.max(0.1f, whipWaitTime);
         }
+        weaponDamage = (int) Math.ceil(weaponDamage * 1.33f);
     }
 
     public boolean hasPowerUp(PowerUp powerUp) {
@@ -86,7 +97,7 @@ public class Player implements Component {
 
     public static class Settings {
 
-        public static final float PLAYER_SPEED = 5f;
+        public static final float PLAYER_SPEED = 4.8f;
         public final float speed = PLAYER_SPEED;
         public final float accelerationTime;
 

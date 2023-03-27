@@ -1,7 +1,6 @@
 package io.github.fourlastor.game.intro;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.InputProcessor;
@@ -115,35 +114,13 @@ public class IntroScreen extends ScreenAdapter {
 
         @Override
         public boolean touchUp(int screenX, int screenY, int pointer, int button) {
-            character.addAction(Actions.moveTo(0, -screenHeight(), 1.75f, Interpolation.exp10In));
-            textWedding.addAction(Actions.sequence(
-                    Actions.delay(1),
-                    Actions.parallel(
-                            Actions.moveTo(-screenWidth(), 0, 1, Interpolation.exp10In),
-                            Actions.sequence(Actions.delay(.4f), Actions.run(() -> {
-                                soundController.play(swooshReverseSound);
-                                soundController.play(dramaSound);
-                            })))));
-            textSurvivor.addAction(Actions.sequence(
-                    Actions.delay(1.25f),
-                    Actions.parallel(
-                            Actions.moveTo(2 * screenWidth(), 0, 1, Interpolation.exp10In),
-                            Actions.sequence(
-                                    Actions.delay(.45f),
-                                    Actions.run(() -> soundController.play(swooshReverseSound))))));
-            character.addAction(Actions.sequence(Actions.delay(2), Actions.run(() -> {
-                introMusic.stop();
-                chatterMusic.stop();
-                router.goToLevel();
-            })));
+            transitionToLevelScreen();
             return true;
         }
 
         @Override
         public boolean keyDown(int keycode) {
-            if (keycode == Input.Keys.Q) // TODO: remove for production/release
-            Gdx.app.exit();
-            else if (keycode == Input.Keys.E) System.out.println(time);
+            transitionToLevelScreen();
             return super.keyDown(keycode);
         }
     };
@@ -283,5 +260,28 @@ public class IntroScreen extends ScreenAdapter {
 
     private float screenHeight() {
         return viewport.getWorldHeight();
+    }
+
+    private void transitionToLevelScreen() {
+        character.addAction(Actions.moveTo(0, -screenHeight(), 1.75f, Interpolation.exp10In));
+        textWedding.addAction(Actions.sequence(
+                Actions.delay(1),
+                Actions.parallel(
+                        Actions.moveTo(-screenWidth(), 0, 1, Interpolation.exp10In),
+                        Actions.sequence(Actions.delay(.4f), Actions.run(() -> {
+                            soundController.play(swooshReverseSound);
+                            soundController.play(dramaSound);
+                        })))));
+        textSurvivor.addAction(Actions.sequence(
+                Actions.delay(1.25f),
+                Actions.parallel(
+                        Actions.moveTo(2 * screenWidth(), 0, 1, Interpolation.exp10In),
+                        Actions.sequence(
+                                Actions.delay(.45f), Actions.run(() -> soundController.play(swooshReverseSound))))));
+        character.addAction(Actions.sequence(Actions.delay(2), Actions.run(() -> {
+            introMusic.stop();
+            chatterMusic.stop();
+            router.goToLevel();
+        })));
     }
 }

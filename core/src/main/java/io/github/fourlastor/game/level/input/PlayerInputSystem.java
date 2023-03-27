@@ -7,6 +7,8 @@ import com.badlogic.ashley.core.EntityListener;
 import com.badlogic.ashley.core.Family;
 import com.badlogic.ashley.systems.IteratingSystem;
 import com.badlogic.gdx.ai.msg.MessageDispatcher;
+import com.badlogic.gdx.assets.AssetManager;
+import io.github.fourlastor.game.SoundController;
 import io.github.fourlastor.game.level.Message;
 import io.github.fourlastor.game.level.component.Animated;
 import io.github.fourlastor.game.level.component.BodyComponent;
@@ -62,17 +64,23 @@ public class PlayerInputSystem extends IteratingSystem {
         private final Provider<Dead> deadProvider;
         private final InputStateMachine.Factory stateMachineFactory;
         private final MessageDispatcher messageDispatcher;
+        private final SoundController soundController;
+        private final AssetManager assetManager;
 
         @Inject
         public PlayerSetup(
                 Provider<OnGround> onGroundProvider,
                 Provider<Dead> deadProvider,
                 InputStateMachine.Factory stateMachineFactory,
-                MessageDispatcher messageDispatcher) {
+                MessageDispatcher messageDispatcher,
+                SoundController soundController,
+                AssetManager assetManager) {
             this.onGroundProvider = onGroundProvider;
             this.deadProvider = deadProvider;
             this.stateMachineFactory = stateMachineFactory;
             this.messageDispatcher = messageDispatcher;
+            this.soundController = soundController;
+            this.assetManager = assetManager;
         }
 
         @Override
@@ -82,7 +90,15 @@ public class PlayerInputSystem extends IteratingSystem {
             OnGround onGround = onGroundProvider.get();
             Dead dead = deadProvider.get();
             InputStateMachine stateMachine = stateMachineFactory.create(entity, onGround);
-            entity.add(new Player(request.camera, stateMachine, onGround, dead, settings, request.actor));
+            entity.add(new Player(
+                    request.camera,
+                    stateMachine,
+                    onGround,
+                    dead,
+                    settings,
+                    request.actor,
+                    soundController,
+                    assetManager));
             stateMachine.getCurrentState().enter(entity);
             messageDispatcher.addListener(stateMachine, Message.PLAYER_HIT.ordinal());
             messageDispatcher.addListener(stateMachine, Message.PLAYER_HIT_END.ordinal());
