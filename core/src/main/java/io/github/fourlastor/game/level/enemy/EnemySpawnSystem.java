@@ -52,6 +52,7 @@ public class EnemySpawnSystem extends EntitySystem {
             new EnemyWave(asList(EnemyType.LYZE, EnemyType.PANDA), asList(EnemyType.LYZE, EnemyType.PANDA), 60 * 2)));
 
     private final ComponentMapper<BodyComponent> bodies;
+    private final ComponentMapper<Enemy> enemies;
 
     private EnemyWave wave = waves.poll();
     private int currentWave = 1;
@@ -68,8 +69,13 @@ public class EnemySpawnSystem extends EntitySystem {
 
     @Inject
     public EnemySpawnSystem(
-            ComponentMapper<BodyComponent> bodies, Camera camera, EntitiesFactory factory, SilkRNG random) {
+            ComponentMapper<BodyComponent> bodies,
+            ComponentMapper<Enemy> enemies,
+            Camera camera,
+            EntitiesFactory factory,
+            SilkRNG random) {
         this.bodies = bodies;
+        this.enemies = enemies;
         this.camera = camera;
         this.factory = factory;
         this.random = random;
@@ -100,10 +106,10 @@ public class EnemySpawnSystem extends EntitySystem {
         if (entities.size() < MAX_ENEMIES_COUNT && spawnTime > SPAWN_INTERVAL) {
             spawnTime = 0f;
             spawnEnemies();
-            if (newWave) {
-                newWave = false;
-                spawnBosses();
-            }
+        }
+        if (newWave) {
+            newWave = false;
+            spawnBosses();
         }
         // spawn pasta
         if (pastaTime > PASTA_INTERVAL) {
@@ -112,6 +118,9 @@ public class EnemySpawnSystem extends EntitySystem {
         }
         // cleanup enemies
         for (Entity enemy : entities) {
+            if (enemies.get(enemy).boss) {
+                continue;
+            }
             Vector2 position = bodies.get(enemy).body.getPosition();
             if (camera.position.dst(position.x, position.y, camera.position.z)
                     > viewportRadius(camera.viewportWidth, camera.viewportHeight) * MAX_VIEWPORT_GARBAGE) {
