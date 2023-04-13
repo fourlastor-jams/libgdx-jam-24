@@ -1,6 +1,6 @@
 # Wedding survivor
 
-Entry for the [libGDX Jam 24](https://itch.io/jam/libgdx-jam-24).
+Entry for the [libGDX Jam 24](https://itch.io/jam/libgdx-jam-24), [play](https://sandramoen.itch.io/wedding-survivor) in your browser.
 
 By [Sandra Moen](https://github.com/Slideshow776) and [Daniele Conti](https://github.com/fourlastor).
 [Play it](https://sandramoen.itch.io/wedding-survivor) now!
