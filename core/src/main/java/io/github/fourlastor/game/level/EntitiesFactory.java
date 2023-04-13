@@ -18,6 +18,7 @@ import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
+import com.badlogic.gdx.scenes.scene2d.utils.TiledDrawable;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.Array;
 import io.github.fourlastor.game.di.ScreenScoped;
@@ -169,7 +170,7 @@ public class EntitiesFactory {
 
     public Entity bg() {
         Entity entity = new Entity();
-        Actor actor = new ParallaxImage(Objects.requireNonNull(textureAtlas.findRegion("ground/grass")), 1f);
+        Actor actor = new ParallaxImage(new TiledDrawable(new TextureRegionDrawable(Objects.requireNonNull(textureAtlas.findRegion("ground/grass")))), 1f);
         actor.setPosition(-50, -50);
         actor.setScale(SCALE);
         entity.add(new ActorComponent(actor, ActorComponent.Layer.BG));
