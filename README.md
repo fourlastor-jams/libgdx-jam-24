@@ -3,5 +3,5 @@
 Entry for the [libGDX Jam 24](https://itch.io/jam/libgdx-jam-24), [play](https://sandramoen.itch.io/wedding-survivor) in your browser.
 
 By [Sandra Moen](https://github.com/Slideshow776) and [Daniele Conti](https://github.com/fourlastor).
-
-[![cover image](https://user-images.githubusercontent.com/1263058/226357112-d08f016d-7b28-4b29-9403-4b545ddc44e2.png)](https://sandramoen.itch.io/wedding-survivor)
+[Play it](https://sandramoen.itch.io/wedding-survivor) now!
+[![intro2](https://user-images.githubusercontent.com/4059636/228152971-10aa25a2-46ed-4486-bc2d-e4c0a1e7f0d0.gif)](https://sandramoen.itch.io/wedding-survivor)
